@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {App} from './App';
+//import {PromoFilm} from './pages/Main';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -7,6 +9,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <h1>Hello, World!</h1>
+    <App paramsMain={{
+      film: {
+        name: 'The Grand Budapest Hotel',
+        genre: 'Drama',
+        date:  new Date('02.06.2014'),
+        image: 'img/bg-the-grand-budapest-hotel.jpg'
+      }
+    }}
+    />
   </React.StrictMode>
 );
