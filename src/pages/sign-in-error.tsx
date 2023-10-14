@@ -1,4 +1,4 @@
-export function SignInError() {
+export function signInError() {
   return(
     <div className="user-page">
       <header className="page-header user-page__head">

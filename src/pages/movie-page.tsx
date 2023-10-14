@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function MoviePage() {
+export function moviePage() {
   return(
     <React.Fragment>
       <section className="film-card film-card--full">

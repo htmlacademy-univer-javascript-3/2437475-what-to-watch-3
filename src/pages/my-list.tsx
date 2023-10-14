@@ -1,4 +1,4 @@
-export function MyList() {
+export function myList() {
   return(
     <div className="user-page">
       <header className="page-header user-page__head">

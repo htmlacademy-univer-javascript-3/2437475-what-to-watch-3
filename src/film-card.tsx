@@ -1,9 +1,9 @@
-type PropsCard = {
+type propsCard = {
     name: string;
     image: string;
 }
 
-export function Card({name, image}: PropsCard) {
+export function Card({name, image}: propsCard) {
   return (
     <article className="small-film-card catalog__films-card">
       <div className="small-film-card__image">

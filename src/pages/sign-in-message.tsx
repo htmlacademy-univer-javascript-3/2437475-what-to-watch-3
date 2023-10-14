@@ -1,4 +1,4 @@
-export function SignInMessage() {
+export function signInMessage() {
   return(
     <div className="user-page">
       <header className="page-header user-page__head">

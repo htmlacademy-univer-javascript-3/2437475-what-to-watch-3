@@ -1,11 +1,11 @@
-import { Main } from "./pages/Main";
-import {PropsMain} from './pages/Main';
+import {Main} from "./pages/main-page";
+import {propsMain} from './pages/main-page';
 
-export type PropsApp = {
-    paramsMain: PropsMain;
+export type propsApp = {
+    paramsMain: propsMain;
 }
 
-export function App({paramsMain}: PropsApp) {
+export function App({paramsMain}: propsApp) {
   return (
     <Main {...paramsMain} />
   );

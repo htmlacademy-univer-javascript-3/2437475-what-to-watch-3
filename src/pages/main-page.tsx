@@ -1,18 +1,18 @@
 import React from 'react';
-import {Card} from '../Card';
+import {Card} from '../film-card';
 
-export type PromoFilm = {
+export type promoFilm = {
     name: string;
     genre: string;
     date: Date;
     image: string;
   }
 
-export type PropsMain = {
-    film: PromoFilm;
+export type propsMain = {
+    film: promoFilm;
 }
 
-export function Main({film}: PropsMain) {
+export function Main({film}: propsMain) {
   return (
     <React.Fragment>
       <section className="film-card">
