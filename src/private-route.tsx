@@ -11,6 +11,6 @@ export function PrivateRoute({children}: PrivateRouteProps) {
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  
+
   return <div>{children}</div>;
 }
