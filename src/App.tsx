@@ -1,4 +1,4 @@
-import { Main } from "./pages/Main";
+import {Main} from './pages/Main';
 import {PropsMain} from './pages/Main';
 
 export type PropsApp = {
