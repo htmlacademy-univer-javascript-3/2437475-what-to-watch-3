@@ -6,11 +6,11 @@ export type PrivateRouteProps = {
 }
 
 export function PrivateRoute({children}: PrivateRouteProps) {
-  const isAuthenticated = false;
+  //const isAuthenticated = false;
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+  //if (!isAuthenticated) {
+  return <Navigate to="/login" />;
+  //}
 
-  return children;
+  //return children;
 }
