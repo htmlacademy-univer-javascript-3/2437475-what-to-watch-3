@@ -5,12 +5,13 @@ export type PrivateRouteProps = {
     children: ReactNode;
 }
 
-export function PrivateRoute({}: PrivateRouteProps) {
-  //const isAuthenticated = false;
+export function PrivateRoute({children}: PrivateRouteProps) {
+  const isAuthenticated = false;
 
-  //if (!isAuthenticated) {
-  return <Navigate to="/login" />;
-  //}
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  children = '2';
 
-  //return children;
+  return children;
 }
