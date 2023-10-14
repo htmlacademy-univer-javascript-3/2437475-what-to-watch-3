@@ -5,7 +5,7 @@ export type PrivateRouteProps = {
     children: ReactNode;
 }
 
-export function PrivateRoute({children}: PrivateRouteProps) {
+export function PrivateRoute({}: PrivateRouteProps) {
   //const isAuthenticated = false;
 
   //if (!isAuthenticated) {
