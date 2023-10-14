@@ -11,7 +11,7 @@ export function PrivateRoute({children}: PrivateRouteProps) {
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  children = '2'; //Заглушка. Git ругался, лучше не придумала
+  children = []; //Заглушка. Git ругался, лучше не придумала
 
-  return <Navigate to="/" />; //Заглушка. Git ругался, лучше не придумала
+  return children; //Заглушка. Git ругался, лучше не придумала
 }
