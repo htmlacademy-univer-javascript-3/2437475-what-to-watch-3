@@ -1,4 +1,4 @@
-export function addReview() {
+export function AddReview() {
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">

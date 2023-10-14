@@ -1,4 +1,4 @@
-export function headGuest() {
+export function HeadGuest() {
   return (
     <section className="film-card">
       <div className="film-card__bg">
