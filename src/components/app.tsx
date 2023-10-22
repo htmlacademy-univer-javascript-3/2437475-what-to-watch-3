@@ -18,19 +18,29 @@ export function App({paramsMain}: propsApp) {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Main {...paramsMain}/>} />
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/mylist" element={
+        <Route path={AppRoute.Main} element={<Main {...paramsMain}/>} />
+        <Route path={AppRoute.Login} element={<SignIn />} />
+        <Route path={AppRoute.MyList} element={
           <PrivateRoute>
             <MyList />
           </PrivateRoute>
         }
         />
-        <Route path="/films/:id" element={<MoviePage />} />
-        <Route path="/films/:id/review" element={<AddReview />} />
-        <Route path="/player/:id" element={<Player />} />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path={AppRoute.Movie} element={<MoviePage />} />
+        <Route path={AppRoute.Review} element={<AddReview />} />
+        <Route path={AppRoute.Player} element={<Player />} />
+        <Route path={AppRoute.NotFound} element={<PageNotFound />} />
       </Routes>
     </Router>
   );
+}
+
+export enum AppRoute {
+  Main = '/',
+  Login = '/login',
+  MyList = '/mylist',
+  Movie = '/films/:id',
+  Review = '/films/:id/review',
+  Player = '/player/:id',
+  NotFound = '*',
 }
