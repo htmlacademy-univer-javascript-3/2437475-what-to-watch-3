@@ -10,37 +10,46 @@ import {Player} from './pages/player';
 import {PageNotFound} from './pages/not-found-page';
 import {PrivateRoute} from './private-route';
 
-export type propsApp = {
-    paramsMain: propsMain;
+export enum AppRoute {
+  MainPage = '/',
+  LoginPage = '/login',
+  MyListPage = '/mylist',
+  FilmPage = '/films/:id',
+  ReviewPage = '/films/:id/review',
+  PlayerPage = '/player/:id',
+  NotFoundPage = '*',
 }
 
-export function App({paramsMain}: propsApp) {
+export type propsAppMain = {
+  paramsMain: propsMain;
+}
+
+export function App({paramsMain}: propsAppMain) {
   return (
     <Router>
       <Routes>
-        <Route path={AppRoute.Main} element={<Main {...paramsMain}/>} />
-        <Route path={AppRoute.Login} element={<SignIn />} />
-        <Route path={AppRoute.MyList} element={
+        <Route path={AppRoute.MainPage} element={<Main {...paramsMain}/>} />
+        <Route path={AppRoute.LoginPage} element={<SignIn />} />
+        <Route path={AppRoute.MyListPage} element={
           <PrivateRoute>
             <MyList />
           </PrivateRoute>
         }
         />
-        <Route path={AppRoute.Movie} element={<MoviePage />} />
-        <Route path={AppRoute.Review} element={<AddReview />} />
-        <Route path={AppRoute.Player} element={<Player />} />
-        <Route path={AppRoute.NotFound} element={<PageNotFound />} />
+        <Route path={AppRoute.FilmPage} element={<MoviePage />} />
+        <Route path={AppRoute.ReviewPage} element={
+          // <PrivateRoute>
+          <AddReview />
+          // </PrivateRoute>
+        }
+        />
+        <Route path={AppRoute.PlayerPage} element={<Player />} />
+        <Route path={AppRoute.NotFoundPage} element={<PageNotFound />} />
       </Routes>
     </Router>
   );
 }
 
-export enum AppRoute {
-  Main = '/',
-  Login = '/login',
-  MyList = '/mylist',
-  Movie = '/films/:id',
-  Review = '/films/:id/review',
-  Player = '/player/:id',
-  NotFound = '*',
+export function getReviewRoute(filmId: string): string {
+  return AppRoute.ReviewPage.replace(':id', `:id=${filmId}`);
 }

@@ -1,8 +1,12 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../app';
+import { Films } from '../../mocks/films';
+
 export function HeadGuest() {
   return (
     <section className="film-card">
       <div className="film-card__bg">
-        <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+        <img src={Films[0].bigImage} alt={Films[0].name} />
         <img src="img/bg-header.jpg" />
       </div>
 
@@ -18,7 +22,7 @@ export function HeadGuest() {
         </div>
 
         <div className="user-block">
-          <a href="sign-in.html" className="user-block__link">Sign in</a>
+          <Link to={AppRoute.LoginPage} className="user-block__link">Sign in</Link>
         </div>
       </header>
 

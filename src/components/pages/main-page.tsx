@@ -1,23 +1,22 @@
 import React from 'react';
-import {Card} from '../film-card';
+import {Cards} from '../film-card';
+import {Film, Films} from '../../mocks/films';
+// import {Review} from '../../mocks/reviews';
+// import {Overview} from '../../mocks/overview';
+import {Detail} from '../../mocks/details';
 
-export type promoFilm = {
-    name: string;
-    genre: string;
-    date: Date;
-    image: string;
-  }
 
 export type propsMain = {
-    film: promoFilm;
+    film: Film;
+    detail: Detail;
 }
 
-export function Main({film}: propsMain) {
+export function Main({film, detail}: propsMain) {
   return (
     <React.Fragment>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={film.image} alt={film.name} />
+          <img src={film.bigImage} alt={film.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -52,8 +51,8 @@ export function Main({film}: propsMain) {
             <div className="film-card__desc">
               <h2 className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{film.genre}</span>
-                <span className="film-card__year">{film.date.getFullYear()}</span>
+                <span className="film-card__genre">{detail.genre}</span>
+                <span className="film-card__year">{detail.year.getFullYear()}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -113,32 +112,8 @@ export function Main({film}: propsMain) {
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            <Card name={'Fantastic Beasts: The Crimes of Grindelwald'} image={'img/fantastic-beasts-the-crimes-of-grindelwald.jpg'}/>
-            <Card name={'Bohemian Rhapsody'} image={'img/bohemian-rhapsody.jpg'}/>
-            <Card name={'Macbeth'} image={'img/macbeth.jpg'}/>
-            <Card name={'Aviator'} image={'img/aviator.jpg'}/>
-
-            <Card name={'We need to talk about Kevin'} image={'img/we-need-to-talk-about-kevin.jpg'}/>
-            <Card name={'What We Do in The Shadows'} image={'img/what-we-do-in-the-shadows.jpg'}/>
-            <Card name={'Revenant'} image={'img/revenant.jpg'}/>
-            <Card name={'Johnny English'} image={'img/johnny-english.jpg'}/>
-
-            <Card name={'Shutter Island'} image={'img/shutter-island.jpg'}/>
-            <Card name={'Pulp Fiction'} image={'img/pulp-fiction.jpg'}/>
-            <Card name={'No Country for Old Men'} image={'img/no-country-for-old-men.jpg'}/>
-            <Card name={'Snatch'} image={'img/snatch.jpg'}/>
-
-            <Card name={'Moonrise Kingdom'} image={'img/moonrise-kingdom.jpg'}/>
-            <Card name={'Seven Years in Tibet'} image={'img/seven-years-in-tibet.jpg'}/>
-            <Card name={'Midnight Special'} image={'img/midnight-special.jpg'}/>
-            <Card name={'War of the Worlds'} image={'img/war-of-the-worlds.jpg'}/>
-
-            <Card name={'Dardjeeling limited'} image={'img/dardjeeling-limited.jpg'}/>
-            <Card name={'Orlando'} image={'img/orlando.jpg'}/>
-            <Card name={'Mindhunter'} image={'img/mindhunter.jpg'}/>
-            <Card name={'Midnight Special'} image={'img/midnight-special.jpg'}/>
-          </div>
+          <Cards films={Films}>
+          </Cards>
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
