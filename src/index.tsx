@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {App} from './app';
+import {App} from './components/app';
+import { Films } from './mocks/films';
+import { Details } from './mocks/details';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -9,12 +12,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <App paramsMain={{
-      film: {
-        name: 'The Grand Budapest Hotel',
-        genre: 'Drama',
-        date:  new Date('02.06.2014'),
-        image: 'img/bg-the-grand-budapest-hotel.jpg'
-      }
+      film: Films[0],
+      detail: Details[0]
     }}
     />
   </React.StrictMode>
