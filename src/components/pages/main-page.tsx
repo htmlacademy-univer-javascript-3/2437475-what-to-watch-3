@@ -6,12 +6,12 @@ import {Film, Films} from '../../mocks/films';
 import {Detail} from '../../mocks/details';
 
 
-export type propsMain = {
+export type PropsMain = {
     film: Film;
     detail: Detail;
 }
 
-export function Main({film, detail}: propsMain) {
+export function Main({film, detail}: PropsMain) {
   return (
     <React.Fragment>
       <section className="film-card">

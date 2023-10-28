@@ -2,6 +2,7 @@ import { Films } from '../../mocks/films';
 import { Details } from '../../mocks/details';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
+import React from 'react';
 
 export function PlayerPause() {
   const { id } = useParams();

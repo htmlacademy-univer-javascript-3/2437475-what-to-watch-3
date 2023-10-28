@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import {Main} from './pages/main-page';
-import {propsMain} from './pages/main-page';
+import {PropsMain} from './pages/main-page';
 import {SignIn} from './pages/sign-in';
 import {MyList} from './pages/my-list';
 import {MoviePage} from './pages/movie-page';
@@ -20,11 +20,11 @@ export enum AppRoute {
   NotFoundPage = '*',
 }
 
-export type propsAppMain = {
-  paramsMain: propsMain;
+export type PropsAppMain = {
+  paramsMain: PropsMain;
 }
 
-export function App({paramsMain}: propsAppMain) {
+export function App({paramsMain}: PropsAppMain) {
   return (
     <Router>
       <Routes>
