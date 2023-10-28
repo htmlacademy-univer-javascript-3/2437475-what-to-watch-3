@@ -15,7 +15,7 @@ export function MoviePage() {
   const overview = Overviews.filter((overviewInOverviews) => overviewInOverviews.filmId === filmId)[0];
 
   const navigate = useNavigate();
-  if (!film || !detail ||!overview) {
+  if (!film || !detail || !overview) {
     navigate(AppRoute.NotFoundPage);
   }
 

@@ -15,10 +15,10 @@ export function MoviePageInList() {
   const overview = Overviews.filter((overviewInOverviews) => overviewInOverviews.filmId === filmId)[0];
 
   const navigate = useNavigate();
-  if (!film || !detail ||!overview) {
+  if (!film || !detail || !overview) {
     navigate(AppRoute.NotFoundPage);
   }
-  
+
   return(
     <React.Fragment>
       <section className="film-card film-card--full">

@@ -12,4 +12,4 @@ export function VideoPlayer({src, muted, width, height, poster, autoplay}: Props
   return (
     <video src={src} controls muted={muted} width={width} height={height} autoPlay={autoplay} poster={poster}/>
   );
-};
+}

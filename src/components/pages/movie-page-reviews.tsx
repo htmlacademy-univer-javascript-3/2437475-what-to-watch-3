@@ -18,7 +18,7 @@ export function MoviePageReviews() {
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
   }
-  
+
   return(
     <React.Fragment>
       <section className="film-card film-card--full">

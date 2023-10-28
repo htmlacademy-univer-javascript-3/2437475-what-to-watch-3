@@ -33,7 +33,7 @@ export function Card({film}: PropsCard) {
     <article className="small-film-card catalog__films-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="small-film-card__image">
         {isHovered ? (
-          <VideoPlayer src={film.video} muted={true} width="280" height="175" poster={film.image} autoplay={true} />
+          <VideoPlayer src={film.video} muted width="280" height="175" poster={film.image} autoplay />
         ) : (
           <img src={film.image} alt={film.name} width="280" height="175" />
         )}

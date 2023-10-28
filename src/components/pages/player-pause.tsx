@@ -14,7 +14,7 @@ export function PlayerPause() {
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
   }
-  
+
 
   return(
     <div className="player">

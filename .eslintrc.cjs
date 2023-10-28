@@ -13,7 +13,10 @@ module.exports = {
   settings: { react: { version: 'detect' } },
   plugins: ['react-refresh'],
   rules: {
-    'react-refresh/only-export-components': 'warn',
+    'react-refresh/only-export-components': [
+      'warn',
+      { 'allowConstantExport': true }
+    ],
   },
   overrides: [
     {

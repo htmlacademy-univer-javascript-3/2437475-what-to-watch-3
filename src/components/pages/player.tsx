@@ -13,7 +13,7 @@ export function Player() {
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
   }
-  
+
   return(
     <div className="player">
       <video src={film.video} className="player__video" poster={film.image}></video>
