@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AppRoute, getReviewRoute } from '../app';
-import { Detail, Details } from '../../mocks/details';
-import { Film, Films } from '../../mocks/films';
+import { Details } from '../../mocks/details';
+import { Films } from '../../mocks/films';
 import { Cards } from '../film-card';
 import { ReviewCards } from '../review-card';
 import { Reviews } from '../../mocks/reviews';
@@ -11,9 +11,14 @@ export function MoviePageReviews() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film: Film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
-  const detail: Detail = Details.filter((detailInDetails) => detailInDetails.filmId === filmId)[0];
+  const film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
+  const detail = Details.filter((detailInDetails) => detailInDetails.filmId === filmId)[0];
 
+  const navigate = useNavigate();
+  if (!film || !detail) {
+    navigate(AppRoute.NotFoundPage);
+  }
+  
   return(
     <React.Fragment>
       <section className="film-card film-card--full">

@@ -1,12 +1,17 @@
-import { Film, Films } from '../../mocks/films';
-import { Link, useParams } from 'react-router-dom';
+import { Films } from '../../mocks/films';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film: Film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
+  const film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
+
+  const navigate = useNavigate();
+  if (!film) {
+    navigate(AppRoute.NotFoundPage);
+  }
 
   return (
     <section className="film-card film-card--full">
