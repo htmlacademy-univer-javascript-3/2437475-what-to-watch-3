@@ -1,12 +1,18 @@
-import { Film, Films } from '../../mocks/films';
-import { Detail, Details } from '../../mocks/details';
-import { useParams } from 'react-router-dom';
+import { Films } from '../../mocks/films';
+import { Details } from '../../mocks/details';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppRoute } from '../app';
 
 export function Player() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film: Film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
-  const detail: Detail = Details.filter((detailInDetails) => detailInDetails.filmId === filmId)[0];
+  const film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
+  const detail = Details.filter((detailInDetails) => detailInDetails.filmId === filmId)[0];
+
+  const navigate = useNavigate();
+  if (!film || !detail) {
+    navigate(AppRoute.NotFoundPage);
+  }
 
   return(
     <div className="player">

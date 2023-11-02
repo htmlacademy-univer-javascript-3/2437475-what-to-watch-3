@@ -1,7 +1,7 @@
 import {ReactNode} from 'react';
 import { Review } from '../mocks/reviews';
 
-type propsReviewCard = {
+type PropsReviewCard = {
     review: Review;
 }
 
@@ -10,7 +10,7 @@ type reviewsListProps = {
     children: ReactNode;
 }
 
-export function ReviewCard({review}: propsReviewCard) {
+export function ReviewCard({review}: PropsReviewCard) {
   return (
     <div className="review">
       <blockquote className="review__quote">
