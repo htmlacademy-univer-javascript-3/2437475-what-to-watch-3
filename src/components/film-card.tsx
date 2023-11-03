@@ -4,6 +4,8 @@ import {AppRoute} from './app';
 import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
 
+const OneSecond: number = 1000;
+
 type PropsCard = {
   film: Film;
 }
@@ -18,7 +20,7 @@ export function Card({film}: PropsCard) {
   const timeoutRef = useRef<number | null>(null);
 
   const handleMouseEnter = () => {
-    timeoutRef.current = window.setTimeout(() => setIsHovered(true), 1000);
+    timeoutRef.current = window.setTimeout(() => setIsHovered(true), OneSecond);
   };
 
   const handleMouseLeave = () => {

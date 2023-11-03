@@ -6,12 +6,14 @@ import { AppRoute } from '../app';
 export function Player() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
-  const detail = Details.filter((detailInDetails) => detailInDetails.filmId === filmId)[0];
+  const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
+
+const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
   const navigate = useNavigate();
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
+return;
   }
 
   return(
