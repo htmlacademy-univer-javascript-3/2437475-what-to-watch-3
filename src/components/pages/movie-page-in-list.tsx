@@ -19,7 +19,7 @@ export function MoviePageInList() {
   const navigate = useNavigate();
   if (!film || !detail || !overview) {
     navigate(AppRoute.NotFoundPage);
-        return(<></>);
+    return null;
   }
 
   return(

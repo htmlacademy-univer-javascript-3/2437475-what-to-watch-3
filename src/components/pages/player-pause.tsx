@@ -12,7 +12,7 @@ export function PlayerPause() {
   const navigate = useNavigate();
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
-        return(<></>);
+    return null;
   }
 
 
