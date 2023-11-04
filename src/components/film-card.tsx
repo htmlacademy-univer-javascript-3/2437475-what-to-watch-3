@@ -3,8 +3,10 @@ import {ReactNode, useRef, useState} from 'react';
 import {AppRoute} from './app';
 import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
+import { Details } from '../mocks/details';
 
 const OneSecond: number = 1000;
+const SimilarFilmConst: number = 4;
 
 type PropsCard = {
   film: Film;
@@ -47,6 +49,22 @@ export function Card({film}: PropsCard) {
   );
 }
 
+export type PropsSimilarMovies = {
+  genre: string;
+  filmId: string;
+  films: Film[];
+}
+
+export function getSimilarMovies({genre, filmId, films}: PropsSimilarMovies) {
+  let similarFilms = films.filter(film => 
+    Details.find((detailInDetails) => detailInDetails.filmId === film.id)?.genre === genre && film.id !== filmId);
+
+  if (similarFilms.length > SimilarFilmConst) {
+    return similarFilms.slice(0, SimilarFilmConst);
+  }
+
+  return similarFilms;
+}
 
 export function Cards({ films, children }: filmsListProps) {
   return (

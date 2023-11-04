@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import {Films} from '../../mocks/films';
 import { AppRoute } from '../app';
 import { Cards } from '../film-card';
+import { Footer } from '../footer';
 
 
 export function MyList() {
@@ -37,19 +38,7 @@ export function MyList() {
 
       </section>
 
-      <footer className="page-footer">
-        <div className="logo">
-          <Link to={AppRoute.MainPage} className="logo__link">
-            <span className="logo__letter logo__letter--1">W</span>
-            <span className="logo__letter logo__letter--2">T</span>
-            <span className="logo__letter logo__letter--3">W</span>
-          </Link>
-        </div>
-
-        <div className="copyright">
-          <p>© 2019 What to watch Ltd.</p>
-        </div>
-      </footer>
+<Footer/>
     </div>
   );
 }

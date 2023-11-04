@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Films} from '../../mocks/films';
 import {Details} from '../../mocks/details';
 import {Overviews} from '../../mocks/overview';
 import {AppRoute, getReviewRoute} from '../app';
-import {Cards } from '../film-card';
+import {Cards, getSimilarMovies } from '../film-card';
 import {Link, useNavigate, useParams} from 'react-router-dom';
+import { DetailsTab, OverviewTab, ReviewsTab, TabsNavigation } from '../tabs';
+import { Reviews } from '../../mocks/reviews';
+import { Footer } from '../footer';
 
 export function MoviePage() {
 
@@ -14,6 +17,9 @@ export function MoviePage() {
 
 const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
 const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
+const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId)
+
+const [activeTab, setActiveTab] = useState('Overview');
 
   const navigate = useNavigate();
   if (!film || !detail || !overview) {
@@ -87,35 +93,11 @@ return;
             </div>
 
             <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <a href="#" className="film-nav__link">Overview</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Details</a>
-                  </li>
-                  <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Reviews</a>
-                  </li>
-                </ul>
-              </nav>
+              <TabsNavigation activeTab={activeTab} setTab={setActiveTab}/>
 
-              <div className="film-rating">
-                <div className="film-rating__score">{overview.rating}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">{overview.ratingDescription}</span>
-                  <span className="film-rating__count">{overview.votes} ratings</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{overview.description}</p>
-
-                <p className="film-card__director"><strong>Director: {overview.director}</strong></p>
-
-                <p className="film-card__starring"><strong>Starring: {overview.actors}</strong></p>
-              </div>
+              {activeTab === 'Overview' && <OverviewTab overview={overview} />}
+              {activeTab === 'Details' && <DetailsTab detail={detail} />}
+              {activeTab === 'Reviews' && <ReviewsTab reviews={reviews} />}
             </div>
           </div>
         </div>
@@ -124,23 +106,11 @@ return;
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={Films.slice(1, 5)}>
+          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: Films})}>
           </Cards>
         </section>
 
-        <footer className="page-footer">
-          <div className="logo">
-            <Link to={AppRoute.MainPage} className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer/>
       </div>
     </React.Fragment>
   );

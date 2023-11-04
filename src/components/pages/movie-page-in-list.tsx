@@ -4,7 +4,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Details } from '../../mocks/details';
 import { Films } from '../../mocks/films';
 import { Overviews } from '../../mocks/overview';
-import { Cards } from '../film-card';
+import { Cards, getSimilarMovies } from '../film-card';
+import { Footer } from '../footer';
 
 export function MoviePageInList() {
 
@@ -123,23 +124,11 @@ return;
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={Films.slice(1, 5)}>
+          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: Films})}>
           </Cards>
         </section>
 
-        <footer className="page-footer">
-          <div className="logo">
-            <Link to={AppRoute.MainPage} className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer/>
       </div>
     </React.Fragment>
   );
