@@ -38,7 +38,7 @@ export function SignInMessage() {
         </form>
       </div>
 
-<Footer/>
+      <Footer/>
     </div>
   );
 }

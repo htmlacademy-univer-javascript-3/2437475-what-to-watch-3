@@ -38,7 +38,7 @@ export function MyList() {
 
       </section>
 
-<Footer/>
+      <Footer/>
     </div>
   );
 }

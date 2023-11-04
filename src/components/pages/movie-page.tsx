@@ -15,16 +15,16 @@ export function MoviePage() {
   const filmId = id?.split('=')[1];
   const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
 
-const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
-const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
-const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId)
+  const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
+  const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId);
 
-const [activeTab, setActiveTab] = useState('Overview');
+  const [activeTab, setActiveTab] = useState('Overview');
 
   const navigate = useNavigate();
   if (!film || !detail || !overview) {
     navigate(AppRoute.NotFoundPage);
-return;
+    return;
   }
 
   return(

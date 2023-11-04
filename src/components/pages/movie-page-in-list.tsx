@@ -13,13 +13,13 @@ export function MoviePageInList() {
   const filmId = id?.split('=')[1];
   const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
 
-const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
-const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
+  const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
 
   const navigate = useNavigate();
   if (!film || !detail || !overview) {
     navigate(AppRoute.NotFoundPage);
-return;
+    return;
   }
 
   return(

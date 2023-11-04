@@ -8,12 +8,12 @@ export function Player() {
   const filmId = id?.split('=')[1];
   const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
 
-const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
   const navigate = useNavigate();
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
-return;
+    return;
   }
 
   return(

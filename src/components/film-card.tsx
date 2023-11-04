@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
 import { Details } from '../mocks/details';
 
-const OneSecond: number = 1000;
-const SimilarFilmConst: number = 4;
+const OneSecond = 1000;
+const SimilarFilmConst = 4;
 
 type PropsCard = {
   film: Film;
@@ -56,7 +56,7 @@ export type PropsSimilarMovies = {
 }
 
 export function getSimilarMovies({genre, filmId, films}: PropsSimilarMovies) {
-  let similarFilms = films.filter(film => 
+  const similarFilms = films.filter((film) =>
     Details.find((detailInDetails) => detailInDetails.filmId === film.id)?.genre === genre && film.id !== filmId);
 
   if (similarFilms.length > SimilarFilmConst) {

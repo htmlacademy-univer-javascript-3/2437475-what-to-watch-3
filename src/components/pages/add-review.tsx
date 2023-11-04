@@ -11,7 +11,7 @@ export function AddReview() {
   const navigate = useNavigate();
   if (!film) {
     navigate(AppRoute.NotFoundPage);
-return;
+    return;
   }
 
   return (

@@ -35,7 +35,7 @@ export function SignIn() {
         </form>
       </div>
 
-<Footer/>
+      <Footer/>
     </div>
   );
 }
