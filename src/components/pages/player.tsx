@@ -13,7 +13,7 @@ export function Player() {
   const navigate = useNavigate();
   if (!film || !detail) {
     navigate(AppRoute.NotFoundPage);
-    return;
+        return(<></>);
   }
 
   return(
