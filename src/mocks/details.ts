@@ -45,7 +45,7 @@ export const Details: Detail[] = [
       minutes: 22,
       seconds: 8,
     },
-    genre: 'Fantasy',
+    genre: 'Drama',
     year: new Date('2018'),
   },
   {

@@ -6,11 +6,12 @@ import { AddReviewForm } from '../add-review-form';
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = Films.filter((filmInFilms) => filmInFilms.id === filmId)[0];
+  const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
 
   const navigate = useNavigate();
   if (!film) {
     navigate(AppRoute.NotFoundPage);
+    return null;
   }
 
   return (
