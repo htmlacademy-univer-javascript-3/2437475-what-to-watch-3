@@ -863,10 +863,12 @@ main {
 
 .film-nav__link {
   display: block;
-  color: #EEE5B5;
+  color: #fd612ead;
   text-decoration: none;
   position: relative;
-  padding-bottom: 19px; }
+  padding-bottom: 19px;
+  background-color: transparent;
+  border: none; }
   .film-nav__link::after {
     content: '';
     position: absolute;
@@ -875,7 +877,7 @@ main {
     right: 0;
     height: 4px;
     bottom: 0;
-    background: #EEE5B5;
+    background: #fd612ead;
     display: none; }
   .film-nav__link:hover::after {
     display: block; }

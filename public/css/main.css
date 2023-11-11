@@ -866,7 +866,9 @@ main {
   color: #EEE5B5;
   text-decoration: none;
   position: relative;
-  padding-bottom: 19px; }
+  padding-bottom: 19px;
+  background-color: transparent;
+  border: none; }
   .film-nav__link::after {
     content: '';
     position: absolute;
