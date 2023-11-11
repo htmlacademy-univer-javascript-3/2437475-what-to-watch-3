@@ -50,6 +50,3 @@ export function App({paramsMain}: PropsAppMain) {
   );
 }
 
-export function getReviewRoute(filmId: string): string {
-  return AppRoute.ReviewPage.replace(':id', `:id=${filmId}`);
-}

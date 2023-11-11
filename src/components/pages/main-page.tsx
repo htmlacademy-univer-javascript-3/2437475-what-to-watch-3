@@ -3,8 +3,8 @@ import {Cards} from '../film-card';
 import {Film, Films} from '../../mocks/films';
 import {Detail, Details} from '../../mocks/details';
 import { Footer } from '../footer';
-import { GenreList, getMoviesByGenre } from '../genres-list';
-
+import { GenreList } from '../genres-list';
+import { getMoviesByGenre } from '../functions/get-movie-by-genre';
 
 export type PropsMain = {
     film: Film;

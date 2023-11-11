@@ -4,8 +4,8 @@ import {Films} from '../../mocks/films';
 import {Details} from '../../mocks/details';
 import {Overviews} from '../../mocks/overview';
 
-import {AppRoute, getReviewRoute} from '../app';
-import {Cards, getSimilarMovies } from '../film-card';
+import {AppRoute} from '../app';
+import {Cards} from '../film-card';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 
 import { TabsNavigation } from '../tab-navigation';
@@ -15,6 +15,8 @@ import { ReviewsTab } from '../tab-reviews';
 
 import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
+import { getSimilarMovies } from '../functions/get-similar-movies';
+import { getReviewRoute } from '../functions/get-review-route';
 
 export function MoviePage() {
 
