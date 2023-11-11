@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Cards} from '../film-card';
 import {Film, Films} from '../../mocks/films';
-import {Detail} from '../../mocks/details';
+import {Detail, Details} from '../../mocks/details';
 import { Footer } from '../footer';
+import { GenreList, getMoviesByGenre } from '../genres-list';
 
 
 export type PropsMain = {
@@ -11,6 +12,15 @@ export type PropsMain = {
 }
 
 export function Main({film, detail}: PropsMain) {
+  const [activeGenre, setActiveGenre] = useState('All genres');
+  const [filteredMovies, setFilteredMovies] = useState(Films);
+
+  const handleGenreChange = (genre: string) => {
+    setActiveGenre(genre);
+    const newFilteredMovies = getMoviesByGenre(Films, Details, genre);
+    setFilteredMovies(newFilteredMovies);
+  };
+
   return (
     <React.Fragment>
       <section className="film-card">
@@ -78,40 +88,9 @@ export function Main({film, detail}: PropsMain) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <GenreList details={Details} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
 
-          <Cards films={Films}>
+          <Cards films={filteredMovies}>
           </Cards>
 
           <div className="catalog__more">
@@ -124,3 +103,4 @@ export function Main({film, detail}: PropsMain) {
     </React.Fragment>
   );
 }
+
