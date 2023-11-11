@@ -1,8 +1,6 @@
 import React from 'react';
 import {Cards} from '../film-card';
 import {Film, Films} from '../../mocks/films';
-// import {Review} from '../../mocks/reviews';
-// import {Overview} from '../../mocks/overview';
 import {Detail} from '../../mocks/details';
 import { Footer } from '../footer';
 
