@@ -1,11 +1,13 @@
 import React from 'react';
-import { AppRoute, getReviewRoute } from '../app';
+import { AppRoute } from '../app';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Details } from '../../mocks/details';
 import { Films } from '../../mocks/films';
 import { Overviews } from '../../mocks/overview';
-import { Cards, getSimilarMovies } from '../film-card';
+import { Cards } from '../film-card';
 import { Footer } from '../footer';
+import { getReviewRoute } from '../functions/get-review-route';
+import { getSimilarMovies } from '../functions/get-similar-movies';
 
 export function MoviePageInList() {
 

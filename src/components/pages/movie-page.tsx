@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
+
 import {Films} from '../../mocks/films';
 import {Details} from '../../mocks/details';
 import {Overviews} from '../../mocks/overview';
-import {AppRoute, getReviewRoute} from '../app';
-import {Cards, getSimilarMovies } from '../film-card';
+
+import {AppRoute} from '../app';
+import {Cards} from '../film-card';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import { DetailsTab, OverviewTab, ReviewsTab, TabsNavigation } from '../tabs';
+
+import { TabsNavigation } from '../tab-navigation';
+import { DetailsTab } from '../tab-details';
+import { OverviewTab } from '../tab-overviews';
+import { ReviewsTab } from '../tab-reviews';
+
 import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
+import { getSimilarMovies } from '../functions/get-similar-movies';
+import { getReviewRoute } from '../functions/get-review-route';
 
 export function MoviePage() {
 

@@ -3,10 +3,8 @@ import {ReactNode, useRef, useState} from 'react';
 import {AppRoute} from './app';
 import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
-import { Details } from '../mocks/details';
 
-const OneSecond = 1000;
-const SimilarFilmConst = 4;
+const ONE_SECOND = 1000;
 
 type PropsCard = {
   film: Film;
@@ -22,7 +20,7 @@ export function Card({film}: PropsCard) {
   const timeoutRef = useRef<number | null>(null);
 
   const handleMouseEnter = () => {
-    timeoutRef.current = window.setTimeout(() => setIsHovered(true), OneSecond);
+    timeoutRef.current = window.setTimeout(() => setIsHovered(true), ONE_SECOND);
   };
 
   const handleMouseLeave = () => {
@@ -47,23 +45,6 @@ export function Card({film}: PropsCard) {
       </h3>
     </article>
   );
-}
-
-export type PropsSimilarMovies = {
-  genre: string;
-  filmId: string;
-  films: Film[];
-}
-
-export function getSimilarMovies({genre, filmId, films}: PropsSimilarMovies) {
-  const similarFilms = films.filter((film) =>
-    Details.find((detailInDetails) => detailInDetails.filmId === film.id)?.genre === genre && film.id !== filmId);
-
-  if (similarFilms.length > SimilarFilmConst) {
-    return similarFilms.slice(0, SimilarFilmConst);
-  }
-
-  return similarFilms;
 }
 
 export function Cards({ films, children }: filmsListProps) {
