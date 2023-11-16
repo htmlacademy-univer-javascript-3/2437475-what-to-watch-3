@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Cards } from '../film-card';
-import { Film, Films } from '../../mocks/films';
-import { Detail, Details } from '../../mocks/details';
+import { Film} from '../../mocks/films';
+import { Detail } from '../../mocks/details';
 import { Footer } from '../footer';
 import { GenreList } from '../genres-list';
-import { getMoviesByGenre } from '../functions/get-movie-by-genre';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
+import { changeGenre } from '../../store/action';
 
 export type PropsMain = {
     film: Film;
@@ -14,14 +16,16 @@ export type PropsMain = {
 const FILMS_PAGE_SIZE = 8;
 
 export function Main({film, detail}: PropsMain) {
+  const details = useSelector((state: AppState) => state.details);
+  const filteredMovies = useSelector((state: AppState) => state.filteredMovies);
+  // console.log(details);
+  const dispatch = useDispatch();
   const [activeGenre, setActiveGenre] = useState('All genres');
-  const [filteredMovies, setFilteredMovies] = useState(Films);
   const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
 
   const handleGenreChange = (genre: string) => {
     setActiveGenre(genre);
-    const newFilteredMovies = getMoviesByGenre(Films, Details, genre);
-    setFilteredMovies(newFilteredMovies);
+    dispatch(changeGenre(genre));
     setVisibleMovies(FILMS_PAGE_SIZE);
   };
 
@@ -96,7 +100,7 @@ export function Main({film, detail}: PropsMain) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenreList details={Details} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
+          <GenreList details={details} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
 
           <Cards films={filteredMovies.slice(0, visibleMovies)}>
             {
