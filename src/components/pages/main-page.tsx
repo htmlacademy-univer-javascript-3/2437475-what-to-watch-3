@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import {Cards} from '../film-card';
-import {Film, Films} from '../../mocks/films';
-import {Detail, Details} from '../../mocks/details';
+import { Cards } from '../film-card';
+import { Film, Films } from '../../mocks/films';
+import { Detail, Details } from '../../mocks/details';
 import { Footer } from '../footer';
 import { GenreList } from '../genres-list';
 import { getMoviesByGenre } from '../functions/get-movie-by-genre';
@@ -11,14 +11,22 @@ export type PropsMain = {
     detail: Detail;
 }
 
+const FILMS_PAGE_SIZE = 8;
+
 export function Main({film, detail}: PropsMain) {
   const [activeGenre, setActiveGenre] = useState('All genres');
   const [filteredMovies, setFilteredMovies] = useState(Films);
+  const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
 
   const handleGenreChange = (genre: string) => {
     setActiveGenre(genre);
     const newFilteredMovies = getMoviesByGenre(Films, Details, genre);
     setFilteredMovies(newFilteredMovies);
+    setVisibleMovies(FILMS_PAGE_SIZE);
+  };
+
+  const handleShowMore = () => {
+    setVisibleMovies((prev) => prev + FILMS_PAGE_SIZE);
   };
 
   return (
@@ -90,12 +98,12 @@ export function Main({film, detail}: PropsMain) {
 
           <GenreList details={Details} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
 
-          <Cards films={filteredMovies}>
+          <Cards films={filteredMovies.slice(0, visibleMovies)}>
+            {
+              filteredMovies.length > visibleMovies &&
+              <button className="catalog__button" type="button" onClick={handleShowMore}>Show more</button>
+            }
           </Cards>
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
         </section>
 
         <Footer/>
