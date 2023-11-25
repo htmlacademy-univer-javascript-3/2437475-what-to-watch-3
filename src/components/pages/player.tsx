@@ -5,7 +5,6 @@ import { AppState } from '../../store/reducer';
 import { Detail } from '../../mocks/details';
 import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
 import { useEffect } from 'react';
-import { Film } from '../../mocks/films';
 import Spinner from '../spinner';
 
 export function Player() {
@@ -17,33 +16,32 @@ export function Player() {
   const details = useSelector((state: AppState) => state.details);
   let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
-
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!film) {
       navigate(AppRoute.NotFoundPage);
     }
-   }, [film, navigate]);
-   
-   if (!film) {
+  }, [film, navigate]);
+
+  const fetchData = async () => {
+    if (!detail && film) {
+      const [newDetail, ] = await getMoreInfoAboutFilm(film);
+      detail = newDetail as Detail;
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [detail, film, fetchData]);
+
+  if (!film) {
     return null;
-   }
- 
-   const fetchData = async (film: Film) => {
-     if (!detail) {
-       let [newDetail, __] = await getMoreInfoAboutFilm(film);
-       detail = newDetail as Detail;
-     }
-     };
- 
-   useEffect(() => {
-     fetchData(film);
-   }, [detail, film])
- 
-   if (!detail) {
-     return <Spinner/>;
-   }
+  }
+
+  if (!detail) {
+    return <Spinner/>;
+  }
 
   return(
     <div className="player">

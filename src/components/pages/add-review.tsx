@@ -1,20 +1,20 @@
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
   const film = useSelector((state: AppState) => state.films).find((filmInFilms) => filmInFilms.id === filmId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   if (!film) {
-        useEffect(() => {
-      navigate(AppRoute.NotFoundPage);
-    }, [navigate]);
+    // useEffect(() => {
+    //   navigate(AppRoute.NotFoundPage);
+    // }, [navigate]);
     return null;
   }
 

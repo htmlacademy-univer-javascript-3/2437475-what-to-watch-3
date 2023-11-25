@@ -19,7 +19,6 @@ import { getReviewRoute } from '../functions/get-review-route';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
-import { Film } from '../../mocks/films';
 import Spinner from '../spinner';
 
 export function MoviePage() {
@@ -32,7 +31,7 @@ export function MoviePage() {
 
   const details = useSelector((state: AppState) => state.details);
   let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
-  
+
   const overviews = useSelector((state: AppState) => state.overviews);
   let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
   const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId);
@@ -42,32 +41,31 @@ export function MoviePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-   if (!film) {
-     navigate(AppRoute.NotFoundPage);
-   }
+    if (!film) {
+      navigate(AppRoute.NotFoundPage);
+    }
   }, [film, navigate]);
-  
-  if (!film) {
-   return null;
-  }
 
-  const fetchData = async (film: Film) => {
-    if (!detail || !overview) {
-      let [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
+  const fetchData = async () => {
+    if ((!detail || !overview) && film) {
+      const [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
       detail = newDetail as Detail;
       overview = newOverview as Overview;
     }
-    };
+  };
 
   useEffect(() => {
-    fetchData(film);
-  }, [detail, overview, film])
+    fetchData();
+  }, [detail, overview, film, fetchData]);
 
-  if (!detail || !overview) {
-    return <Spinner/>
+  if (!film) {
+    return null;
   }
 
-  
+  if (!detail || !overview) {
+    return <Spinner/>;
+  }
+
 
   return(
     <React.Fragment>

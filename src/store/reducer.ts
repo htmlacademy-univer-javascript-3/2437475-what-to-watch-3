@@ -45,8 +45,8 @@ export const appReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setLoading, (state, action) => {
       state.loading = action.payload;
-    })
-    // .addCase(setErrorMessage, (state, action) => {
-    //   state.errorMessage = action.payload;
-    // });
+    });
+  // .addCase(setErrorMessage, (state, action) => {
+  //   state.errorMessage = action.payload;
+  // });
 });

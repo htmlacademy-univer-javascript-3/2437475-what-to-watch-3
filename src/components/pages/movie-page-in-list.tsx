@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import { AppRoute } from '../app';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Detail } from '../../mocks/details';
 import { Overview } from '../../mocks/overview';
 import { Cards } from '../film-card';
@@ -10,6 +10,7 @@ import { getSimilarMovies } from '../functions/get-similar-movies';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
+import React from 'react';
 
 export async function MoviePageInList() {
 
@@ -24,16 +25,16 @@ export async function MoviePageInList() {
   const overviews = useSelector((state: AppState) => state.overviews);
   let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   if (!film || !overview) {
-    useEffect(() => {
-      navigate(AppRoute.NotFoundPage);
-    }, [navigate]);
+    // useEffect(() => {
+    //   navigate(AppRoute.NotFoundPage);
+    // }, [navigate]);
     return null;
   }
 
   if (!detail || !overview) {
-    let [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
+    const [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
     detail = newDetail as Detail;
     overview = newOverview as Overview;
   }

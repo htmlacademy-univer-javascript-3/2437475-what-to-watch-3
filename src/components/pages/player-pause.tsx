@@ -1,10 +1,9 @@
 import { Detail } from '../../mocks/details';
-import { useNavigate, useParams } from 'react-router-dom';
-import { AppRoute } from '../app';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
 export async function PlayerPause() {
   const { id } = useParams();
@@ -15,16 +14,16 @@ export async function PlayerPause() {
   const details = useSelector((state: AppState) => state.details);
   let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   if (!film) {
-        useEffect(() => {
-      navigate(AppRoute.NotFoundPage);
-    }, [navigate]);
+    // useEffect(() => {
+    //   navigate(AppRoute.NotFoundPage);
+    // }, [navigate]);
     return null;
   }
 
   if (!detail) {
-    let [newDetail, __] = await getMoreInfoAboutFilm(film);
+    const [newDetail, ] = await getMoreInfoAboutFilm(film);
     detail = newDetail as Detail;
   }
 

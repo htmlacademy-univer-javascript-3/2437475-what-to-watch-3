@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 
 export function HeadGuest() {
-  let promoFilm = useSelector((state: AppState) => state.films)[0];
+  const promoFilm = useSelector((state: AppState) => state.films)[0];
   return ( //detail.bigImage
     <section className="film-card">
       <div className="film-card__bg">

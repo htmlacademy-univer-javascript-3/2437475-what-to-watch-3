@@ -5,5 +5,5 @@ export type Overview = {
     ratingDescription: string;
     votes: number;
     director: string;
-    actors: string;
+    actors: string[];
 }

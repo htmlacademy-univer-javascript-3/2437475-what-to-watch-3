@@ -15,12 +15,12 @@ export function DetailsTab({detail}: PropsDetailsTab) {
         <div className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
           <span className="film-card__details-value">
-          {detail.actors.map((actor, index) => (
- <div key={index}>
-   {actor}
-   <br />
- </div>
-))}
+            {detail.actors.map((actor) => (
+              <div key={actor}>
+                {actor}
+                <br />
+              </div>
+            ))}
           </span>
         </div>
       </div>

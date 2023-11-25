@@ -21,7 +21,15 @@ export function OverviewTab({overview}: PropsOverviewTab) {
 
         <p className="film-card__director"><strong>Director: {overview.director}</strong></p>
 
-        <p className="film-card__starring"><strong>Starring: {overview.actors}</strong></p>
+        <div className="film-card__starring">
+          <strong>Starring: {overview.actors.map((actor) => (
+            <div key={actor}>
+              {actor}
+              <br />
+            </div>
+          ))}
+          </strong>
+        </div>
       </div>
     </React.Fragment>
   );

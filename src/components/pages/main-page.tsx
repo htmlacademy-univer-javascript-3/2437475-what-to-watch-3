@@ -20,17 +20,16 @@ const FILMS_PAGE_SIZE = 8;
 export function Main({film, detail}: PropsMain) {
 
   const loading = useSelector((state: AppState) => state.loading);
+  const films = useSelector((state: AppState) => state.films);
+  const filteredMovies = useSelector((state: AppState) => state.filteredMovies);
+  const dispatch = useDispatch();
+  const [activeGenre, setActiveGenre] = useState('All genres');
+  const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
 
   if (loading) {
     return <Spinner/>;
   }
 
-  const films = useSelector((state: AppState) => state.films);
-  const filteredMovies = useSelector((state: AppState) => state.filteredMovies);
-
-  const dispatch = useDispatch();
-  const [activeGenre, setActiveGenre] = useState('All genres');
-  const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
 
   const handleGenreChange = (genre: string) => {
     setActiveGenre(genre);

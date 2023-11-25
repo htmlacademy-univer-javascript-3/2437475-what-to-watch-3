@@ -4,6 +4,8 @@ import { changeGenre, setFilms, setLoading } from './action';
 import { Film } from '../mocks/films';
 import { createAPI, getFilms } from '../api';
 
+interface serverFilmsItem { id: string; name: string; previewImage: string; previewVideoLink: string; genre: string }
+
 export const preloadedState = {
   genre: 'All genres',
   films: [],
@@ -31,18 +33,16 @@ const store = configureStore({
 
 store.dispatch(setLoading(true));
 
-let serverFilmsResponse;
-let loadingFilms = await store.dispatch(getFilms())
- serverFilmsResponse = loadingFilms.payload;
+const loadingFilms = await store.dispatch(getFilms());
+const serverFilmsResponse: serverFilmsItem[] = await loadingFilms.payload as serverFilmsItem[];
 
-  const films: Film[] = await serverFilmsResponse.map((item: { id: any; name: any; previewImage: any; previewVideoLink: any; genre: any; }) => ({
-    id: item.id as string,
-    name: item.name,
-    image: item.previewImage,
-    video: item.previewVideoLink,
-    bigImage: '',
-    genre: item.genre
-  }));
+const films: Film[] = serverFilmsResponse.map((item: serverFilmsItem) => ({
+  id: item.id ,
+  name: item.name ,
+  image: item.previewImage ,
+  video: item.previewVideoLink ,
+  genre: item.genre
+}));
 
 store.dispatch(setFilms(films));
 store.dispatch(changeGenre('All genres'));
