@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
-import {Films} from '../../mocks/films';
 import { AppRoute } from '../app';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
 
 
 export function MyList() {
+  const films = useSelector((state: AppState) => state.films);
   return(
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -33,7 +35,7 @@ export function MyList() {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <Cards films={Films}>
+        <Cards films={films}>
         </Cards>
 
       </section>

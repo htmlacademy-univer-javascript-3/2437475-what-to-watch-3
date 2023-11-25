@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppRoute } from '../app';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Details } from '../../mocks/details';
-import { Films } from '../../mocks/films';
-import { Overviews } from '../../mocks/overview';
+import { Detail } from '../../mocks/details';
+import { Overview } from '../../mocks/overview';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
 import { getReviewRoute } from '../functions/get-review-route';
 import { getSimilarMovies } from '../functions/get-similar-movies';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
+import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
 
-export function MoviePageInList() {
+export async function MoviePageInList() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
+  const films = useSelector((state: AppState) => state.films);
+  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
-  const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
-  const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
+  const details = useSelector((state: AppState) => state.details);
+  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+
+  const overviews = useSelector((state: AppState) => state.overviews);
+  let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
 
   const navigate = useNavigate();
-  if (!film || !detail || !overview) {
-    navigate(AppRoute.NotFoundPage);
+  if (!film || !overview) {
+    useEffect(() => {
+      navigate(AppRoute.NotFoundPage);
+    }, [navigate]);
     return null;
+  }
+
+  if (!detail || !overview) {
+    let [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
+    detail = newDetail as Detail;
+    overview = newOverview as Overview;
   }
 
   return(
@@ -60,7 +74,7 @@ export function MoviePageInList() {
               <h2 className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{detail.genre}</span>
-                <span className="film-card__year">{detail.year.getFullYear()}</span>
+                <span className="film-card__year">{detail.year}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -126,7 +140,7 @@ export function MoviePageInList() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: Films})}>
+          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}>
           </Cards>
         </section>
 

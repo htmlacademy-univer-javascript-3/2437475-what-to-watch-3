@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../app';
-import { Films } from '../../mocks/films';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
 
 export function HeadGuest() {
-  return (
+  let promoFilm = useSelector((state: AppState) => state.films)[0];
+  return ( //detail.bigImage
     <section className="film-card">
       <div className="film-card__bg">
-        <img src={Films[0].bigImage} alt={Films[0].name} />
+        <img src={promoFilm.image} alt={promoFilm.name} />
         <img src="img/bg-header.jpg" />
       </div>
 

@@ -12,12 +12,17 @@ export function DetailsTab({detail}: PropsDetailsTab) {
           <strong className="film-card__details-name">Director</strong>
           <span className="film-card__details-value">{detail.director}</span>
         </p>
-        <p className="film-card__details-item">
+        <div className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
           <span className="film-card__details-value">
-            {detail.actors}
+          {detail.actors.map((actor, index) => (
+ <div key={index}>
+   {actor}
+   <br />
+ </div>
+))}
           </span>
-        </p>
+        </div>
       </div>
 
       <div className="film-card__text-col">
@@ -31,7 +36,7 @@ export function DetailsTab({detail}: PropsDetailsTab) {
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Released</strong>
-          <span className="film-card__details-value">{detail.year.getFullYear()}</span>
+          <span className="film-card__details-value">{detail.year}</span>
         </p>
       </div>
     </div>

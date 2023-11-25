@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {Films} from '../../mocks/films';
-import {Details} from '../../mocks/details';
-import {Overviews} from '../../mocks/overview';
+import { Detail } from '../../mocks/details';
+import { Overview } from '../../mocks/overview';
 
-import {AppRoute} from '../app';
-import {Cards} from '../film-card';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import { AppRoute } from '../app';
+import { Cards } from '../film-card';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { TabsNavigation } from '../tab-navigation';
 import { DetailsTab } from '../tab-details';
@@ -17,31 +16,65 @@ import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
 import { getSimilarMovies } from '../functions/get-similar-movies';
 import { getReviewRoute } from '../functions/get-review-route';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
+import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
+import { Film } from '../../mocks/films';
+import Spinner from '../spinner';
 
 export function MoviePage() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
 
-  const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
-  const overview = Overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
+  const films = useSelector((state: AppState) => state.films);
+  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
+
+  const details = useSelector((state: AppState) => state.details);
+  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  
+  const overviews = useSelector((state: AppState) => state.overviews);
+  let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
   const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId);
 
   const [activeTab, setActiveTab] = useState('Overview');
 
   const navigate = useNavigate();
-  if (!film || !detail || !overview) {
-    navigate(AppRoute.NotFoundPage);
-    return null;
+
+  useEffect(() => {
+   if (!film) {
+     navigate(AppRoute.NotFoundPage);
+   }
+  }, [film, navigate]);
+  
+  if (!film) {
+   return null;
   }
+
+  const fetchData = async (film: Film) => {
+    if (!detail || !overview) {
+      let [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
+      detail = newDetail as Detail;
+      overview = newOverview as Overview;
+    }
+    };
+
+  useEffect(() => {
+    fetchData(film);
+  }, [detail, overview, film])
+
+  if (!detail || !overview) {
+    return <Spinner/>
+  }
+
+  
 
   return(
     <React.Fragment>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.image} alt={film.name} />
+            <img src={detail.bigImage} alt={film.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -72,7 +105,7 @@ export function MoviePage() {
               <h2 className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{detail.genre}</span>
-                <span className="film-card__year">{detail.year.getFullYear()}</span>
+                <span className="film-card__year">{detail.year}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -115,7 +148,7 @@ export function MoviePage() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: Films})}>
+          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}>
           </Cards>
         </section>
 
