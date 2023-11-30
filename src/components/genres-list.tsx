@@ -1,14 +1,16 @@
-import { Detail } from '../mocks/details';
+import { Film } from '../mocks/films';
+
+// const MAX_GENRE_LIST_COUNT = 9;
 
 
 type GenreListProps = {
- details: Detail[];
+ films: Film[];
  activeGenre: string;
  onGenreChange: (genre: string) => void;
 }
 
-export function GenreList ({ details, activeGenre, onGenreChange }: GenreListProps) {
-  const genres = Array.from(new Set(details.map((detail) => detail.genre)));
+export function GenreList ({ films, activeGenre, onGenreChange }: GenreListProps) {
+  const genres = Array.from(new Set(films.map((film) => film.genre)));//.slice(0, MAX_GENRE_LIST_COUNT - 1);
   genres.unshift('All genres');
 
   return (

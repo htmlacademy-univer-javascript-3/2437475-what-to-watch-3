@@ -7,6 +7,8 @@ import { GenreList } from '../genres-list';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { changeGenre } from '../../store/action';
+import Spinner from '../spinner';
+
 
 export type PropsMain = {
     film: Film;
@@ -16,12 +18,18 @@ export type PropsMain = {
 const FILMS_PAGE_SIZE = 8;
 
 export function Main({film, detail}: PropsMain) {
-  const details = useSelector((state: AppState) => state.details);
+
+  const loading = useSelector((state: AppState) => state.loading);
+  const films = useSelector((state: AppState) => state.films);
   const filteredMovies = useSelector((state: AppState) => state.filteredMovies);
-  // console.log(details);
   const dispatch = useDispatch();
   const [activeGenre, setActiveGenre] = useState('All genres');
   const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
+
+  if (loading) {
+    return <Spinner/>;
+  }
+
 
   const handleGenreChange = (genre: string) => {
     setActiveGenre(genre);
@@ -37,7 +45,7 @@ export function Main({film, detail}: PropsMain) {
     <React.Fragment>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src={film.bigImage} alt={film.name} />
+          <img src={detail.bigImage} alt={film.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -73,7 +81,7 @@ export function Main({film, detail}: PropsMain) {
               <h2 className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{detail.genre}</span>
-                <span className="film-card__year">{detail.year.getFullYear()}</span>
+                <span className="film-card__year">{detail.year}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -100,7 +108,7 @@ export function Main({film, detail}: PropsMain) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenreList details={details} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
+          <GenreList films={films} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
 
           <Cards films={filteredMovies.slice(0, visibleMovies)}>
             {

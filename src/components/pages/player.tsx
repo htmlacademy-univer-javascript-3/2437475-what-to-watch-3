@@ -1,19 +1,46 @@
-import { Films } from '../../mocks/films';
-import { Details } from '../../mocks/details';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
+import { Detail } from '../../mocks/details';
+import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
+import { useEffect } from 'react';
+import Spinner from '../spinner';
 
 export function Player() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
+  const films = useSelector((state: AppState) => state.films);
+  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
-  const detail = Details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const details = useSelector((state: AppState) => state.details);
+  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
   const navigate = useNavigate();
-  if (!film || !detail) {
-    navigate(AppRoute.NotFoundPage);
+
+  useEffect(() => {
+    if (!film) {
+      navigate(AppRoute.NotFoundPage);
+    }
+  }, [film, navigate]);
+
+  const fetchData = async () => {
+    if (!detail && film) {
+      const [newDetail, ] = await getMoreInfoAboutFilm(film);
+      detail = newDetail as Detail;
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [detail, film, fetchData]);
+
+  if (!film) {
     return null;
+  }
+
+  if (!detail) {
+    return <Spinner/>;
   }
 
   return(
@@ -28,7 +55,7 @@ export function Player() {
             <progress className="player__progress" value="30" max="100"></progress>
             <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
           </div>
-          <div className="player__time-value">{detail.duration.hours}:{detail.duration.minutes}:{detail.duration.seconds}</div>
+          <div className="player__time-value">{detail.duration.hours}:{detail.duration.minutes}</div>
         </div>
 
         <div className="player__controls-row">

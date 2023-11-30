@@ -7,7 +7,7 @@ export function AddReviewForm() {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     // Отправка на сервер, временно вывожу в консольку
-    // console.log(rating, reviewText);
+    //
   };
 
   const handleRatingChange = (event: { target: { value: SetStateAction<string> } }) => {

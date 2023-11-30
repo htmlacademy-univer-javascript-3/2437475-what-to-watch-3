@@ -1,24 +1,29 @@
-import { Films } from '../../mocks/films';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store/reducer';
+// import { useEffect } from 'react';
 
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = Films.find((filmInFilms) => filmInFilms.id === filmId);
+  const film = useSelector((state: AppState) => state.films).find((filmInFilms) => filmInFilms.id === filmId);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   if (!film) {
-    navigate(AppRoute.NotFoundPage);
+    // useEffect(() => {
+    //   navigate(AppRoute.NotFoundPage);
+    // }, [navigate]);
     return null;
   }
 
+  //detail.bigImage
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={film.bigImage} alt={film.name} />
+          <img src={film.image} alt={film.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
