@@ -1,9 +1,8 @@
-import { changeGenre, setFilms, setDetails, setLoading, setOverviews } from './action';
+import { changeGenre, setFilms, setDetails, setLoading } from './action';
 import { Film } from '../mocks/films';
 import { createReducer } from '@reduxjs/toolkit';
 import { getMoviesByGenre } from '../components/functions/get-movie-by-genre';
 import { Detail } from '../mocks/details';
-import { Overview } from '../mocks/overview';
 
 export type AppState = {
  loading: boolean;
@@ -11,7 +10,6 @@ export type AppState = {
  genre: string;
  films: Film[];
  details: Detail[];
- overviews: Overview[];
  filteredMovies: Film[];
 };
 
@@ -21,7 +19,6 @@ export const initialState: AppState = {
   genre: 'All genres',
   films: [],
   details: [],
-  overviews: [],
   filteredMovies: []
 };
 
@@ -38,10 +35,7 @@ export const appReducer = createReducer(initialState, (builder) => {
       state.films = action.payload;
     })
     .addCase(setDetails, (state, action) => {
-      state.details = action.payload;
-    })
-    .addCase(setOverviews, (state, action) => {
-      state.overviews = action.payload;
+      state.details = state.details.concat(action.payload);
     })
     .addCase(setLoading, (state, action) => {
       state.loading = action.payload;

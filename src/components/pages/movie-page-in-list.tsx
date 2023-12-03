@@ -1,18 +1,20 @@
 // import React, { useEffect } from 'react';
 import { AppRoute } from '../app';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Detail } from '../../mocks/details';
-import { Overview } from '../../mocks/overview';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
 import { getReviewRoute } from '../functions/get-review-route';
 import { getSimilarMovies } from '../functions/get-similar-movies';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { AppDispatch } from '../../store';
+import { setDetails } from '../../store/action';
+import { getFilm } from '../../store/api-action';
+import Spinner from '../spinner';
 
-export async function MoviePageInList() {
+export function MoviePageInList() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];
@@ -20,23 +22,36 @@ export async function MoviePageInList() {
   const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
   const details = useSelector((state: AppState) => state.details);
-  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
-  const overviews = useSelector((state: AppState) => state.overviews);
-  let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
+  const navigate = useNavigate();
 
-  // const navigate = useNavigate();
-  if (!film || !overview) {
-    // useEffect(() => {
-    //   navigate(AppRoute.NotFoundPage);
-    // }, [navigate]);
+  useEffect(() => {
+    if (!film) {
+      navigate(AppRoute.NotFoundPage);
+    }
+  }, [film, navigate]);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const fetchFilmDetails = async () => {
+      const serverDetailAction = await dispatch(getFilm(filmId as string));
+      const serverDetail = serverDetailAction.payload;
+      dispatch(setDetails(serverDetail as Detail));
+    };
+
+    if(!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, dispatch, filmId]);
+
+  if (!film) {
     return null;
   }
 
-  if (!detail || !overview) {
-    const [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
-    detail = newDetail as Detail;
-    overview = newOverview as Overview;
+  if (!detail) {
+    return <Spinner/>;
   }
 
   return(
@@ -120,18 +135,18 @@ export async function MoviePageInList() {
               </nav>
 
               <div className="film-rating">
-                <div className="film-rating__score">{overview.rating}</div>
+                <div className="film-rating__score">{detail.rating}</div>
                 <p className="film-rating__meta">
-                  <span className="film-rating__level">{overview.ratingDescription}</span>
-                  <span className="film-rating__count">{overview.votes} ratings</span>
+                  <span className="film-rating__level">{detail.ratingDescription}</span>
+                  <span className="film-rating__count">{detail.votes} ratings</span>
                 </p>
               </div>
 
               <div className="film-card__text">
-                <p>{overview.description}</p>
-                <p className="film-card__director"><strong>Director: {overview.director}</strong></p>
+                <p>{detail.description}</p>
+                <p className="film-card__director"><strong>Director: {detail.director}</strong></p>
 
-                <p className="film-card__starring"><strong>Starring: {overview.actors}</strong></p>
+                <p className="film-card__starring"><strong>Starring: {detail.actors}</strong></p>
               </div>
             </div>
           </div>

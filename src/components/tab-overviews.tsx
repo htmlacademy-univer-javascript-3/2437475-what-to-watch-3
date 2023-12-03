@@ -1,8 +1,8 @@
 import React from 'react';
-import { Overview } from '../mocks/overview';
+import { Detail } from '../mocks/details';
 
 type PropsOverviewTab = {
-    overview: Overview;
+    overview: Detail;
 }
 
 export function OverviewTab({overview}: PropsOverviewTab) {

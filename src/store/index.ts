@@ -2,9 +2,8 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { appReducer } from './reducer';
 import { changeGenre, setFilms, setLoading } from './action';
 import { Film } from '../mocks/films';
-import { createAPI, getFilms } from '../api';
-
-interface serverFilmsItem { id: string; name: string; previewImage: string; previewVideoLink: string; genre: string }
+import { createAPI } from '../api';
+import { getFilms } from './api-action';
 
 export const preloadedState = {
   genre: 'All genres',
@@ -31,18 +30,12 @@ const store = configureStore({
   preloadedState
 });
 
+export type AppDispatch = typeof store.dispatch;
+
 store.dispatch(setLoading(true));
 
 const loadingFilms = await store.dispatch(getFilms());
-const serverFilmsResponse: serverFilmsItem[] = await loadingFilms.payload as serverFilmsItem[];
-
-const films: Film[] = serverFilmsResponse.map((item: serverFilmsItem) => ({
-  id: item.id ,
-  name: item.name ,
-  image: item.previewImage ,
-  video: item.previewVideoLink ,
-  genre: item.genre
-}));
+const films = loadingFilms.payload as Film[];
 
 store.dispatch(setFilms(films));
 store.dispatch(changeGenre('All genres'));

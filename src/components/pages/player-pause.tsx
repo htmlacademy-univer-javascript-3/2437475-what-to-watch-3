@@ -1,31 +1,53 @@
 import { Detail } from '../../mocks/details';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
+import { useEffect } from 'react';
+import { AppDispatch } from '../../store';
+import { setDetails } from '../../store/action';
+import { getFilm } from '../../store/api-action';
+import { AppRoute } from '../app';
+import Spinner from '../spinner';
 // import { useEffect } from 'react';
 
-export async function PlayerPause() {
+export function PlayerPause() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
   const films = useSelector((state: AppState) => state.films);
   const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
   const details = useSelector((state: AppState) => state.details);
-  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const navigate = useNavigate();
 
-  // const navigate = useNavigate();
+  useEffect(() => {
+    if (!film) {
+      navigate(AppRoute.NotFoundPage);
+    }
+  }, [film, navigate]);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const fetchFilmDetails = async () => {
+      const serverDetailAction = await dispatch(getFilm(filmId as string));
+      const serverDetail = serverDetailAction.payload;
+      dispatch(setDetails(serverDetail as Detail));
+    };
+
+    if(!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, dispatch, filmId]);
+
   if (!film) {
-    // useEffect(() => {
-    //   navigate(AppRoute.NotFoundPage);
-    // }, [navigate]);
     return null;
   }
 
   if (!detail) {
-    const [newDetail, ] = await getMoreInfoAboutFilm(film);
-    detail = newDetail as Detail;
+    return <Spinner/>;
   }
+
 
   return(
     <div className="player">

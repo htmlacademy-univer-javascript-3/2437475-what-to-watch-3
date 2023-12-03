@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Detail } from '../../mocks/details';
-import { Overview } from '../../mocks/overview';
 
 import { AppRoute } from '../app';
 import { Cards } from '../film-card';
@@ -16,10 +15,12 @@ import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
 import { getSimilarMovies } from '../functions/get-similar-movies';
 import { getReviewRoute } from '../functions/get-review-route';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
 import Spinner from '../spinner';
+import { getFilm } from '../../store/api-action';
+import { AppDispatch } from '../../store';
+import { setDetails } from '../../store/action';
 
 export function MoviePage() {
 
@@ -30,10 +31,8 @@ export function MoviePage() {
   const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
   const details = useSelector((state: AppState) => state.details);
-  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
-  const overviews = useSelector((state: AppState) => state.overviews);
-  let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
   const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId);
 
   const [activeTab, setActiveTab] = useState('Overview');
@@ -46,23 +45,25 @@ export function MoviePage() {
     }
   }, [film, navigate]);
 
-  const fetchData = async () => {
-    if ((!detail || !overview) && film) {
-      const [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
-      detail = newDetail as Detail;
-      overview = newOverview as Overview;
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchData();
-  }, [detail, overview, film, fetchData]);
+    const fetchFilmDetails = async () => {
+      const serverDetailAction = await dispatch(getFilm(filmId as string));
+      const serverDetail = serverDetailAction.payload;
+      dispatch(setDetails(serverDetail as Detail));
+    };
+
+    if(!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, dispatch, filmId]);
 
   if (!film) {
     return null;
   }
 
-  if (!detail || !overview) {
+  if (!detail) {
     return <Spinner/>;
   }
 
@@ -135,7 +136,7 @@ export function MoviePage() {
             <div className="film-card__desc">
               <TabsNavigation activeTab={activeTab} setTab={setActiveTab}/>
 
-              {activeTab === 'Overview' && <OverviewTab overview={overview} />}
+              {activeTab === 'Overview' && <OverviewTab overview={detail} />}
               {activeTab === 'Details' && <DetailsTab detail={detail} />}
               {activeTab === 'Reviews' && <ReviewsTab reviews={reviews} />}
             </div>

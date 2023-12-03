@@ -9,4 +9,8 @@ export type Detail = {
     genre: string;
     year: number;
     bigImage: string;
+    description: string;
+    rating: number;
+    ratingDescription: string;
+    votes: number;
 }
