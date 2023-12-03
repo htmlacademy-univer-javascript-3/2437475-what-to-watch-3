@@ -4,15 +4,21 @@ import {App} from './components/app';
 import { Detail } from './mocks/details';
 import store from './store';
 import { Provider } from 'react-redux';
-// import { getMoreInfoAboutFilm } from './components/functions/get-more-info-about-film';
-import { fetchFilms, getFilm, getPromoFilm } from './store/api-action';
+import { fetchFilms, getAuthStatus, getPromoFilm } from './store/api-action';
 import { Film } from './mocks/films';
-import { setFilms } from './store/action';
+import { updateAuthorizationStatus } from './store/action';
 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const state = store.getState();
+
+const statusLogin = await store.dispatch(getAuthStatus(state.token));
+if (statusLogin.payload) {
+  store.dispatch(updateAuthorizationStatus(true));
+}
 
 await store.dispatch(fetchFilms());
 
