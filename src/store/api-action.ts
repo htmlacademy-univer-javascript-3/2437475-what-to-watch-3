@@ -32,6 +32,17 @@ interface serverFilm {
     isFavorite: boolean;
 }
 
+interface serverPromo {
+    id: string;
+    name: string;
+    posterImage: string;
+    backgroundImage: string;
+    videoLink: string;
+    genre: string;
+    released: number;
+    isFavorite: boolean;
+}
+
 function getRatingDescription(rating: number) {
   switch (true) {
     case (rating >= 0 && rating < 3):
@@ -73,35 +84,73 @@ export const getFilm = createAsyncThunk('films/getFilm', async (filmId: string, 
   const apiInstance = api as AxiosInstance;
   const response = await apiInstance.get(`/films/${filmId}`);
 
-  const loadingFilm: serverFilm = await response.data as serverFilm;
+  const serverResponce: serverFilm = await response.data as serverFilm;
 
   const detail: Detail = {
     filmId: filmId,
-    genre: loadingFilm.genre,
-    year:  loadingFilm.released ,
-    director: loadingFilm.director ,
-    actors: loadingFilm.starring ,
+    genre: serverResponce.genre,
+    year:  serverResponce.released ,
+    director: serverResponce.director ,
+    actors: serverResponce.starring ,
     duration: {
-      hours: Math.floor(loadingFilm.runTime / 60) ,
-      minutes: loadingFilm.runTime % 60
+      hours: Math.floor(serverResponce.runTime / 60) ,
+      minutes: serverResponce.runTime % 60
     },
-    bigImage: loadingFilm.backgroundImage,
-    description: loadingFilm.description ,
-    rating: loadingFilm.rating ,
-    ratingDescription: getRatingDescription(loadingFilm.rating) as string,
-    votes: loadingFilm.scoresCount
+    poster: serverResponce.posterImage,
+    bigImage: serverResponce.backgroundImage,
+    description: serverResponce.description ,
+    rating: serverResponce.rating ,
+    ratingDescription: getRatingDescription(serverResponce.rating) as string,
+    votes: serverResponce.scoresCount
   };
 
   return detail;
 });
+
+export const getPromoFilm = createAsyncThunk('films/getPromoFilm', async (_, {extra: api}) => {
+    const apiInstance = api as AxiosInstance;
+    const response = await apiInstance.get('/promo');
+    console.log(response);
+
+    const serverPromoResponce: serverPromo = await response.data as serverPromo;
+
+    const promo: Film = {
+        id: serverPromoResponce.id,
+        name: serverPromoResponce.name,
+        image: serverPromoResponce.posterImage,
+        video: serverPromoResponce.videoLink,
+        genre: serverPromoResponce.genre
+    };
+
+    const promoDetail: Detail = {
+        filmId: serverPromoResponce.id,
+        genre: serverPromoResponce.genre,
+        year:  serverPromoResponce.released ,
+        director: '',
+        actors: [],
+        duration: {
+          hours: 0 ,
+          minutes: 0
+        },
+        poster: serverPromoResponce.posterImage,
+        bigImage: serverPromoResponce.backgroundImage,
+        description: '',
+        rating: 0,
+        ratingDescription: '',
+        votes: 0
+    };
+
+    return [promo, promoDetail];
+
+})
 
 export const fetchFilms = createAsyncThunk(
     'films/fetchFilms',
     async (_, { dispatch }) => {
       dispatch(setLoading(true));
    
-      const loadingFilms = await dispatch(getFilms());
-      const films = loadingFilms.payload as Film[];
+      const serverPromoResponces = await dispatch(getFilms());
+      const films = serverPromoResponces.payload as Film[];
    
       dispatch(setFilms(films));
       dispatch(changeGenre('All genres'));

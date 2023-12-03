@@ -6,6 +6,7 @@ import { Detail } from '../mocks/details';
 import { fetchFilms } from './api-action';
 
 export type AppState = {
+ authorizationStatus: boolean,
  loading: boolean;
  errorMessage: string;
  genre: string;
@@ -15,6 +16,7 @@ export type AppState = {
 };
 
 export const initialState: AppState = {
+  authorizationStatus: false,
   loading: true,
   errorMessage: '',
   genre: 'All genres',

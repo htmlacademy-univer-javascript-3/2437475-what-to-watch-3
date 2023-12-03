@@ -8,6 +8,7 @@ export type Detail = {
     };
     genre: string;
     year: number;
+    poster: string;
     bigImage: string;
     description: string;
     rating: number;

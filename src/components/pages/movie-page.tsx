@@ -130,7 +130,7 @@ export function MoviePage() {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={film.image} alt={film.name} width="218" height="327" />
+              <img src={detail.poster} alt={film.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">

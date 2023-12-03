@@ -5,7 +5,9 @@ import { Detail } from './mocks/details';
 import store from './store';
 import { Provider } from 'react-redux';
 // import { getMoreInfoAboutFilm } from './components/functions/get-more-info-about-film';
-import { fetchFilms, getFilm } from './store/api-action';
+import { fetchFilms, getFilm, getPromoFilm } from './store/api-action';
+import { Film } from './mocks/films';
+import { setFilms } from './store/action';
 
 
 const root = ReactDOM.createRoot(
@@ -14,15 +16,11 @@ const root = ReactDOM.createRoot(
 
 await store.dispatch(fetchFilms());
 
-//Пока нет авторизации, не могу получить промо-фильм. Беру первый (про Гриндевальда)
+const serverPromo = await store.dispatch(getPromoFilm());
+const promo = serverPromo.payload as [Film, Detail];
 
-
-const state = store.getState();
-
-const loadingdetail = await store.dispatch(getFilm(state.films[0].id));
-
-const detailPromoFilm = loadingdetail.payload as Detail;
-const promoFilm = state.films[0];
+const detailPromoFilm = promo[1];
+const promoFilm = promo[0];
 
 root.render(
   <React.StrictMode>
