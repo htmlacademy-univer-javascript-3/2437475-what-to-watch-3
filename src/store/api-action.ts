@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
+import { setLoading, setFilms, changeGenre } from './action';
 
 interface serverFilmsItem {
     id: string;
@@ -51,7 +52,6 @@ function getRatingDescription(rating: number) {
 export const getFilms = createAsyncThunk('films/getFilms', async (_, { extra: api }) => {
   const apiInstance = api as AxiosInstance;
   const response = await apiInstance.get('/films');
-  // console.log(response);
 
   const serverFilmsResponse: serverFilmsItem[] = await response.data as serverFilmsItem[];
 
@@ -62,8 +62,6 @@ export const getFilms = createAsyncThunk('films/getFilms', async (_, { extra: ap
     video: item.previewVideoLink ,
     genre: item.genre
   }));
-
-  // console.log(films);
 
   return films;
 });
@@ -96,3 +94,18 @@ export const getFilm = createAsyncThunk('films/getFilm', async (filmId: string, 
 
   return detail;
 });
+
+export const fetchFilms = createAsyncThunk(
+    'films/fetchFilms',
+    async (_, { dispatch }) => {
+      dispatch(setLoading(true));
+   
+      const loadingFilms = await dispatch(getFilms());
+      const films = loadingFilms.payload as Film[];
+   
+      dispatch(setFilms(films));
+      dispatch(changeGenre('All genres'));
+   
+      dispatch(setLoading(false));
+    }
+   );
