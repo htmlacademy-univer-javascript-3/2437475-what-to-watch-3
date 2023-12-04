@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Detail } from '../../mocks/details';
-import { Overview } from '../../mocks/overview';
 
 import { AppRoute } from '../app';
 import { Cards } from '../film-card';
@@ -16,24 +15,27 @@ import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
 import { getSimilarMovies } from '../functions/get-similar-movies';
 import { getReviewRoute } from '../functions/get-review-route';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
 import Spinner from '../spinner';
+import { getFilm } from '../../store/api-action';
+import { AppDispatch } from '../../store';
+import { setDetails } from '../../store/action';
+import { Header } from '../header';
 
 export function MoviePage() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];
 
+  const authStatus = useSelector((state: AppState) => state.authorizationStatus);
+
   const films = useSelector((state: AppState) => state.films);
   const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
   const details = useSelector((state: AppState) => state.details);
-  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
-  const overviews = useSelector((state: AppState) => state.overviews);
-  let overview = overviews.find((overviewInOverviews) => overviewInOverviews.filmId === filmId);
   const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId);
 
   const [activeTab, setActiveTab] = useState('Overview');
@@ -46,23 +48,25 @@ export function MoviePage() {
     }
   }, [film, navigate]);
 
-  const fetchData = async () => {
-    if ((!detail || !overview) && film) {
-      const [newDetail, newOverview] = await getMoreInfoAboutFilm(film);
-      detail = newDetail as Detail;
-      overview = newOverview as Overview;
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchData();
-  }, [detail, overview, film, fetchData]);
+    const fetchFilmDetails = async () => {
+      const serverDetailAction = await dispatch(getFilm(filmId as string));
+      const serverDetail = serverDetailAction.payload;
+      dispatch(setDetails(serverDetail as Detail));
+    };
+
+    if(!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, dispatch, filmId]);
 
   if (!film) {
     return null;
   }
 
-  if (!detail || !overview) {
+  if (!detail) {
     return <Spinner/>;
   }
 
@@ -77,26 +81,7 @@ export function MoviePage() {
 
           <h1 className="visually-hidden">WTW</h1>
 
-          <header className="page-header film-card__head">
-            <div className="logo">
-              <Link to={AppRoute.MainPage} className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </Link>
-            </div>
-
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
-          </header>
+          <Header authStatus={authStatus} />
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
@@ -129,13 +114,13 @@ export function MoviePage() {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={film.image} alt={film.name} width="218" height="327" />
+              <img src={detail.poster} alt={film.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
               <TabsNavigation activeTab={activeTab} setTab={setActiveTab}/>
 
-              {activeTab === 'Overview' && <OverviewTab overview={overview} />}
+              {activeTab === 'Overview' && <OverviewTab overview={detail} />}
               {activeTab === 'Details' && <DetailsTab detail={detail} />}
               {activeTab === 'Reviews' && <ReviewsTab reviews={reviews} />}
             </div>

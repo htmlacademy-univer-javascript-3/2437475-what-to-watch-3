@@ -1,27 +1,29 @@
-import { changeGenre, setFilms, setDetails, setLoading, setOverviews } from './action';
+import { changeGenre, setFilms, setDetails, setLoading, updateAuthorizationStatus, setToken } from './action';
 import { Film } from '../mocks/films';
 import { createReducer } from '@reduxjs/toolkit';
 import { getMoviesByGenre } from '../components/functions/get-movie-by-genre';
 import { Detail } from '../mocks/details';
-import { Overview } from '../mocks/overview';
+import { fetchFilms } from './api-action';
 
 export type AppState = {
+ token: string;
+ authorizationStatus: boolean;
  loading: boolean;
  errorMessage: string;
  genre: string;
  films: Film[];
  details: Detail[];
- overviews: Overview[];
  filteredMovies: Film[];
 };
 
 export const initialState: AppState = {
+  token: '',
+  authorizationStatus: false,
   loading: true,
   errorMessage: '',
   genre: 'All genres',
   films: [],
   details: [],
-  overviews: [],
   filteredMovies: []
 };
 
@@ -38,13 +40,27 @@ export const appReducer = createReducer(initialState, (builder) => {
       state.films = action.payload;
     })
     .addCase(setDetails, (state, action) => {
-      state.details = action.payload;
-    })
-    .addCase(setOverviews, (state, action) => {
-      state.overviews = action.payload;
+      state.loading = true;
+      state.details = state.details.concat(action.payload);
+      state.loading = false;
     })
     .addCase(setLoading, (state, action) => {
       state.loading = action.payload;
+    })
+    .addCase(fetchFilms.pending, (state) => {
+      state.loading = true;
+    })
+    .addCase(fetchFilms.fulfilled, (state) => {
+      state.loading = false;
+    })
+    .addCase(fetchFilms.rejected, (state) => {
+      state.loading = false;
+    })
+    .addCase(updateAuthorizationStatus, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setToken, (state, action) => {
+      state.token = action.payload;
     });
   // .addCase(setErrorMessage, (state, action) => {
   //   state.errorMessage = action.payload;

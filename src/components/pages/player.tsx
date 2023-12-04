@@ -1,11 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { Detail } from '../../mocks/details';
-import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
+// import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
 import { useEffect } from 'react';
 import Spinner from '../spinner';
+import { AppDispatch } from '../../store';
+import { getFilm } from '../../store/api-action';
+import { setDetails } from '../../store/action';
 
 export function Player() {
   const { id } = useParams();
@@ -14,7 +17,7 @@ export function Player() {
   const film = films.find((filmInFilms) => filmInFilms.id === filmId);
 
   const details = useSelector((state: AppState) => state.details);
-  let detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
   const navigate = useNavigate();
 
@@ -24,16 +27,19 @@ export function Player() {
     }
   }, [film, navigate]);
 
-  const fetchData = async () => {
-    if (!detail && film) {
-      const [newDetail, ] = await getMoreInfoAboutFilm(film);
-      detail = newDetail as Detail;
-    }
-  };
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    fetchData();
-  }, [detail, film, fetchData]);
+    const fetchFilmDetails = async () => {
+      const serverDetailAction = await dispatch(getFilm(filmId as string));
+      const serverDetail = serverDetailAction.payload;
+      dispatch(setDetails(serverDetail as Detail));
+    };
+
+    if(!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, dispatch, filmId]);
 
   if (!film) {
     return null;
