@@ -1,7 +1,5 @@
 import axios from 'axios';
-
-const BASE_URL = 'https://13.design.pages.academy/wtw';
-const API_TIMEOUT = 5000;
+import { BASE_URL, API_TIMEOUT } from './constants';
 
 export function createAPI() {
   const api = axios.create({

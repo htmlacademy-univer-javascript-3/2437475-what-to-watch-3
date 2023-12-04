@@ -13,20 +13,24 @@ import { ReviewsTab } from '../tab-reviews';
 
 import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
-import { getSimilarMovies } from '../functions/get-similar-movies';
+// import { getSimilarMovies } from '../functions/get-similar-movies';
 import { getReviewRoute } from '../functions/get-review-route';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import Spinner from '../spinner';
-import { getFilm } from '../../store/api-action';
+import { getFilm, getSimilarFilms } from '../../store/api-action';
 import { AppDispatch } from '../../store';
 import { setDetails } from '../../store/action';
 import { Header } from '../header';
+import { Film } from '../../mocks/films';
+import { SIMILAR_FILM_COUNT } from '../../constants';
 
 export function MoviePage() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];
+
+  const [similarFilms, setSimilarFilms] = useState<Film[]>([]);
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
@@ -62,11 +66,25 @@ export function MoviePage() {
     }
   }, [detail, dispatch, filmId]);
 
+  useEffect(() => {
+    const fetchSimilarFilms = async () => {
+      const serverSimilarFilmsAction = await dispatch(getSimilarFilms(filmId as string));
+      setSimilarFilms((serverSimilarFilmsAction.payload as Film[]).slice(0, SIMILAR_FILM_COUNT));
+    };
+
+    fetchSimilarFilms();
+  }, [dispatch, filmId]);
+
   if (!film) {
     return null;
   }
 
   if (!detail) {
+    return <Spinner/>;
+  }
+
+  if (similarFilms.length == 0) {
+    // similarFilms = getSimilarMovies({genre: detail.genre, filmId: film.id, films: films});
     return <Spinner/>;
   }
 
@@ -131,7 +149,7 @@ export function MoviePage() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}>
+          <Cards films={similarFilms}>
           </Cards>
         </section>
 

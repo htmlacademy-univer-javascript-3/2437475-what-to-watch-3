@@ -3,8 +3,7 @@ import {ReactNode, useRef, useState} from 'react';
 import {AppRoute} from './app';
 import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
-
-const ONE_SECOND = 1000;
+import { ONE_SECOND } from '../constants';
 
 type PropsCard = {
   film: Film;

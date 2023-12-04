@@ -103,7 +103,8 @@ export const getFilm = createAsyncThunk('films/getFilm', async (filmId: string, 
     description: serverResponce.description ,
     rating: serverResponce.rating ,
     ratingDescription: getRatingDescription(serverResponce.rating) as string,
-    votes: serverResponce.scoresCount
+    votes: serverResponce.scoresCount, 
+    video: serverResponce.videoLink
   };
 
   return detail;
@@ -138,12 +139,30 @@ export const getPromoFilm = createAsyncThunk('films/getPromoFilm', async (_, {ex
     description: '',
     rating: 0,
     ratingDescription: '',
-    votes: 0
+    votes: 0,
+    video: serverPromoResponce.videoLink
   };
 
   return [promo, promoDetail];
 
 });
+
+export const getSimilarFilms = createAsyncThunk('films/getSimilarFilms', async (filmId: string, {extra: api}) => {
+  const apiInstance = api as AxiosInstance;
+  const response = await apiInstance.get(`/films/${filmId}/similar`);
+
+  const serverSimilarFilmsResponse: serverFilmsItem[] = await response.data as serverFilmsItem[];
+
+  const films: Film[] = serverSimilarFilmsResponse.map((item: serverFilmsItem) => ({
+    id: item.id ,
+    name: item.name ,
+    image: item.previewImage ,
+    video: item.previewVideoLink ,
+    genre: item.genre
+  }));
+
+  return films;
+})
 
 export const fetchFilms = createAsyncThunk(
   'films/fetchFilms',
