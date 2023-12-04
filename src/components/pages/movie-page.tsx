@@ -10,19 +10,18 @@ import { TabsNavigation } from '../tab-navigation';
 import { DetailsTab } from '../tab-details';
 import { OverviewTab } from '../tab-overviews';
 import { ReviewsTab } from '../tab-reviews';
-
-import { Reviews } from '../../mocks/reviews';
 import { Footer } from '../footer';
 // import { getSimilarMovies } from '../functions/get-similar-movies';
 import { getReviewRoute } from '../functions/get-review-route';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import Spinner from '../spinner';
-import { getFilm, getSimilarFilms } from '../../store/api-action';
+import { getFilm, getReviews, getSimilarFilms } from '../../store/api-action';
 import { AppDispatch } from '../../store';
 import { setDetails } from '../../store/action';
 import { Header } from '../header';
 import { Film } from '../../mocks/films';
+import { Review } from '../../mocks/reviews';
 import { SIMILAR_FILM_COUNT } from '../../constants';
 
 export function MoviePage() {
@@ -31,6 +30,7 @@ export function MoviePage() {
   const filmId = id?.split('=')[1];
 
   const [similarFilms, setSimilarFilms] = useState<Film[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
@@ -39,8 +39,6 @@ export function MoviePage() {
 
   const details = useSelector((state: AppState) => state.details);
   const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
-
-  const reviews = Reviews.filter((reviewsInReviews) => reviewsInReviews.filmId === filmId);
 
   const [activeTab, setActiveTab] = useState('Overview');
 
@@ -75,6 +73,15 @@ export function MoviePage() {
     fetchSimilarFilms();
   }, [dispatch, filmId]);
 
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const serverReviewsAction = await dispatch(getReviews(filmId as string));
+      setReviews((serverReviewsAction.payload as Review[]));
+    };
+
+    fetchReviews();
+  }, [dispatch, filmId]);
+
   if (!film) {
     return null;
   }
@@ -82,12 +89,6 @@ export function MoviePage() {
   if (!detail) {
     return <Spinner/>;
   }
-
-  if (similarFilms.length == 0) {
-    // similarFilms = getSimilarMovies({genre: detail.genre, filmId: film.id, films: films});
-    return <Spinner/>;
-  }
-
 
   return(
     <React.Fragment>

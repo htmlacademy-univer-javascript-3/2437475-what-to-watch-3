@@ -5,6 +5,7 @@ import { Detail } from '../mocks/details';
 import { setLoading, setFilms, changeGenre, updateAuthorizationStatus, setToken } from './action';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '.';
+import { Review } from '../mocks/reviews';
 
 interface serverFilmsItem {
     id: string;
@@ -43,6 +44,14 @@ interface serverPromo {
     genre: string;
     released: number;
     isFavorite: boolean;
+}
+
+interface serverReview {
+  id: string;
+date: string;
+user: string;
+comment: string;
+rating: number;
 }
 
 function getRatingDescription(rating: number) {
@@ -162,6 +171,27 @@ export const getSimilarFilms = createAsyncThunk('films/getSimilarFilms', async (
   }));
 
   return films;
+})
+
+export const getReviews = createAsyncThunk('comments/getReviews', async (filmId: string, {extra: api}) => {
+  const apiInstance = api as AxiosInstance;
+  const response = await apiInstance.get(`/comments/${filmId}`);
+
+  const serverReviewsResponse: serverReview[] = await response.data as serverReview[];
+  console.log(response);
+
+  const reviews: Review[] = serverReviewsResponse.map((item: serverReview) => ({
+    id: item.id,
+    filmId: filmId,
+    rating: item.rating,
+    author: item.user,
+    text: item.comment,
+    reviewDate: item.date
+  }));
+
+  console.log(reviews);
+
+  return reviews;
 })
 
 export const fetchFilms = createAsyncThunk(
