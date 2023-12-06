@@ -62,7 +62,4 @@ export const appReducer = createReducer(initialState, (builder) => {
     .addCase(setToken, (state, action) => {
       state.token = action.payload;
     });
-  // .addCase(setErrorMessage, (state, action) => {
-  //   state.errorMessage = action.payload;
-  // });
 });

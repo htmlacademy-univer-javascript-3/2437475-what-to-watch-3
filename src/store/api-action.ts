@@ -217,7 +217,6 @@ export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: stri
     const response = await apiInstance.get('/login', token as AxiosRequestConfig);
     return response;
   } catch (error) {
-    // alert('Sorry, auth not auth');
     return undefined;
   }
 });
