@@ -38,9 +38,9 @@ export function App({paramsMain}: PropsAppMain) {
         />
         <Route path={AppRoute.FilmPage} element={<MoviePage />} />
         <Route path={AppRoute.ReviewPage} element={
-          // <PrivateRoute>
-          <AddReview />
-          // </PrivateRoute>
+          <PrivateRoute>
+            <AddReview />
+          </PrivateRoute>
         }
         />
         <Route path={AppRoute.PlayerPage} element={<Player />} />

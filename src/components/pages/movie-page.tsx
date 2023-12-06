@@ -11,7 +11,6 @@ import { DetailsTab } from '../tab-details';
 import { OverviewTab } from '../tab-overviews';
 import { ReviewsTab } from '../tab-reviews';
 import { Footer } from '../footer';
-// import { getSimilarMovies } from '../functions/get-similar-movies';
 import { getReviewRoute } from '../functions/get-review-route';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
@@ -124,7 +123,7 @@ export function MoviePage() {
                   <span>My list</span>
                   <span className="film-card__count">9</span>
                 </button>
-                <Link to={getReviewRoute(film.id)} className="btn film-card__button">Add review</Link>
+                {authStatus && (<Link to={getReviewRoute(film.id)} className="btn film-card__button">Add review</Link>)}
               </div>
             </div>
           </div>

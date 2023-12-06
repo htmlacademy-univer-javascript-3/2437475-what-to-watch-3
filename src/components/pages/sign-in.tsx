@@ -42,7 +42,7 @@ export function SignIn() {
       dispatch(updateAuthorizationStatus(false));
     } else {
       dispatch(updateAuthorizationStatus(true));
-      dispatch(signIn({email, password})); // Отсюда не заходит в метод signIn, а потому не загружает в state token и статус авторизации. Не смогла найти проблему
+      dispatch(signIn({email, password}));
     }
   }
 

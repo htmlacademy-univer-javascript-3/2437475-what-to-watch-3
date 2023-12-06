@@ -3,8 +3,6 @@ import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
 import { setLoading, setFilms, changeGenre, updateAuthorizationStatus, setToken } from './action';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '.';
 import { Review } from '../mocks/reviews';
 
 interface serverFilmsItem {
@@ -52,6 +50,13 @@ date: string;
 user: string;
 comment: string;
 rating: number;
+}
+
+interface serverSignInRequest {
+    name: string;
+    avatarUrl: string;
+    email: string;
+    token: string;
 }
 
 function getRatingDescription(rating: number) {
@@ -112,7 +117,7 @@ export const getFilm = createAsyncThunk('films/getFilm', async (filmId: string, 
     description: serverResponce.description ,
     rating: serverResponce.rating ,
     ratingDescription: getRatingDescription(serverResponce.rating) as string,
-    votes: serverResponce.scoresCount, 
+    votes: serverResponce.scoresCount,
     video: serverResponce.videoLink
   };
 
@@ -171,14 +176,13 @@ export const getSimilarFilms = createAsyncThunk('films/getSimilarFilms', async (
   }));
 
   return films;
-})
+});
 
 export const getReviews = createAsyncThunk('comments/getReviews', async (filmId: string, {extra: api}) => {
   const apiInstance = api as AxiosInstance;
   const response = await apiInstance.get(`/comments/${filmId}`);
 
   const serverReviewsResponse: serverReview[] = await response.data as serverReview[];
-  console.log(response);
 
   const reviews: Review[] = serverReviewsResponse.map((item: serverReview) => ({
     id: item.id,
@@ -189,10 +193,8 @@ export const getReviews = createAsyncThunk('comments/getReviews', async (filmId:
     reviewDate: item.date
   }));
 
-  console.log(reviews);
-
   return reviews;
-})
+});
 
 export const fetchFilms = createAsyncThunk(
   'films/fetchFilms',
@@ -220,15 +222,23 @@ export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: stri
   }
 });
 
-export const signIn = createAsyncThunk('user/signIn', async(data: {email: string; password: string}, { extra: api }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const apiInstance = api as AxiosInstance;
-  const response = await apiInstance.post('/login', data);
-  if (response.status === 200) {
-    dispatch(updateAuthorizationStatus(true));
-    dispatch(setToken(response.data.token as string));
+export const signIn = createAsyncThunk('user/signIn', async (data: {email: string; password: string}, thunkAPI) => {
+  const apiInstance = thunkAPI.extra as AxiosInstance;
+  const response = await apiInstance.post<serverSignInRequest>('/login', data);
+  if (response.status === 201) {
+    thunkAPI.dispatch(updateAuthorizationStatus(true));
+    thunkAPI.dispatch(setToken(response.data.token));
     return response.data;
   }
 
   return undefined;
+});
+
+export const postReview = createAsyncThunk('comments/postReview', async (data: {filmId: string; request: { comment: string; rating: number}}, {extra: api}) => {
+  const apiInstance = api as AxiosInstance;
+  const comment = data.request.comment;
+  const rating = data.request.rating;
+  const response = await apiInstance.post<serverReview>(`/comments/${data.filmId}`, {comment, rating});
+
+  return response.data;
 });
