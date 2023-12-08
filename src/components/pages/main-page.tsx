@@ -9,14 +9,13 @@ import { AppState } from '../../store/reducer';
 import { changeGenre } from '../../store/action';
 import Spinner from '../spinner';
 import { Header } from '../header';
+import { FILMS_PAGE_SIZE } from '../../constants';
 
 
 export type PropsMain = {
     film: Film;
     detail: Detail;
 }
-
-const FILMS_PAGE_SIZE = 8;
 
 export function Main({film, detail}: PropsMain) {
 

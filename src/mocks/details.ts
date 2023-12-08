@@ -14,4 +14,5 @@ export type Detail = {
     rating: number;
     ratingDescription: string;
     votes: number;
+    video: string;
 }

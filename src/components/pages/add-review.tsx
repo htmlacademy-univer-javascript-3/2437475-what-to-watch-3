@@ -1,29 +1,63 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
+import { Detail } from '../../mocks/details';
+import { AppDispatch } from '../../store';
+import { setDetails } from '../../store/action';
+import { getFilm } from '../../store/api-action';
+import Spinner from '../spinner';
+import React from 'react';
 
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  const film = useSelector((state: AppState) => state.films).find((filmInFilms) => filmInFilms.id === filmId);
 
-  // const navigate = useNavigate();
+  const films = useSelector((state: AppState) => state.films);
+  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
+
+  const authStatus = useSelector((state: AppState) => state.authorizationStatus);
+
+  const details = useSelector((state: AppState) => state.details);
+  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!film) {
+      navigate(AppRoute.NotFoundPage);
+    }
+  }, [film, navigate]);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const fetchFilmDetails = async () => {
+      const serverDetailAction = await dispatch(getFilm(filmId as string));
+      const serverDetail = serverDetailAction.payload;
+      dispatch(setDetails(serverDetail as Detail));
+    };
+
+    if(!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, dispatch, filmId]);
+
   if (!film) {
-    // useEffect(() => {
-    //   navigate(AppRoute.NotFoundPage);
-    // }, [navigate]);
     return null;
   }
 
-  //detail.bigImage
+  if (!detail) {
+    return <Spinner/>;
+  }
+
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={film.image} alt={film.name} />
+          <img src={detail.bigImage} alt={film.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -49,14 +83,23 @@ export function AddReview() {
           </nav>
 
           <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
+            {authStatus === true && (
+              <React.Fragment>
+                <li className="user-block__item">
+                  <div className="user-block__avatar">
+                    <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
+                  </div>
+                </li>
+                <li className="user-block__item">
+                  <a className="user-block__link">Sign out</a>
+                </li>
+              </React.Fragment>
+            )}
+            {authStatus === false && (
+              <Link to={AppRoute.LoginPage} className="user-block__link">
+              Sign in
+              </Link>
+            )}
           </ul>
         </header>
 

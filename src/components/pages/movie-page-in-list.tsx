@@ -1,4 +1,3 @@
-// import React, { useEffect } from 'react';
 import { AppRoute } from '../app';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Detail } from '../../mocks/details';

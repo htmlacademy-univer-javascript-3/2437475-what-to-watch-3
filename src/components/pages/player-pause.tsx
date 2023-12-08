@@ -8,7 +8,6 @@ import { setDetails } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import { AppRoute } from '../app';
 import Spinner from '../spinner';
-// import { useEffect } from 'react';
 
 export function PlayerPause() {
   const { id } = useParams();

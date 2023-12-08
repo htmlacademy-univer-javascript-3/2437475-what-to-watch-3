@@ -3,7 +3,6 @@ import { AppRoute } from '../app';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { Detail } from '../../mocks/details';
-// import { getMoreInfoAboutFilm } from '../functions/get-more-info-about-film';
 import { useEffect } from 'react';
 import Spinner from '../spinner';
 import { AppDispatch } from '../../store';
