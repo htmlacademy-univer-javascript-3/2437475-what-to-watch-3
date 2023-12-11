@@ -4,6 +4,7 @@ import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
 import { setLoading, setFilms, changeGenre, updateAuthorizationStatus } from './action';
 import { Review } from '../mocks/reviews';
+import store from './index';
 
 interface serverFilmsItem {
     id: string;
@@ -216,6 +217,7 @@ export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: stri
   //console.log(typeof token);
   try {
     const response = await apiInstance.get('/login', token as AxiosRequestConfig);
+    store.dispatch(updateAuthorizationStatus(true));
     return response;
   } catch (error) {
     return undefined;
