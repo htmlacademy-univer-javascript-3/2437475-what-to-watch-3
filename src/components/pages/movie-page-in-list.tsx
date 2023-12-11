@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import React, { useEffect } from 'react';
 import { AppDispatch } from '../../store';
-import { setDetails } from '../../store/action';
+import { setDetails, updateAuthorizationStatus } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
 import { PageNotFound } from './not-found-page';
@@ -46,6 +46,11 @@ export function MoviePageInList() {
     return <Spinner/>;
   }
 
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  };
+
   return(
     <React.Fragment>
       <section className="film-card film-card--full">
@@ -72,7 +77,7 @@ export function MoviePageInList() {
                 </div>
               </li>
               <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
+                <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
               </li>
             </ul>
           </header>

@@ -6,7 +6,7 @@ import { AppState } from '../../store/reducer';
 import { useEffect } from 'react';
 import { Detail } from '../../mocks/details';
 import { AppDispatch } from '../../store';
-import { setDetails } from '../../store/action';
+import { setDetails, updateAuthorizationStatus } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
 import React from 'react';
@@ -45,6 +45,10 @@ export function AddReview() {
   if (!detail) {
     return <Spinner/>;
   }
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  };
 
   return (
     <section className="film-card film-card--full">
@@ -84,7 +88,7 @@ export function AddReview() {
                   </div>
                 </li>
                 <li className="user-block__item">
-                  <a className="user-block__link">Sign out</a>
+                  <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
                 </li>
               </React.Fragment>
             )}
