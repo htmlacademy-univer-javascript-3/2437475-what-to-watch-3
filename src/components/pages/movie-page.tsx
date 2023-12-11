@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { Detail } from '../../mocks/details';
-
-import { AppRoute } from '../app';
 import { Cards } from '../film-card';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { TabsNavigation } from '../tab-navigation';
 import { DetailsTab } from '../tab-details';
@@ -22,6 +20,7 @@ import { Header } from '../header';
 import { Film } from '../../mocks/films';
 import { Review } from '../../mocks/reviews';
 import { SIMILAR_FILM_COUNT } from '../../constants';
+import { PageNotFound } from './not-found-page';
 
 export function MoviePage() {
 
@@ -41,13 +40,6 @@ export function MoviePage() {
 
   const [activeTab, setActiveTab] = useState('Overview');
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -82,7 +74,7 @@ export function MoviePage() {
   }, [dispatch, filmId]);
 
   if (!film) {
-    return null;
+    return <PageNotFound/>;
   }
 
   if (!detail) {

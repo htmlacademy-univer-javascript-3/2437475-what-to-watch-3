@@ -1,5 +1,5 @@
 import { AppRoute } from '../app';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Detail } from '../../mocks/details';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
@@ -12,6 +12,7 @@ import { AppDispatch } from '../../store';
 import { setDetails } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
+import { PageNotFound } from './not-found-page';
 
 export function MoviePageInList() {
 
@@ -22,14 +23,6 @@ export function MoviePageInList() {
 
   const details = useSelector((state: AppState) => state.details);
   const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -46,7 +39,7 @@ export function MoviePageInList() {
   }, [detail, dispatch, filmId]);
 
   if (!film) {
-    return null;
+    return <PageNotFound/>;
   }
 
   if (!detail) {

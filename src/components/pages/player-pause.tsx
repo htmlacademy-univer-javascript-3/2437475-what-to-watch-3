@@ -1,13 +1,13 @@
 import { Detail } from '../../mocks/details';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { useEffect } from 'react';
 import { AppDispatch } from '../../store';
 import { setDetails } from '../../store/action';
 import { getFilm } from '../../store/api-action';
-import { AppRoute } from '../app';
 import Spinner from '../spinner';
+import { PageNotFound } from './not-found-page';
 
 export function PlayerPause() {
   const { id } = useParams();
@@ -17,13 +17,7 @@ export function PlayerPause() {
 
   const details = useSelector((state: AppState) => state.details);
   const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -40,13 +34,12 @@ export function PlayerPause() {
   }, [detail, dispatch, filmId]);
 
   if (!film) {
-    return null;
+    return <PageNotFound/>;
   }
 
   if (!detail) {
     return <Spinner/>;
   }
-
 
   return(
     <div className="player">

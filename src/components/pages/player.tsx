@@ -1,5 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { AppRoute } from '../app';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { Detail } from '../../mocks/details';
@@ -8,6 +7,7 @@ import Spinner from '../spinner';
 import { AppDispatch } from '../../store';
 import { getFilm } from '../../store/api-action';
 import { setDetails } from '../../store/action';
+import { PageNotFound } from './not-found-page';
 
 export function Player() {
   const { id } = useParams();
@@ -18,13 +18,6 @@ export function Player() {
   const details = useSelector((state: AppState) => state.details);
   const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -41,7 +34,7 @@ export function Player() {
   }, [detail, dispatch, filmId]);
 
   if (!film) {
-    return null;
+    return <PageNotFound/>;
   }
 
   if (!detail) {

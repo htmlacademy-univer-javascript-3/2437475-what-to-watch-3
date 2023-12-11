@@ -5,6 +5,7 @@ import { AppState } from '../store/reducer';
 import { AppRoute } from './app';
 import { AppDispatch } from '../store';
 import { postReview } from '../store/api-action';
+import { PageNotFound } from './pages/not-found-page';
 
 export function AddReviewForm() {
   const { id } = useParams();
@@ -21,16 +22,14 @@ export function AddReviewForm() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
-
-  useEffect(() => {
     if (reviewPosted) {
       navigate(`${AppRoute.FilmPage}=${filmId as string}`);
     }
   }, [filmId, reviewPosted, navigate]);
+
+  if (!film || !filmId) {
+    return <PageNotFound/>;
+  }
 
   function submitReview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

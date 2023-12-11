@@ -1,11 +1,14 @@
 import {Link} from 'react-router-dom';
 import { AppRoute } from '../app';
+import '../../../markup/css/not-found.css';
 
 export function PageNotFound() {
   return (
-    <div>
-      <h1>404 Not Found :c</h1>
-      <Link to={AppRoute.MainPage}>Go to Main Page</Link>
+    <div className="not-found-page">
+      <h1 className="not-found-title">404 Not Found :c</h1>
+      <p className="not-found-text">Oops! Looks like the page you&apos;re looking for does not exist.</p>
+      <p className="not-found-text">Don&apos;t worry, you can always go back to the main page!</p>
+      <Link to={AppRoute.MainPage} className="not-found-link">Main Page</Link>
     </div>
   );
 }
