@@ -31,32 +31,37 @@ export function AddReviewForm() {
     return <PageNotFound/>;
   }
 
-  function submitReview(event: FormEvent<HTMLFormElement>) {
+  async function submitReview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!filmId || !film || !reviewText || !rating) {
-      return null;
-    }
-
-    if (reviewText.length < 50) {
-      // console.error('Minimum 50 characters required');
-      return null;
-    }
-
-    if (rating < 1 || rating > 10) {
-      // console.error('Incorrect rating');
-      return null;
-    }
-
-    const data = {
-      filmId: filmId,
-      request: {
-        comment: reviewText,
-        rating: rating
+    try {
+      if (!filmId || !film || !reviewText || !rating) {
+        return null;
       }
-    };
-    setReviewPosted(true);
-    dispatch(postReview(data));
+
+      if (reviewText.length < 50) {
+        // console.error('Minimum 50 characters required');
+        return null;
+      }
+
+      if (rating < 1 || rating > 10) {
+        // console.error('Incorrect rating');
+        return null;
+      }
+
+      const data = {
+        filmId: filmId,
+        request: {
+          comment: reviewText,
+          rating: rating
+        }
+      };
+      await dispatch(postReview(data));
+    } catch(error) {
+      //
+    } finally {
+      setReviewPosted(true);
+    }
   }
 
   const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +111,7 @@ export function AddReviewForm() {
       <div className="add-review__text">
         <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">Post</button>
+          <button className="add-review__btn" type="submit" disabled={reviewPosted}>Post</button>
         </div>
       </div>
     </form>

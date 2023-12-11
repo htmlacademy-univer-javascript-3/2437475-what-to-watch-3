@@ -6,13 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { useEffect } from 'react';
 import { AppDispatch } from '../../store';
-import { updateAuthorizationStatus } from '../../store/action';
 import { signIn } from '../../store/api-action';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setError] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
@@ -32,17 +31,22 @@ export function SignIn() {
     setError(message);
   };
 
-  function sumbitEmailPassword(event: FormEvent<HTMLFormElement>) {
+  async function sumbitEmailPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      handleErrorMessage('Sorry, the email is incorrect');
-      dispatch(updateAuthorizationStatus(false));
-    } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
-      handleErrorMessage('Sorry, the password is incorrect');
-      dispatch(updateAuthorizationStatus(false));
-    } else {
-      dispatch(updateAuthorizationStatus(true));
-      dispatch(signIn({email, password}));
+
+    setIsLoading(true);
+    try {
+      if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+        handleErrorMessage('Sorry, the email is incorrect');
+      } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
+        handleErrorMessage('Sorry, the password is incorrect');
+      } else {
+        await dispatch(signIn({email, password}));
+      }
+    } catch (error) {
+      handleErrorMessage('Sorry, login failed. Try again later')
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -83,7 +87,7 @@ export function SignIn() {
             </div>
           </div>
           <div className="sign-in__submit">
-            <button className="sign-in__btn" type="submit">Sign in</button>
+            <button className="sign-in__btn" type="submit" disabled={isLoading}>Sign in</button>
           </div>
         </form>
       </div>
