@@ -1,12 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { Footer } from '../footer';
 import { FormEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { useEffect } from 'react';
 import { AppDispatch } from '../../store';
 import { signIn } from '../../store/api-action';
+import React from 'react';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -15,17 +15,6 @@ export function SignIn() {
   const [errorMessage, setError] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (authStatus === true) {
-      navigate(AppRoute.MainPage);
-    }
-  }, [authStatus, navigate]);
-
-  if (authStatus === true) {
-    return null;
-  }
 
   const handleErrorMessage = (message: string) => {
     setError(message);
@@ -51,6 +40,8 @@ export function SignIn() {
   }
 
   return(
+    <React.Fragment>
+    {authStatus && (<Navigate to={AppRoute.MainPage} replace={true}/>)}
     <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
@@ -94,5 +85,6 @@ export function SignIn() {
 
       <Footer/>
     </div>
+    </React.Fragment>
   );
 }
