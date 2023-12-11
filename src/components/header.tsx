@@ -1,12 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from './app';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../store';
+import { updateAuthorizationStatus } from '../store/action';
 
 type PropsHeader = {
     authStatus: boolean;
 }
 
 export function Header({ authStatus }: PropsHeader) {
+  const dispatch = useDispatch<AppDispatch>();
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  };
   return (
     <header className="page-header film-card__head">
       <div className="logo">
@@ -26,7 +34,7 @@ export function Header({ authStatus }: PropsHeader) {
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+              <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
             </li>
           </React.Fragment>
         )}

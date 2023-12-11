@@ -31,22 +31,22 @@ export function AddReviewForm() {
     return <PageNotFound/>;
   }
 
-  async function submitReview(event: FormEvent<HTMLFormElement>) {
+  function submitReview(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
     try {
       if (!filmId || !film || !reviewText || !rating) {
-        return null;
+        return;
       }
 
       if (reviewText.length < 50) {
         // console.error('Minimum 50 characters required');
-        return null;
+        return;
       }
 
       if (rating < 1 || rating > 10) {
         // console.error('Incorrect rating');
-        return null;
+        return;
       }
 
       const data = {
@@ -56,7 +56,7 @@ export function AddReviewForm() {
           rating: rating
         }
       };
-      await dispatch(postReview(data));
+      dispatch(postReview(data));
     } catch(error) {
       //
     } finally {

@@ -13,9 +13,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const state = store.getState();
-
-const statusLogin = await store.dispatch(getAuthStatus(state.token));
+const statusLogin = await store.dispatch(getAuthStatus(localStorage.getItem('token') as string));
 if (statusLogin.payload) {
   store.dispatch(updateAuthorizationStatus(true));
 }

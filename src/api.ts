@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import store from './store';
 
 export const BASE_URL = 'https://13.design.pages.academy/wtw';
 export const API_TIMEOUT = 5000;
@@ -12,7 +11,7 @@ export function createAPI() {
 
   api.interceptors.request.use(
     (config: AxiosRequestConfig) => {
-      const token = store.getState().token;
+      const token = localStorage.getItem('token');
       if (token && config.headers) {
         config.headers['X-Token'] = token;
       }

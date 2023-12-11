@@ -31,7 +31,7 @@ export function SignIn() {
     setError(message);
   };
 
-  async function sumbitEmailPassword(event: FormEvent<HTMLFormElement>) {
+  function sumbitEmailPassword(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
     setIsLoading(true);
@@ -41,10 +41,10 @@ export function SignIn() {
       } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
         handleErrorMessage('Sorry, the password is incorrect');
       } else {
-        await dispatch(signIn({email, password}));
+        dispatch(signIn({email, password}));
       }
     } catch (error) {
-      handleErrorMessage('Sorry, login failed. Try again later')
+      handleErrorMessage('Sorry, login failed. Try again later');
     } finally {
       setIsLoading(false);
     }

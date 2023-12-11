@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
-import { setLoading, setFilms, changeGenre, updateAuthorizationStatus, setToken } from './action';
+import { setLoading, setFilms, changeGenre, updateAuthorizationStatus } from './action';
 import { Review } from '../mocks/reviews';
 
 interface serverFilmsItem {
@@ -213,6 +213,7 @@ export const fetchFilms = createAsyncThunk(
 
 export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: string, { extra: api }) => {
   const apiInstance = api as AxiosInstance;
+  //console.log(typeof token);
   try {
     const response = await apiInstance.get('/login', token as AxiosRequestConfig);
     return response;
@@ -226,7 +227,7 @@ export const signIn = createAsyncThunk('user/signIn', async (data: {email: strin
   const response = await apiInstance.post<serverSignInRequest>('/login', data);
   if (response.status === 201) {
     thunkAPI.dispatch(updateAuthorizationStatus(true));
-    thunkAPI.dispatch(setToken(response.data.token));
+    localStorage.setItem('token', response.data.token);
     return response.data;
   }
 

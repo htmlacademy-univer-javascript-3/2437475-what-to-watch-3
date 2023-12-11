@@ -3,7 +3,6 @@ import { appReducer } from './reducer';
 import { createAPI } from '../api';
 
 export const preloadedState = {
-  token: '',
   authorizationStatus: false,
   genre: 'All genres',
   films: [],

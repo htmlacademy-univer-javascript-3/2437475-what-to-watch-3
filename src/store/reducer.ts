@@ -1,4 +1,4 @@
-import { changeGenre, setFilms, setDetails, setLoading, updateAuthorizationStatus, setToken } from './action';
+import { changeGenre, setFilms, setDetails, setLoading, updateAuthorizationStatus } from './action';
 import { Film } from '../mocks/films';
 import { createReducer } from '@reduxjs/toolkit';
 import { getMoviesByGenre } from '../components/functions/get-movie-by-genre';
@@ -6,7 +6,6 @@ import { Detail } from '../mocks/details';
 import { fetchFilms } from './api-action';
 
 export type AppState = {
- token: string;
  authorizationStatus: boolean;
  loading: boolean;
  errorMessage: string;
@@ -17,7 +16,6 @@ export type AppState = {
 };
 
 export const initialState: AppState = {
-  token: '',
   authorizationStatus: false,
   loading: true,
   errorMessage: '',
@@ -58,8 +56,5 @@ export const appReducer = createReducer(initialState, (builder) => {
     })
     .addCase(updateAuthorizationStatus, (state, action) => {
       state.authorizationStatus = action.payload;
-    })
-    .addCase(setToken, (state, action) => {
-      state.token = action.payload;
     });
 });
