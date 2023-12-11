@@ -9,8 +9,8 @@ import { AppState } from '../../store/reducer';
 import { changeGenre } from '../../store/action';
 import Spinner from '../spinner';
 import { Header } from '../header';
-import { FILMS_PAGE_SIZE } from '../../constants';
 
+export const FILMS_PAGE_SIZE = 8;
 
 export type PropsMain = {
     film: Film;

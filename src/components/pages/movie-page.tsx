@@ -19,8 +19,9 @@ import { setDetails } from '../../store/action';
 import { Header } from '../header';
 import { Film } from '../../mocks/films';
 import { Review } from '../../mocks/reviews';
-import { SIMILAR_FILM_COUNT } from '../../constants';
 import { PageNotFound } from './not-found-page';
+
+export const SIMILAR_FILM_COUNT = 4;
 
 export function MoviePage() {
 

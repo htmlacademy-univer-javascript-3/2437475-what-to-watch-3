@@ -1,6 +1,7 @@
-import { SIMILAR_FILM_COUNT } from '../../constants';
 import { Film } from '../../mocks/films';
 import { getMoviesByGenre } from './get-movie-by-genre';
+
+export const SIMILAR_FILM_COUNT = 4;
 
 export type PropsSimilarMovies = {
     genre: string;
