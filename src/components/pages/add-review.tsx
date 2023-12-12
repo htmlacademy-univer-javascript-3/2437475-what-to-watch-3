@@ -43,18 +43,18 @@ export function AddReview() {
     const serverDetailAction = await dispatch(getFilm(filmId as string));
     const serverDetail = serverDetailAction.payload;
     dispatch(setDetails(serverDetail as Detail));
-    }, [dispatch, filmId]);
-    
-    useEffect(() => {
-    if (!detail) {
-    fetchFilmDetails();
-    }
-    }, [detail, fetchFilmDetails]);
+  }, [dispatch, filmId]);
 
-    const handleSignOut = useCallback(() => {
-      localStorage.removeItem('token');
-      dispatch(updateAuthorizationStatus(false));
-      }, [dispatch]);
+  useEffect(() => {
+    if (!detail) {
+      fetchFilmDetails();
+    }
+  }, [detail, fetchFilmDetails]);
+
+  const handleSignOut = useCallback(() => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  }, [dispatch]);
 
   if (!film) {
     return <PageNotFound/>;

@@ -21,15 +21,15 @@ export function Card({film}: PropsCard) {
 
   const handleMouseEnter = useCallback(() => {
     timeoutRef.current = window.setTimeout(() => setIsHovered(true), ONE_SECOND);
-    }, []);
-    
-    const handleMouseLeave = useCallback(() => {
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
     if (timeoutRef.current) {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = null;
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
     setIsHovered(false);
-    }, []);
+  }, []);
 
   return (
     <article className="small-film-card catalog__films-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

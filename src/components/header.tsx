@@ -14,7 +14,7 @@ export function Header({ authStatus }: PropsHeader) {
   const handleSignOut = useCallback(() => {
     localStorage.removeItem('token');
     dispatch(updateAuthorizationStatus(false));
-    }, [dispatch]);
+  }, [dispatch]);
   return (
     <header className="page-header film-card__head">
       <div className="logo">

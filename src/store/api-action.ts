@@ -203,11 +203,9 @@ export const fetchFilms = createAsyncThunk<
   { dispatch: AppDispatch }
 >('films/fetchFilms', async (_, { dispatch }) => {
   dispatch(setLoading(true));
-  console.log('!')
 
   const serverFilmsResponse = await dispatch(getFilms());
   const films = serverFilmsResponse.payload as Film[];
-  console.log(films);
 
   dispatch(setFilms(films));
   dispatch(changeGenre('All genres'));

@@ -37,11 +37,7 @@ export function AddReviewForm() {
 
   const handleRatingChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setRating(parseInt(event.target.value, 10));
-    }, []);
-
-  if (!film || !filmId) {
-    return <PageNotFound/>;
-  }
+  }, []);
 
   const submitReview = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,17 +46,17 @@ export function AddReviewForm() {
       if (!filmId || !film || !reviewText || !rating) {
         return;
       }
-    
+
       if (reviewText.length < 50) {
-        console.error('Minimum 50 characters required');
+        // console.error('Minimum 50 characters required');
         return;
       }
-    
+
       if (rating < 1 || rating > 10) {
-        console.error('Incorrect rating');
+        // console.error('Incorrect rating');
         return;
       }
-    
+
       const data = {
         filmId: filmId,
         request: {
@@ -70,11 +66,15 @@ export function AddReviewForm() {
       };
       dispatch(postReview(data));
     } catch (error) {
-      console.error('Failed to post review', error);
+      // console.error('Failed to post review', error);
     } finally {
       setReviewPosted(true);
     }
-    }, [dispatch, filmId, film, reviewText, rating]);
+  }, [dispatch, filmId, film, reviewText, rating]);
+
+  if (!film || !filmId) {
+    return <PageNotFound/>;
+  }
 
   if(reviewPosted) {
     return null;

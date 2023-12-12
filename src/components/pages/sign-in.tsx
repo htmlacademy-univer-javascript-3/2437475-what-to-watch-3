@@ -18,25 +18,25 @@ export function SignIn() {
 
   const handleErrorMessage = useCallback((message: string) => {
     setError(message);
-    }, []);
-    
-    const sumbitEmailPassword = useCallback((event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      setIsLoading(true);
-      try {
-        if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-          handleErrorMessage('Sorry, the email is incorrect');
-        } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
-          handleErrorMessage('Sorry, the password is incorrect');
-        } else {
-          dispatch(signIn({ email, password }));
-        }
-      } catch (error) {
-        handleErrorMessage('Sorry, login failed. Try again later');
-      } finally {
-        setIsLoading(false);
+  }, []);
+
+  const sumbitEmailPassword = useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    try {
+      if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+        handleErrorMessage('Sorry, the email is incorrect');
+      } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
+        handleErrorMessage('Sorry, the password is incorrect');
+      } else {
+        dispatch(signIn({ email, password }));
       }
-      }, [dispatch, email, password, handleErrorMessage]);
+    } catch (error) {
+      handleErrorMessage('Sorry, login failed. Try again later');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch, email, password, handleErrorMessage]);
 
   return(
     <React.Fragment>
