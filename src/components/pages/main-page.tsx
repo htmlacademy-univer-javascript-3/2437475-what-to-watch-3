@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Cards } from '../film-card';
 import { Film} from '../../mocks/films';
 import { Detail } from '../../mocks/details';
 import { Footer } from '../footer';
 import { GenreList } from '../genres-list';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
 import { changeGenre } from '../../store/action';
 import Spinner from '../spinner';
 import { Header } from '../header';
+import { createSelector } from '@reduxjs/toolkit';
+import { AppState } from '../../store/reducer';
 
 export const FILMS_PAGE_SIZE = 8;
 
@@ -21,25 +22,36 @@ export function Main({film, detail}: PropsMain) {
 
   const loading = useSelector((state: AppState) => state.loading);
   const films = useSelector((state: AppState) => state.films);
-  const filteredMovies = useSelector((state: AppState) => state.filteredMovies);
+
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
   const dispatch = useDispatch();
   const [activeGenre, setActiveGenre] = useState('All genres');
   const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
+  const filteredMoviesSelector = createSelector(
+    (state: AppState) => state.films,
+    () => activeGenre,
+    (filmsForFilter, activeGenreForFilter) => activeGenreForFilter === 'All genres' ? filmsForFilter : filmsForFilter.filter((filmForFilter) => filmForFilter.genre === activeGenreForFilter)
+  );
 
-  if (loading) {
-    return <Spinner/>;
-  }
+  const filteredMovies = useSelector(filteredMoviesSelector);
+  const MemoGenreList = React.memo(GenreList);
+  const MemoCards = React.memo(Cards);
+  const MemoFooter = React.memo(Footer);
+  const MemoSpinner = React.memo(Spinner);
 
-  const handleGenreChange = (genre: string) => {
+  const handleGenreChange = useCallback((genre: string) => {
     setActiveGenre(genre);
     dispatch(changeGenre(genre));
     setVisibleMovies(FILMS_PAGE_SIZE);
-  };
+  }, [dispatch]);
 
-  const handleShowMore = () => {
+  const handleShowMore = useCallback(() => {
     setVisibleMovies((prev) => prev + FILMS_PAGE_SIZE);
-  };
+  }, []);
+
+  if (loading) {
+    return <MemoSpinner/>;
+  }
 
   return (
     <React.Fragment>
@@ -89,17 +101,17 @@ export function Main({film, detail}: PropsMain) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenreList films={films} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
+          <MemoGenreList films={films} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
 
-          <Cards films={filteredMovies.slice(0, visibleMovies)}>
+          <MemoCards films={filteredMovies.slice(0, visibleMovies)}>
             {
               filteredMovies.length > visibleMovies &&
               <button className="catalog__button" type="button" onClick={handleShowMore}>Show more</button>
             }
-          </Cards>
+          </MemoCards>
         </section>
 
-        <Footer/>
+        <MemoFooter/>
       </div>
     </React.Fragment>
   );

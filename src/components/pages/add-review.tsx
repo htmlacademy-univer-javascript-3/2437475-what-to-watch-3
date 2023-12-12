@@ -3,7 +3,7 @@ import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Detail } from '../../mocks/details';
 import { AppDispatch } from '../../store';
 import { setDetails, updateAuthorizationStatus } from '../../store/action';
@@ -11,18 +11,33 @@ import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
 import React from 'react';
 import { PageNotFound } from './not-found-page';
+import { createSelector } from '@reduxjs/toolkit';
 
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
 
-  const films = useSelector((state: AppState) => state.films);
-  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
-
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
-  const details = useSelector((state: AppState) => state.details);
-  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const filmSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.films,
+      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+    ),
+  [filmId]
+  );
+
+  const detailsSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.details,
+      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+    ),
+  [filmId]
+  );
+
+  const film = useSelector(filmSelector);
+  const detail = useSelector(detailsSelector);
+
 
   const dispatch = useDispatch<AppDispatch>();
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Detail } from '../../mocks/details';
 import { Cards } from '../film-card';
@@ -20,6 +20,7 @@ import { Header } from '../header';
 import { Film } from '../../mocks/films';
 import { Review } from '../../mocks/reviews';
 import { PageNotFound } from './not-found-page';
+import { createSelector } from '@reduxjs/toolkit';
 
 export const SIMILAR_FILM_COUNT = 4;
 
@@ -33,53 +34,68 @@ export function MoviePage() {
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
-  const films = useSelector((state: AppState) => state.films);
-  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
+  const filmSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.films,
+      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+    ),
+  [filmId]
+  );
 
-  const details = useSelector((state: AppState) => state.details);
-  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const detailsSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.details,
+      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+    ),
+  [filmId]
+  );
+
+  const film = useSelector(filmSelector);
+  const detail = useSelector(detailsSelector);
 
   const [activeTab, setActiveTab] = useState('Overview');
 
-
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    const fetchFilmDetails = async () => {
-      const serverDetailAction = await dispatch(getFilm(filmId as string));
-      const serverDetail = serverDetailAction.payload;
-      dispatch(setDetails(serverDetail as Detail));
-    };
+  const fetchFilmDetails = useCallback(async () => {
+    const serverDetailAction = await dispatch(getFilm(filmId as string));
+    const serverDetail = serverDetailAction.payload;
+    dispatch(setDetails(serverDetail as Detail));
+  }, [dispatch, filmId]);
 
+  const fetchSimilarFilms = useCallback(async () => {
+    const serverSimilarFilmsAction = await dispatch(getSimilarFilms(filmId as string));
+    setSimilarFilms((serverSimilarFilmsAction.payload as Film[]).slice(0, SIMILAR_FILM_COUNT));
+  }, [dispatch, filmId]);
+
+  const fetchReviews = useCallback(async () => {
+    const serverReviewsAction = await dispatch(getReviews(filmId as string));
+    setReviews((serverReviewsAction.payload as Review[]));
+  }, [dispatch, filmId]);
+
+  useEffect(() => {
     if(!detail) {
       fetchFilmDetails();
     }
-  }, [detail, dispatch, filmId]);
+  }, [detail, dispatch, filmId, fetchFilmDetails]);
 
   useEffect(() => {
-    const fetchSimilarFilms = async () => {
-      const serverSimilarFilmsAction = await dispatch(getSimilarFilms(filmId as string));
-      setSimilarFilms((serverSimilarFilmsAction.payload as Film[]).slice(0, SIMILAR_FILM_COUNT));
-    };
-
     fetchSimilarFilms();
-  }, [dispatch, filmId]);
+  }, [dispatch, filmId, fetchSimilarFilms]);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      const serverReviewsAction = await dispatch(getReviews(filmId as string));
-      setReviews((serverReviewsAction.payload as Review[]));
-    };
-
     fetchReviews();
-  }, [dispatch, filmId]);
+  }, [dispatch, filmId, fetchReviews]);
+
+  const MemoSpinner = React.memo(Spinner);
+  const MemoPageNotFound = React.memo(PageNotFound);
 
   if (!film) {
-    return <PageNotFound/>;
+    return <MemoPageNotFound/>;
   }
 
   if (!detail) {
-    return <Spinner/>;
+    return <MemoSpinner/>;
   }
 
   return(
@@ -142,8 +158,7 @@ export function MoviePage() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={similarFilms}>
-          </Cards>
+          <Cards films={similarFilms}> </Cards>
         </section>
 
         <Footer/>
