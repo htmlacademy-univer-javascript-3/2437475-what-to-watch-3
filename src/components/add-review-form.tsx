@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppState } from '../store/reducer';
@@ -6,13 +6,21 @@ import { AppRoute } from './app';
 import { AppDispatch } from '../store';
 import { postReview } from '../store/api-action';
 import { PageNotFound } from './pages/not-found-page';
+import { createSelector } from '@reduxjs/toolkit';
 
 export function AddReviewForm() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
 
-  const films = useSelector((state: AppState) => state.films);
-  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
+  const filmSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.films,
+      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+    ),
+  [filmId]
+  );
+  const film = useSelector(filmSelector);
+
 
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
@@ -27,28 +35,32 @@ export function AddReviewForm() {
     }
   }, [filmId, reviewPosted, navigate]);
 
+  const handleRatingChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setRating(parseInt(event.target.value, 10));
+    }, []);
+
   if (!film || !filmId) {
     return <PageNotFound/>;
   }
 
-  function submitReview(event: FormEvent<HTMLFormElement>): void {
+  const submitReview = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       if (!filmId || !film || !reviewText || !rating) {
         return;
       }
-
+    
       if (reviewText.length < 50) {
-        // console.error('Minimum 50 characters required');
+        console.error('Minimum 50 characters required');
         return;
       }
-
+    
       if (rating < 1 || rating > 10) {
-        // console.error('Incorrect rating');
+        console.error('Incorrect rating');
         return;
       }
-
+    
       const data = {
         filmId: filmId,
         request: {
@@ -57,16 +69,12 @@ export function AddReviewForm() {
         }
       };
       dispatch(postReview(data));
-    } catch(error) {
-      //
+    } catch (error) {
+      console.error('Failed to post review', error);
     } finally {
       setReviewPosted(true);
     }
-  }
-
-  const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRating(parseInt(event.target.value, 10));
-  };
+    }, [dispatch, filmId, film, reviewText, rating]);
 
   if(reviewPosted) {
     return null;
