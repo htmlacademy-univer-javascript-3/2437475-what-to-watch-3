@@ -3,7 +3,7 @@ import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Detail } from '../../mocks/details';
 import { AppDispatch } from '../../store';
 import { setDetails, updateAuthorizationStatus } from '../../store/action';
@@ -38,20 +38,24 @@ export function AddReview() {
   const film = useSelector(filmSelector);
   const detail = useSelector(detailsSelector);
 
-
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    const fetchFilmDetails = async () => {
-      const serverDetailAction = await dispatch(getFilm(filmId as string));
-      const serverDetail = serverDetailAction.payload;
-      dispatch(setDetails(serverDetail as Detail));
-    };
-
-    if(!detail) {
-      fetchFilmDetails();
+  const fetchFilmDetails = useCallback(async () => {
+    const serverDetailAction = await dispatch(getFilm(filmId as string));
+    const serverDetail = serverDetailAction.payload;
+    dispatch(setDetails(serverDetail as Detail));
+    }, [dispatch, filmId]);
+    
+    useEffect(() => {
+    if (!detail) {
+    fetchFilmDetails();
     }
-  }, [detail, dispatch, filmId]);
+    }, [detail, fetchFilmDetails]);
+
+    const handleSignOut = useCallback(() => {
+      localStorage.removeItem('token');
+      dispatch(updateAuthorizationStatus(false));
+      }, [dispatch]);
 
   if (!film) {
     return <PageNotFound/>;
@@ -60,10 +64,6 @@ export function AddReview() {
   if (!detail) {
     return <Spinner/>;
   }
-  const handleSignOut = () => {
-    localStorage.removeItem('token');
-    dispatch(updateAuthorizationStatus(false));
-  };
 
   return (
     <section className="film-card film-card--full">

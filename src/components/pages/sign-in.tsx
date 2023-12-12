@@ -1,7 +1,7 @@
 import { Link, Navigate } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { Footer } from '../footer';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { AppDispatch } from '../../store';
@@ -16,28 +16,27 @@ export function SignIn() {
   const dispatch = useDispatch<AppDispatch>();
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
-  const handleErrorMessage = (message: string) => {
+  const handleErrorMessage = useCallback((message: string) => {
     setError(message);
-  };
-
-  function sumbitEmailPassword(event: FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-
-    setIsLoading(true);
-    try {
-      if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-        handleErrorMessage('Sorry, the email is incorrect');
-      } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
-        handleErrorMessage('Sorry, the password is incorrect');
-      } else {
-        dispatch(signIn({email, password}));
+    }, []);
+    
+    const sumbitEmailPassword = useCallback((event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setIsLoading(true);
+      try {
+        if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+          handleErrorMessage('Sorry, the email is incorrect');
+        } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
+          handleErrorMessage('Sorry, the password is incorrect');
+        } else {
+          dispatch(signIn({ email, password }));
+        }
+      } catch (error) {
+        handleErrorMessage('Sorry, login failed. Try again later');
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      handleErrorMessage('Sorry, login failed. Try again later');
-    } finally {
-      setIsLoading(false);
-    }
-  }
+      }, [dispatch, email, password, handleErrorMessage]);
 
   return(
     <React.Fragment>
