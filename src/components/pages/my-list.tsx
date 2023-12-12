@@ -2,11 +2,17 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState, updateAuthorizationStatus } from '../../store/reducer';
+import { AppDispatch } from '../../store';
 
 
 export function MyList() {
+  const dispatch = useDispatch<AppDispatch>();
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  };
   const films = useSelector((state: AppState) => state.films);
   return(
     <div className="user-page">
@@ -27,7 +33,7 @@ export function MyList() {
             </div>
           </li>
           <li className="user-block__item">
-            <a className="user-block__link">Sign out</a>
+            <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
           </li>
         </ul>
       </header>
@@ -35,8 +41,7 @@ export function MyList() {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <Cards films={films}>
-        </Cards>
+        <Cards films={films}> </Cards>
 
       </section>
 

@@ -2,8 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
-import { setLoading, setFilms, changeGenre, updateAuthorizationStatus, setToken } from './action';
 import { Review } from '../mocks/reviews';
+import { AppDispatch } from '.';
+import { changeGenre, setFilms, setLoading, updateAuthorizationStatus } from './reducer';
 
 interface serverFilmsItem {
     id: string;
@@ -196,25 +197,31 @@ export const getReviews = createAsyncThunk('comments/getReviews', async (filmId:
   return reviews;
 });
 
-export const fetchFilms = createAsyncThunk(
-  'films/fetchFilms',
-  async (_, { dispatch }) => {
-    dispatch(setLoading(true));
+export const fetchFilms = createAsyncThunk<
+  Film[],
+  undefined,
+  { dispatch: AppDispatch }
+>('films/fetchFilms', async (_, { dispatch }) => {
+  dispatch(setLoading(true));
 
-    const serverPromoResponces = await dispatch(getFilms());
-    const films = serverPromoResponces.payload as Film[];
+  const serverFilmsResponse = await dispatch(getFilms());
+  const films = serverFilmsResponse.payload as Film[];
 
-    dispatch(setFilms(films));
-    dispatch(changeGenre('All genres'));
+  dispatch(setFilms(films));
+  dispatch(changeGenre('All genres'));
 
-    dispatch(setLoading(false));
-  }
-);
+  dispatch(setLoading(false));
 
-export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: string, { extra: api }) => {
+  return films;
+});
+
+
+export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: string, { extra: api, dispatch }) => {
   const apiInstance = api as AxiosInstance;
+  //console.log(typeof token);
   try {
     const response = await apiInstance.get('/login', token as AxiosRequestConfig);
+    dispatch(updateAuthorizationStatus(true));
     return response;
   } catch (error) {
     return undefined;
@@ -226,7 +233,7 @@ export const signIn = createAsyncThunk('user/signIn', async (data: {email: strin
   const response = await apiInstance.post<serverSignInRequest>('/login', data);
   if (response.status === 201) {
     thunkAPI.dispatch(updateAuthorizationStatus(true));
-    thunkAPI.dispatch(setToken(response.data.token));
+    localStorage.setItem('token', response.data.token);
     return response.data;
   }
 

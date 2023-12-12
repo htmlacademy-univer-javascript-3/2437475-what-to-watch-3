@@ -1,9 +1,10 @@
 import {Film} from '../mocks/films';
-import {ReactNode, useRef, useState} from 'react';
+import {ReactNode, useCallback, useRef, useState} from 'react';
 import {AppRoute} from './app';
 import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
-import { ONE_SECOND } from '../constants';
+
+export const ONE_SECOND = 1000;
 
 type PropsCard = {
   film: Film;
@@ -18,17 +19,17 @@ export function Card({film}: PropsCard) {
   const [isHovered, setIsHovered] = useState(false);
   const timeoutRef = useRef<number | null>(null);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     timeoutRef.current = window.setTimeout(() => setIsHovered(true), ONE_SECOND);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
     setIsHovered(false);
-  };
+  }, []);
 
   return (
     <article className="small-film-card catalog__films-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

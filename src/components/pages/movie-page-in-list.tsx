@@ -1,17 +1,17 @@
 import { AppRoute } from '../app';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Detail } from '../../mocks/details';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
 import { getReviewRoute } from '../functions/get-review-route';
 import { getSimilarMovies } from '../functions/get-similar-movies';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
+import { AppState, setDetails, updateAuthorizationStatus } from '../../store/reducer';
 import React, { useEffect } from 'react';
 import { AppDispatch } from '../../store';
-import { setDetails } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
+import { PageNotFound } from './not-found-page';
 
 export function MoviePageInList() {
 
@@ -22,14 +22,6 @@ export function MoviePageInList() {
 
   const details = useSelector((state: AppState) => state.details);
   const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -46,12 +38,17 @@ export function MoviePageInList() {
   }, [detail, dispatch, filmId]);
 
   if (!film) {
-    return null;
+    return <PageNotFound/>;
   }
 
   if (!detail) {
     return <Spinner/>;
   }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  };
 
   return(
     <React.Fragment>
@@ -79,7 +76,7 @@ export function MoviePageInList() {
                 </div>
               </li>
               <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
+                <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
               </li>
             </ul>
           </header>
@@ -155,8 +152,7 @@ export function MoviePageInList() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}>
-          </Cards>
+          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}> </Cards>
         </section>
 
         <Footer/>
@@ -164,3 +160,4 @@ export function MoviePageInList() {
     </React.Fragment>
   );
 }
+

@@ -1,52 +1,63 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
-import { useEffect } from 'react';
+import { AppState, setDetails, updateAuthorizationStatus } from '../../store/reducer';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Detail } from '../../mocks/details';
 import { AppDispatch } from '../../store';
-import { setDetails } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
 import React from 'react';
+import { PageNotFound } from './not-found-page';
+import { createSelector } from '@reduxjs/toolkit';
 
 export function AddReview() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
 
-  const films = useSelector((state: AppState) => state.films);
-  const film = films.find((filmInFilms) => filmInFilms.id === filmId);
-
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
-  const details = useSelector((state: AppState) => state.details);
-  const detail = details.find((detailInDetails) => detailInDetails.filmId === filmId);
+  const filmSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.films,
+      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+    ),
+  [filmId]
+  );
 
-  const navigate = useNavigate();
+  const detailsSelector = useMemo(() =>
+    createSelector(
+      (state: AppState) => state.details,
+      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+    ),
+  [filmId]
+  );
 
-  useEffect(() => {
-    if (!film) {
-      navigate(AppRoute.NotFoundPage);
-    }
-  }, [film, navigate]);
+  const film = useSelector(filmSelector);
+  const detail = useSelector(detailsSelector);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    const fetchFilmDetails = async () => {
-      const serverDetailAction = await dispatch(getFilm(filmId as string));
-      const serverDetail = serverDetailAction.payload;
-      dispatch(setDetails(serverDetail as Detail));
-    };
+  const fetchFilmDetails = useCallback(async () => {
+    const serverDetailAction = await dispatch(getFilm(filmId as string));
+    const serverDetail = serverDetailAction.payload;
+    dispatch(setDetails(serverDetail as Detail));
+  }, [dispatch, filmId]);
 
-    if(!detail) {
+  useEffect(() => {
+    if (!detail) {
       fetchFilmDetails();
     }
-  }, [detail, dispatch, filmId]);
+  }, [detail, fetchFilmDetails]);
+
+  const handleSignOut = useCallback(() => {
+    localStorage.removeItem('token');
+    dispatch(updateAuthorizationStatus(false));
+  }, [dispatch]);
 
   if (!film) {
-    return null;
+    return <PageNotFound/>;
   }
 
   if (!detail) {
@@ -91,7 +102,7 @@ export function AddReview() {
                   </div>
                 </li>
                 <li className="user-block__item">
-                  <a className="user-block__link">Sign out</a>
+                  <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
                 </li>
               </React.Fragment>
             )}

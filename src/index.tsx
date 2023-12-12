@@ -6,20 +6,13 @@ import store from './store';
 import { Provider } from 'react-redux';
 import { fetchFilms, getAuthStatus, getPromoFilm } from './store/api-action';
 import { Film } from './mocks/films';
-import { updateAuthorizationStatus } from './store/action';
 
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const state = store.getState();
-
-const statusLogin = await store.dispatch(getAuthStatus(state.token));
-if (statusLogin.payload) {
-  store.dispatch(updateAuthorizationStatus(true));
-}
-
+await store.dispatch(getAuthStatus(localStorage.getItem('token') as string));
 await store.dispatch(fetchFilms());
 
 const serverPromo = await store.dispatch(getPromoFilm());

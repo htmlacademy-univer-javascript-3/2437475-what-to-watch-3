@@ -7,4 +7,3 @@ export const setFilms = createAction<Film[]>('setFilms');
 export const setDetails = createAction<Detail>('setDetails');
 export const setLoading = createAction<boolean>('setLoading');
 export const updateAuthorizationStatus = createAction<boolean>('updateAuthorizationStatus');
-export const setToken = createAction<string>('setToken');
