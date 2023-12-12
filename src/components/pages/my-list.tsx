@@ -3,9 +3,8 @@ import { AppRoute } from '../app';
 import { Cards } from '../film-card';
 import { Footer } from '../footer';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
+import { AppState, updateAuthorizationStatus } from '../../store/reducer';
 import { AppDispatch } from '../../store';
-import { updateAuthorizationStatus } from '../../store/action';
 
 
 export function MyList() {
@@ -42,8 +41,7 @@ export function MyList() {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <Cards films={films}>
-        </Cards>
+        <Cards films={films}> </Cards>
 
       </section>
 

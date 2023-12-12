@@ -1,12 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
+import { AppState, setDetails } from '../../store/reducer';
 import { Detail } from '../../mocks/details';
 import { useEffect } from 'react';
 import Spinner from '../spinner';
 import { AppDispatch } from '../../store';
 import { getFilm } from '../../store/api-action';
-import { setDetails } from '../../store/action';
 import { PageNotFound } from './not-found-page';
 
 export function Player() {

@@ -1,10 +1,9 @@
 import { Detail } from '../../mocks/details';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
+import { AppState, setDetails } from '../../store/reducer';
 import { useEffect } from 'react';
 import { AppDispatch } from '../../store';
-import { setDetails } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
 import { PageNotFound } from './not-found-page';

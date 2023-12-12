@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from './app';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
-import { updateAuthorizationStatus } from '../store/action';
+import { updateAuthorizationStatus } from '../store/reducer';
 
 type PropsHeader = {
     authStatus: boolean;

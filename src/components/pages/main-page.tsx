@@ -5,11 +5,10 @@ import { Detail } from '../../mocks/details';
 import { Footer } from '../footer';
 import { GenreList } from '../genres-list';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeGenre } from '../../store/action';
 import Spinner from '../spinner';
 import { Header } from '../header';
 import { createSelector } from '@reduxjs/toolkit';
-import { AppState } from '../../store/reducer';
+import { AppState, changeGenre } from '../../store/reducer';
 
 export const FILMS_PAGE_SIZE = 8;
 

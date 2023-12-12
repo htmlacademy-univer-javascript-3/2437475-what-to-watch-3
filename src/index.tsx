@@ -14,6 +14,7 @@ const root = ReactDOM.createRoot(
 
 await store.dispatch(getAuthStatus(localStorage.getItem('token') as string));
 await store.dispatch(fetchFilms());
+console.log(store.getState().films);
 
 const serverPromo = await store.dispatch(getPromoFilm());
 const promo = serverPromo.payload as [Film, Detail];

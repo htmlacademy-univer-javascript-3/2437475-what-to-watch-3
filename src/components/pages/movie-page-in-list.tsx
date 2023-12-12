@@ -6,10 +6,9 @@ import { Footer } from '../footer';
 import { getReviewRoute } from '../functions/get-review-route';
 import { getSimilarMovies } from '../functions/get-similar-movies';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../store/reducer';
+import { AppState, setDetails, updateAuthorizationStatus } from '../../store/reducer';
 import React, { useEffect } from 'react';
 import { AppDispatch } from '../../store';
-import { setDetails, updateAuthorizationStatus } from '../../store/action';
 import { getFilm } from '../../store/api-action';
 import Spinner from '../spinner';
 import { PageNotFound } from './not-found-page';
@@ -153,8 +152,7 @@ export function MoviePageInList() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}>
-          </Cards>
+          <Cards films={getSimilarMovies({genre: detail.genre, filmId: film.id, films: films})}> </Cards>
         </section>
 
         <Footer/>
@@ -162,3 +160,4 @@ export function MoviePageInList() {
     </React.Fragment>
   );
 }
+
