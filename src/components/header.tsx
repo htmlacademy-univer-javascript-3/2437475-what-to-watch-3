@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from './app';
 import { useDispatch } from 'react-redux';
@@ -11,10 +11,10 @@ type PropsHeader = {
 
 export function Header({ authStatus }: PropsHeader) {
   const dispatch = useDispatch<AppDispatch>();
-  const handleSignOut = () => {
+  const handleSignOut = useCallback(() => {
     localStorage.removeItem('token');
     dispatch(updateAuthorizationStatus(false));
-  };
+    }, [dispatch]);
   return (
     <header className="page-header film-card__head">
       <div className="logo">
