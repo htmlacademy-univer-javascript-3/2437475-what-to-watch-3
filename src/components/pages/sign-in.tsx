@@ -3,11 +3,10 @@ import { AppRoute } from '../app';
 import { Footer } from '../footer';
 import { FormEvent, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, setMyList } from '../../store/reducer';
+import { AppState } from '../../store/reducer';
 import { AppDispatch } from '../../store';
-import { fetchMyList, getMyList, signIn } from '../../store/api-action';
+import { signIn } from '../../store/api-action';
 import React from 'react';
-import { Film } from '../../mocks/films';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -21,7 +20,7 @@ export function SignIn() {
     setError(message);
   }, []);
 
-  const sumbitEmailPassword = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+  const sumbitEmailPassword = useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     try {
@@ -30,9 +29,7 @@ export function SignIn() {
       } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
         handleErrorMessage('Sorry, the password is incorrect');
       } else {
-        await dispatch(signIn({ email, password }));
-        const list = await dispatch(getMyList());
-        dispatch(setMyList(list.payload as Film[]));
+        dispatch(signIn({ email, password }));
       }
     } catch (error) {
       handleErrorMessage('Sorry, login failed. Try again later');

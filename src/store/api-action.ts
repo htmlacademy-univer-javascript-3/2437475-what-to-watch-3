@@ -140,7 +140,7 @@ export const getPromoFilm = createAsyncThunk('films/getPromoFilm', async (_, {ex
     genre: serverPromoResponse.genre
   };
 
-  const responseDetail = await apiInstance.get(`/films/${promo.id}`)
+  const responseDetail = await apiInstance.get(`/films/${promo.id}`);
 
   const serverPromoDetailResponse: serverFilm = await responseDetail.data as serverFilm;
 
@@ -202,18 +202,18 @@ export const getMyList = createAsyncThunk('films/getMyList', async (_, {extra: a
   return films;
 });
 
-export const postFilmInMyList = createAsyncThunk('films/postFilmInMyList', async (data: {filmId: string, status: number}, {dispatch, extra: api}) => {
+export const postFilmInMyList = createAsyncThunk('films/postFilmInMyList', async (data: {filmId: string; status: number}, {dispatch, extra: api}) => {
   const apiInstance = api as AxiosInstance;
-  const request = await apiInstance.post(`/favorite/${data.filmId}/${data.status}`);
+  await apiInstance.post(`/favorite/${data.filmId}/${data.status}`);
 
   const myListServer = await dispatch(getMyList());
   const myList = myListServer.payload;
 
   dispatch(setMyList(myList as Film[]));
 
-  return request.data;
+  return myList as Film[];
 
-})
+});
 
 export const getReviews = createAsyncThunk('comments/getReviews', async (filmId: string, {extra: api}) => {
   const apiInstance = api as AxiosInstance;
@@ -260,13 +260,12 @@ undefined,
 
   const serverList = await dispatch(getMyList());
   const list = serverList.payload as Film[];
-  console.log(list);
   dispatch(setMyList(list));
 
   dispatch(setLoading(false));
 
   return list;
-})
+});
 
 
 export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: string, { extra: api, dispatch }) => {
@@ -281,12 +280,14 @@ export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: stri
   }
 });
 
-export const signIn = createAsyncThunk('user/signIn', async (data: {email: string; password: string}, thunkAPI) => {
-  const apiInstance = thunkAPI.extra as AxiosInstance;
+export const signIn = createAsyncThunk('user/signIn', async (data: {email: string; password: string}, {extra: api, dispatch}) => {
+  const apiInstance = api as AxiosInstance;
   const response = await apiInstance.post<serverSignInRequest>('/login', data);
   if (response.status === 201) {
-    thunkAPI.dispatch(updateAuthorizationStatus(true));
+    dispatch(updateAuthorizationStatus(true));
     localStorage.setItem('token', response.data.token);
+    const list = await dispatch(getMyList());
+    dispatch(setMyList(list.payload as Film[]));
     return response.data;
   }
 

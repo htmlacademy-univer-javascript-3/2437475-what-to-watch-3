@@ -61,10 +61,10 @@ export function Main({film, detail}: PropsMain) {
       navigate(AppRoute.LoginPage);
       return;
     }
-    
-    const isFavorite = myList.some(myFilm => myFilm.id === film.id);
+
+    const isFavorite = myList.some((myFilm) => myFilm.id === film.id);
     dispatch(postFilmInMyList({ filmId: film.id, status: isFavorite ? 0 : 1 }));
-  }, [authStatus, dispatch, film.id, myList]);
+  }, [authStatus, dispatch, film.id, myList, navigate]);
 
   if (loading) {
     return <MemoSpinner/>;
@@ -95,17 +95,17 @@ export function Main({film, detail}: PropsMain) {
               </p>
 
               <div className="film-card__buttons">
-              
+
                 <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </Link>
-                
+
                 <button className="btn btn--list film-card__button" type="button" onClick={handleMyListClick}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref={authStatus && myList.some(myFilm => myFilm.id === film.id) ? "#in-list" : "#add"}></use>
+                    <use xlinkHref={authStatus && myList.some((myFilm) => myFilm.id === film.id) ? '#in-list' : '#add'}></use>
                   </svg>
                   <span>My list</span>
                   {authStatus && <span className="film-card__count">{myList.length}</span>}

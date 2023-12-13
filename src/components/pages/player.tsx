@@ -14,7 +14,7 @@ import React from 'react';
 export function Player() {
   const { id } = useParams();
   const filmId = id?.split('=')[1];
-  
+
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
@@ -83,11 +83,11 @@ export function Player() {
     const video = videoRef.current;
     if (video) {
       const remainingTime = Math.ceil(video.duration - video.currentTime);
-  
+
       const hours = Math.floor(remainingTime / 3600);
       const minutes = Math.floor((remainingTime % 3600) / 60);
       const seconds = remainingTime % 60;
-  
+
       setTimeLeft({ hours, minutes, seconds });
 
       const percentage = (video.currentTime / video.duration) * 100;
@@ -98,9 +98,9 @@ export function Player() {
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
-      video.addEventListener("timeupdate", calculateTimeLeft);
+      video.addEventListener('timeupdate', calculateTimeLeft);
       return () => {
-        video.removeEventListener("timeupdate", calculateTimeLeft);
+        video.removeEventListener('timeupdate', calculateTimeLeft);
       };
     }
   }, [calculateTimeLeft]);
@@ -117,7 +117,7 @@ export function Player() {
         video.currentTime = seekTime;
       }
     }
-  }; 
+  };
 
   if (!film) {
     return <PageNotFound/>;
@@ -142,30 +142,28 @@ export function Player() {
             <div className="player__toggler" style={{left: `${progressPercentage}%`}} >Toggler</div>
           </div>
           <div className="player__time-value">
-          {timeLeft.hours > 0 && (
-            <React.Fragment>
-              {`-${String(timeLeft.hours).padStart(2, "0")}:`}
-            </React.Fragment>
-          )}
-          {`${String(timeLeft.minutes).padStart(2, "0")}:${String(timeLeft.seconds).padStart(2, "0")}`}
-        </div>
+            {timeLeft.hours > 0 && (
+              `-${String(timeLeft.hours).padStart(2, '0')}:`
+            )}
+            {`${String(timeLeft.minutes).padStart(2, '0')}:${String(timeLeft.seconds).padStart(2, '0')}`}
+          </div>
         </div>
 
         <div className="player__controls-row">
           <button type="button" className="player__play" onClick={handlePlayPause}>
-            {isPlaying ? 
-            <React.Fragment>
-            <svg viewBox="0 0 14 21" width="14" height="21">
-              <use xlinkHref="#pause"></use>
-            </svg>
-            <span>Pause</span>
-            </React.Fragment> : 
-            <React.Fragment>
-            <svg viewBox="0 0 19 19" width="19" height="19">
-              <use xlinkHref="#play-s"></use>
-            </svg>
-            <span>Play</span>
-            </React.Fragment> }
+            {isPlaying ?
+              <React.Fragment>
+                <svg viewBox="0 0 14 21" width="14" height="21">
+                  <use xlinkHref="#pause"></use>
+                </svg>
+                <span>Pause</span>
+              </React.Fragment> :
+              <React.Fragment>
+                <svg viewBox="0 0 19 19" width="19" height="19">
+                  <use xlinkHref="#play-s"></use>
+                </svg>
+                <span>Play</span>
+              </React.Fragment> }
           </button>
           <div className="player__name">Transpotting</div>
 
