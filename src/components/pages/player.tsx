@@ -34,6 +34,8 @@ export function Player() {
   const film = useSelector(filmSelector);
   const detail = useSelector(detailsSelector);
 
+  const [progressPercentage, setProgressPercentage] = useState(0);
+
   const dispatch = useDispatch<AppDispatch>();
 
   const fetchFilmDetails = useCallback(async () => {
@@ -87,10 +89,12 @@ export function Player() {
       const seconds = remainingTime % 60;
   
       setTimeLeft({ hours, minutes, seconds });
+
+      const percentage = (video.currentTime / video.duration) * 100;
+      setProgressPercentage(percentage);
     }
   }, []);
-  
-  // Вызовите функцию в обработчике события "timeupdate" плеера:
+
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -100,7 +104,20 @@ export function Player() {
       };
     }
   }, [calculateTimeLeft]);
-  
+
+  const handleTogglerClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const video = videoRef.current;
+    if (video) {
+      const progressContainer = event.currentTarget.parentElement?.parentElement;
+      if (progressContainer) {
+        const containerWidth = progressContainer.offsetWidth;
+        const clickX = event.clientX - progressContainer.getBoundingClientRect().left;
+        const percentage = (clickX / containerWidth) * 100;
+        const seekTime = (video.duration * percentage) / 100;
+        video.currentTime = seekTime;
+      }
+    }
+  }; 
 
   if (!film) {
     return <PageNotFound/>;
@@ -120,9 +137,9 @@ export function Player() {
 
       <div className="player__controls">
         <div className="player__controls-row">
-          <div className="player__time">
-            <progress className="player__progress" value="30" max="100"></progress>
-            <div className="player__toggler" style={{left: '30%'}}>Toggler</div>
+          <div className="player__time" onClick={handleTogglerClick}>
+            <progress className="player__progress" value={progressPercentage} max="100" ></progress>
+            <div className="player__toggler" style={{left: `${progressPercentage}%`}} >Toggler</div>
           </div>
           <div className="player__time-value">
           {timeLeft.hours > 0 && (
