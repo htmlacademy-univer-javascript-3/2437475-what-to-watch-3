@@ -4,7 +4,7 @@ import {App} from './components/app';
 import { Detail } from './mocks/details';
 import store from './store';
 import { Provider } from 'react-redux';
-import { fetchFilms, getAuthStatus, getPromoFilm } from './store/api-action';
+import { fetchFilms, fetchMyList, getAuthStatus, getPromoFilm } from './store/api-action';
 import { Film } from './mocks/films';
 
 
@@ -14,6 +14,10 @@ const root = ReactDOM.createRoot(
 
 await store.dispatch(getAuthStatus(localStorage.getItem('token') as string));
 await store.dispatch(fetchFilms());
+const state = store.getState();
+if (state.authorizationStatus) {
+  await store.dispatch(fetchMyList());
+}
 
 const serverPromo = await store.dispatch(getPromoFilm());
 const promo = serverPromo.payload as [Film, Detail];

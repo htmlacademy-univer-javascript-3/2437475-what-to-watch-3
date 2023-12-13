@@ -1,7 +1,7 @@
 import { Detail } from '../../mocks/details';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, setDetails } from '../../store/reducer';
+import { AppState, setDetail } from '../../store/reducer';
 import { useEffect } from 'react';
 import { AppDispatch } from '../../store';
 import { getFilm } from '../../store/api-action';
@@ -24,7 +24,7 @@ export function PlayerPause() {
     const fetchFilmDetails = async () => {
       const serverDetailAction = await dispatch(getFilm(filmId as string));
       const serverDetail = serverDetailAction.payload;
-      dispatch(setDetails(serverDetail as Detail));
+      dispatch(setDetail(serverDetail as Detail));
     };
 
     if(!detail) {

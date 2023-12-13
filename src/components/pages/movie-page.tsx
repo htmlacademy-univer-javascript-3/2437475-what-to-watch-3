@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Detail } from '../../mocks/details';
 import { Cards } from '../film-card';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { TabsNavigation } from '../tab-navigation';
 import { DetailsTab } from '../tab-details';
@@ -11,15 +11,16 @@ import { ReviewsTab } from '../tab-reviews';
 import { Footer } from '../footer';
 import { getReviewRoute } from '../functions/get-review-route';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, setDetails } from '../../store/reducer';
+import { AppState, setDetail } from '../../store/reducer';
 import Spinner from '../spinner';
-import { getFilm, getReviews, getSimilarFilms } from '../../store/api-action';
+import { getFilm, getReviews, getSimilarFilms, postFilmInMyList } from '../../store/api-action';
 import { AppDispatch } from '../../store';
 import { Header } from '../header';
 import { Film } from '../../mocks/films';
 import { Review } from '../../mocks/reviews';
 import { PageNotFound } from './not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
+import { AppRoute } from '../app';
 
 export const SIMILAR_FILM_COUNT = 4;
 
@@ -32,6 +33,7 @@ export function MoviePage() {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
+  const myList = useSelector((state: AppState) => state.myList) || [];
 
   const filmSelector = useMemo(() =>
     createSelector(
@@ -55,11 +57,12 @@ export function MoviePage() {
   const [activeTab, setActiveTab] = useState('Overview');
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const fetchFilmDetails = useCallback(async () => {
     const serverDetailAction = await dispatch(getFilm(filmId as string));
     const serverDetail = serverDetailAction.payload;
-    dispatch(setDetails(serverDetail as Detail));
+    dispatch(setDetail(serverDetail as Detail));
   }, [dispatch, filmId]);
 
   const fetchSimilarFilms = useCallback(async () => {
@@ -85,6 +88,16 @@ export function MoviePage() {
   useEffect(() => {
     fetchReviews();
   }, [dispatch, filmId, fetchReviews]);
+
+  const handleMyListClick = useCallback(() => {
+    if (!authStatus) {
+      navigate(AppRoute.LoginPage);
+      return;
+    }
+
+    const isFavorite = myList.some((myFilm) => myFilm.id === film?.id);
+    dispatch(postFilmInMyList({ filmId: film?.id as string, status: isFavorite ? 0 : 1 }));
+  }, [authStatus, dispatch, film?.id, myList, navigate]);
 
   const MemoSpinner = React.memo(Spinner);
   const MemoPageNotFound = React.memo(PageNotFound);
@@ -118,18 +131,18 @@ export function MoviePage() {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
+                </Link>
+                <button className="btn btn--list film-card__button" type="button" onClick={handleMyListClick}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
+                    <use xlinkHref={authStatus && myList.some((myFilm) => myFilm.id === film.id) ? '#in-list' : '#add'}></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  {authStatus && <span className="film-card__count">{myList.length}</span>}
                 </button>
                 {authStatus && (<Link to={getReviewRoute(film.id)} className="btn film-card__button">Add review</Link>)}
               </div>

@@ -9,6 +9,10 @@ import Spinner from '../spinner';
 import { Header } from '../header';
 import { createSelector } from '@reduxjs/toolkit';
 import { AppState, changeGenre } from '../../store/reducer';
+import { Link, useNavigate } from 'react-router-dom';
+import { AppRoute } from '../app';
+import { postFilmInMyList } from '../../store/api-action';
+import { AppDispatch } from '../../store';
 
 export const FILMS_PAGE_SIZE = 8;
 
@@ -23,7 +27,11 @@ export function Main({film, detail}: PropsMain) {
   const films = useSelector((state: AppState) => state.films);
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
-  const dispatch = useDispatch();
+  const myList = useSelector((state: AppState) => state.myList) || [];
+
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
   const [activeGenre, setActiveGenre] = useState('All genres');
   const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
   const filteredMoviesSelector = createSelector(
@@ -47,6 +55,16 @@ export function Main({film, detail}: PropsMain) {
   const handleShowMore = useCallback(() => {
     setVisibleMovies((prev) => prev + FILMS_PAGE_SIZE);
   }, []);
+
+  const handleMyListClick = useCallback(() => {
+    if (!authStatus) {
+      navigate(AppRoute.LoginPage);
+      return;
+    }
+
+    const isFavorite = myList.some((myFilm) => myFilm.id === film.id);
+    dispatch(postFilmInMyList({ filmId: film.id, status: isFavorite ? 0 : 1 }));
+  }, [authStatus, dispatch, film.id, myList, navigate]);
 
   if (loading) {
     return <MemoSpinner/>;
@@ -77,18 +95,20 @@ export function Main({film, detail}: PropsMain) {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+
+                <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
+                </Link>
+
+                <button className="btn btn--list film-card__button" type="button" onClick={handleMyListClick}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
+                    <use xlinkHref={authStatus && myList.some((myFilm) => myFilm.id === film.id) ? '#in-list' : '#add'}></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  {authStatus && <span className="film-card__count">{myList.length}</span>}
                 </button>
               </div>
             </div>

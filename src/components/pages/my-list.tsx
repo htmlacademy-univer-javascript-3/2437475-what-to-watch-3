@@ -6,14 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState, updateAuthorizationStatus } from '../../store/reducer';
 import { AppDispatch } from '../../store';
 
-
 export function MyList() {
   const dispatch = useDispatch<AppDispatch>();
+  const favoriteFilms = useSelector((state: AppState) => state.myList) || [];
   const handleSignOut = () => {
     localStorage.removeItem('token');
     dispatch(updateAuthorizationStatus(false));
   };
-  const films = useSelector((state: AppState) => state.films);
   return(
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -25,7 +24,7 @@ export function MyList() {
           </Link>
         </div>
 
-        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">9</span></h1>
+        <h1 className="page-title user-page__title">My list<span className="user-page__film-count">{favoriteFilms.length}</span></h1>
         <ul className="user-block">
           <li className="user-block__item">
             <div className="user-block__avatar">
@@ -41,7 +40,7 @@ export function MyList() {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <Cards films={films}> </Cards>
+        <Cards films={favoriteFilms}> </Cards>
 
       </section>
 

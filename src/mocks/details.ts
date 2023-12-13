@@ -15,4 +15,5 @@ export type Detail = {
     ratingDescription: string;
     votes: number;
     video: string;
+    isFavorite: boolean;
 }
