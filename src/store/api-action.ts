@@ -202,10 +202,15 @@ export const getMyList = createAsyncThunk('films/getMyList', async (_, {extra: a
   return films;
 });
 
-export const postFilmInMyList = createAsyncThunk('films/postFilmInMyList', async (data: {filmId: string, status: number}, {extra: api}) => {
+export const postFilmInMyList = createAsyncThunk('films/postFilmInMyList', async (data: {filmId: string, status: number}, {dispatch, extra: api}) => {
   const apiInstance = api as AxiosInstance;
   const request = await apiInstance.post(`/favorite/${data.filmId}/${data.status}`);
-  
+
+  const myListServer = await dispatch(getMyList());
+  const myList = myListServer.payload;
+
+  dispatch(setMyList(myList as Film[]));
+
   return request.data;
 
 })
