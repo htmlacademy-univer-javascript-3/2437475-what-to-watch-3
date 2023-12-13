@@ -20,6 +20,7 @@ import { Film } from '../../mocks/films';
 import { Review } from '../../mocks/reviews';
 import { PageNotFound } from './not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
+import { AppRoute } from '../app';
 
 export const SIMILAR_FILM_COUNT = 4;
 
@@ -118,12 +119,12 @@ export function MoviePage() {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+               <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
+                </Link>
                 <button className="btn btn--list film-card__button" type="button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
