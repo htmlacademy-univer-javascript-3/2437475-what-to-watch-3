@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Film } from '../mocks/films';
-import { getMoviesByGenre } from '../components/functions/get-movie-by-genre';
 import { Detail } from '../mocks/details';
 import { fetchFilms } from './api-action';
 
@@ -12,6 +11,7 @@ export type AppState = {
   films: Film[];
   details: Detail[];
   filteredMovies: Film[];
+  myList: Film[];
 };
 
 export const initialState: AppState = {
@@ -21,7 +21,8 @@ export const initialState: AppState = {
   genre: 'All genres',
   films: [],
   details: [],
-  filteredMovies: []
+  filteredMovies: [],
+  myList: []
 };
 
 const appSlice = createSlice({
@@ -30,17 +31,18 @@ const appSlice = createSlice({
   reducers: {
     changeGenre(state, action: PayloadAction<string>) {
       state.genre = action.payload;
-      if (state.films && state.details && state.genre) {
-        const newFilteredMovies = getMoviesByGenre(state.films, state.genre);
-        state.filteredMovies = newFilteredMovies;
-      }
     },
     setFilms(state, action: PayloadAction<Film[]>) {
       state.films = action.payload;
     },
-    setDetails(state, action: PayloadAction<Detail>) {
+    setDetail(state, action: PayloadAction<Detail>) {
       state.loading = true;
       state.details = state.details.concat(action.payload);
+      state.loading = false;
+    },
+    setDetails(state, action: PayloadAction<Detail[]>) {
+      state.loading = true;
+      state.details = action.payload;
       state.loading = false;
     },
     setLoading(state, action: PayloadAction<boolean>) {
@@ -49,6 +51,12 @@ const appSlice = createSlice({
     updateAuthorizationStatus(state, action: PayloadAction<boolean>) {
       state.authorizationStatus = action.payload;
     },
+    setFilmInMyList(state, action: PayloadAction<Film>) {
+      state.myList = state.myList.concat(action.payload);
+    },
+    setMyList(state, action: PayloadAction<Film[]>) {
+      state.myList = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -64,7 +72,7 @@ const appSlice = createSlice({
   },
 });
 
-export const { changeGenre, setFilms, setDetails, setLoading, updateAuthorizationStatus } =
+export const { changeGenre, setFilms, setDetail, setDetails, setLoading, updateAuthorizationStatus, setFilmInMyList, setMyList } =
   appSlice.actions;
 
 export default appSlice.reducer;

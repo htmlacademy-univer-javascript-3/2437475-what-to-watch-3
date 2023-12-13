@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, setDetails } from '../../store/reducer';
+import { AppState, setDetail } from '../../store/reducer';
 import { Detail } from '../../mocks/details';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Spinner from '../spinner';
@@ -41,7 +41,7 @@ export function Player() {
   const fetchFilmDetails = useCallback(async () => {
     const serverDetailAction = await dispatch(getFilm(filmId as string));
     const serverDetail = serverDetailAction.payload;
-    dispatch(setDetails(serverDetail as Detail));
+    dispatch(setDetail(serverDetail as Detail));
   }, [dispatch, filmId]);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, setDetails, updateAuthorizationStatus } from '../../store/reducer';
+import { AppState, setDetail, updateAuthorizationStatus } from '../../store/reducer';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Detail } from '../../mocks/details';
 import { AppDispatch } from '../../store';
@@ -42,7 +42,7 @@ export function AddReview() {
   const fetchFilmDetails = useCallback(async () => {
     const serverDetailAction = await dispatch(getFilm(filmId as string));
     const serverDetail = serverDetailAction.payload;
-    dispatch(setDetails(serverDetail as Detail));
+    dispatch(setDetail(serverDetail as Detail));
   }, [dispatch, filmId]);
 
   useEffect(() => {

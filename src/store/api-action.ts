@@ -4,7 +4,7 @@ import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
 import { Review } from '../mocks/reviews';
 import { AppDispatch } from '.';
-import { changeGenre, setFilms, setLoading, updateAuthorizationStatus } from './reducer';
+import { changeGenre, setFilms, setLoading, setMyList, updateAuthorizationStatus } from './reducer';
 
 interface serverFilmsItem {
     id: string;
@@ -119,7 +119,8 @@ export const getFilm = createAsyncThunk('films/getFilm', async (filmId: string, 
     rating: serverResponce.rating ,
     ratingDescription: getRatingDescription(serverResponce.rating) as string,
     votes: serverResponce.scoresCount,
-    video: serverResponce.videoLink
+    video: serverResponce.videoLink,
+    isFavorite: serverResponce.isFavorite
   };
 
   return detail;
@@ -129,33 +130,38 @@ export const getPromoFilm = createAsyncThunk('films/getPromoFilm', async (_, {ex
   const apiInstance = api as AxiosInstance;
   const response = await apiInstance.get('/promo');
 
-  const serverPromoResponce: serverPromo = await response.data as serverPromo;
+  const serverPromoResponse: serverPromo = await response.data as serverPromo;
 
   const promo: Film = {
-    id: serverPromoResponce.id,
-    name: serverPromoResponce.name,
-    image: serverPromoResponce.posterImage,
-    video: serverPromoResponce.videoLink,
-    genre: serverPromoResponce.genre
+    id: serverPromoResponse.id,
+    name: serverPromoResponse.name,
+    image: serverPromoResponse.posterImage,
+    video: serverPromoResponse.videoLink,
+    genre: serverPromoResponse.genre
   };
 
+  const responseDetail = await apiInstance.get(`/films/${promo.id}`)
+
+  const serverPromoDetailResponse: serverFilm = await responseDetail.data as serverFilm;
+
   const promoDetail: Detail = {
-    filmId: serverPromoResponce.id,
-    genre: serverPromoResponce.genre,
-    year:  serverPromoResponce.released ,
-    director: '',
-    actors: [],
+    filmId: serverPromoDetailResponse.id,
+    genre: serverPromoDetailResponse.genre,
+    year:  serverPromoDetailResponse.released ,
+    director: serverPromoDetailResponse.director,
+    actors: serverPromoDetailResponse.starring,
     duration: {
-      hours: 0 ,
-      minutes: 0
+      hours: Math.floor(serverPromoDetailResponse.runTime / 60) ,
+      minutes: serverPromoDetailResponse.runTime % 60
     },
-    poster: serverPromoResponce.posterImage,
-    bigImage: serverPromoResponce.backgroundImage,
-    description: '',
-    rating: 0,
-    ratingDescription: '',
-    votes: 0,
-    video: serverPromoResponce.videoLink
+    poster: serverPromoDetailResponse.posterImage,
+    bigImage: serverPromoDetailResponse.backgroundImage,
+    description: serverPromoDetailResponse.description,
+    rating: serverPromoDetailResponse.rating,
+    ratingDescription: getRatingDescription(serverPromoDetailResponse.rating) as string,
+    votes: serverPromoDetailResponse.scoresCount,
+    video: serverPromoDetailResponse.videoLink,
+    isFavorite: serverPromoDetailResponse.isFavorite
   };
 
   return [promo, promoDetail];
@@ -178,6 +184,31 @@ export const getSimilarFilms = createAsyncThunk('films/getSimilarFilms', async (
 
   return films;
 });
+
+export const getMyList = createAsyncThunk('films/getMyList', async (_, {extra: api}) => {
+  const apiInstance = api as AxiosInstance;
+  const response = await apiInstance.get('/favorite');
+
+  const serverMyList: serverFilmsItem[] = await response.data as serverFilmsItem[];
+
+  const films: Film[] = serverMyList.map((item: serverFilmsItem) => ({
+    id: item.id ,
+    name: item.name ,
+    image: item.previewImage ,
+    video: item.previewVideoLink ,
+    genre: item.genre
+  }));
+
+  return films;
+});
+
+export const postFilmInMyList = createAsyncThunk('films/postFilmInMyList', async (data: {filmId: string, status: number}, {extra: api}) => {
+  const apiInstance = api as AxiosInstance;
+  const request = await apiInstance.post(`/favorite/${data.filmId}/${data.status}`);
+  
+  return request.data;
+
+})
 
 export const getReviews = createAsyncThunk('comments/getReviews', async (filmId: string, {extra: api}) => {
   const apiInstance = api as AxiosInstance;
@@ -214,6 +245,23 @@ export const fetchFilms = createAsyncThunk<
 
   return films;
 });
+
+export const fetchMyList = createAsyncThunk<
+Film[],
+undefined,
+{dispatch: AppDispatch }
+>('films/fetchMyList', async (_, { dispatch }) => {
+  dispatch(setLoading(true));
+
+  const serverList = await dispatch(getMyList());
+  const list = serverList.payload as Film[];
+  console.log(list);
+  dispatch(setMyList(list));
+
+  dispatch(setLoading(false));
+
+  return list;
+})
 
 
 export const getAuthStatus = createAsyncThunk('user/getLogin', async(token: string, { extra: api, dispatch }) => {
