@@ -22,8 +22,8 @@ describe('appSlice reducer', () => {
 
   it('should handle setDetail', () => {
     const prevState = initialState;
-    const detail = { filmId: '1', director: 'Director 1', actors: ['Actor 1', 'Actor 2'], duration: { hours: 2, minutes: 30 }, genre: 'Action', year: 2021, poster: 'poster.png', bigImage: 'bigImage.png', description: 'Description', rating: 5, ratingDescription: 'Excellent', votes: 100, video: 'video.mp4', isFavorite: false }
-    const action = { type: 'app/setDetail', payload: detail }
+    const detail = { filmId: '1', director: 'Director 1', actors: ['Actor 1', 'Actor 2'], duration: { hours: 2, minutes: 30 }, genre: 'Action', year: 2021, poster: 'poster.png', bigImage: 'bigImage.png', description: 'Description', rating: 5, ratingDescription: 'Excellent', votes: 100, video: 'video.mp4', isFavorite: false };
+    const action = { type: 'app/setDetail', payload: detail };
 
     const nextState = appReducer(prevState, action);
 
@@ -84,29 +84,29 @@ describe('appSlice reducer', () => {
     expect(nextState.myList).toEqual(myList);
   });
 
-//   it('should handle fetchFilms.pending', () => {
-//     const prevState = initialState;
-//     const action = { type: 'fetchFilms/pending' };
+  //   it('should handle fetchFilms.pending', () => {
+  //     const prevState = initialState;
+  //     const action = { type: 'fetchFilms/pending' };
 
-//     const nextState = appReducer(prevState, action);
+  //     const nextState = appReducer(prevState, action);
 
-//     expect(nextState.loading).toBe(true);
-//   });
+  //     expect(nextState.loading).toBe(true);
+  //   });
 
-//   it('should handle fetchFilms.fulfilled', () => {
-//     const prevState = initialState;
-//     const action = { type: 'fetchFilms/fulfilled' };
+  //   it('should handle fetchFilms.fulfilled', () => {
+  //     const prevState = initialState;
+  //     const action = { type: 'fetchFilms/fulfilled' };
 
-//     const nextState = appReducer(prevState, action);
+  //     const nextState = appReducer(prevState, action);
 
-//     expect(nextState.loading).toBe(false);
-//   });
+  //     expect(nextState.loading).toBe(false);
+  //   });
 
-//   it('should handle fetchFilms.rejected', () => {
-//     const prevState = initialState;
-//     const action = { type: 'fetchFilms/rejected' };
+  //   it('should handle fetchFilms.rejected', () => {
+  //     const prevState = initialState;
+  //     const action = { type: 'fetchFilms/rejected' };
 
-//     const nextState = appReducer(prevState, action);
+  //     const nextState = appReducer(prevState, action);
 
 //     expect(nextState.loading).toBe(false);
 //   });

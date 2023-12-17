@@ -302,3 +302,5 @@ export const postReview = createAsyncThunk('comments/postReview', async (data: {
 
   return response.data;
 });
+export { changeGenre };
+
