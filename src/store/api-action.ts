@@ -4,7 +4,7 @@ import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
 import { Review } from '../mocks/reviews';
 import { AppDispatch } from '.';
-import { changeGenre, setFilms, setLoading, setMyList, updateAuthorizationStatus } from './reducer';
+import { ALL_GENRES, changeGenre, setFilms, setLoading, setMyList, updateAuthorizationStatus } from './reducer';
 
 interface serverFilmsItem {
     id: string;
@@ -244,7 +244,7 @@ export const fetchFilms = createAsyncThunk<
   const films = serverFilmsResponse.payload as Film[];
 
   dispatch(setFilms(films));
-  dispatch(changeGenre('All genres'));
+  dispatch(changeGenre(ALL_GENRES));
 
   dispatch(setLoading(false));
 

@@ -3,6 +3,8 @@ import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
 import { fetchFilms } from './api-action';
 
+export const ALL_GENRES = 'All genres';
+
 export type AppState = {
   authorizationStatus: boolean;
   loading: boolean;
@@ -18,7 +20,7 @@ export const initialState: AppState = {
   authorizationStatus: false,
   loading: true,
   errorMessage: '',
-  genre: 'All genres',
+  genre: ALL_GENRES,
   films: [],
   details: [],
   filteredMovies: [],

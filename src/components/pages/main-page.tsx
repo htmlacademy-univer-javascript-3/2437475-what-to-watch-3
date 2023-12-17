@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../spinner';
 import { Header } from '../header';
 import { createSelector } from '@reduxjs/toolkit';
-import { AppState, changeGenre } from '../../store/reducer';
+import { ALL_GENRES, AppState, changeGenre } from '../../store/reducer';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { postFilmInMyList } from '../../store/api-action';
@@ -32,12 +32,12 @@ export function Main({film, detail}: PropsMain) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const [activeGenre, setActiveGenre] = useState('All genres');
+  const [activeGenre, setActiveGenre] = useState(ALL_GENRES);
   const [visibleMovies, setVisibleMovies] = useState(FILMS_PAGE_SIZE);
   const filteredMoviesSelector = createSelector(
     (state: AppState) => state.films,
     () => activeGenre,
-    (filmsForFilter, activeGenreForFilter) => activeGenreForFilter === 'All genres' ? filmsForFilter : filmsForFilter.filter((filmForFilter) => filmForFilter.genre === activeGenreForFilter)
+    (filmsForFilter, activeGenreForFilter) => activeGenreForFilter === ALL_GENRES ? filmsForFilter : filmsForFilter.filter((filmForFilter) => filmForFilter.genre === activeGenreForFilter)
   );
 
   const filteredMovies = useSelector(filteredMoviesSelector);

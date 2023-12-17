@@ -1,10 +1,10 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import appReducer from './reducer';
+import appReducer, { ALL_GENRES } from './reducer';
 import { createAPI } from '../api';
 
 export const preloadedState = {
   authorizationStatus: false,
-  genre: 'All genres',
+  genre: ALL_GENRES,
   films: [],
   details: [],
   overviews: [],
