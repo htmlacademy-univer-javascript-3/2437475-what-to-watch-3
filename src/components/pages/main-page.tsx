@@ -77,7 +77,7 @@ export function Main({film, detail}: PropsMain) {
           <img src={detail.bigImage} alt={film.name} />
         </div>
 
-        <h1 className="visually-hidden">WTW</h1>
+        <h1 data-testid="hidden-test-main-page" className="visually-hidden">WTW</h1>
 
         <Header authStatus={authStatus} />
 

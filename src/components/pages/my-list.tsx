@@ -24,7 +24,7 @@ export function MyList() {
           </Link>
         </div>
 
-        <h1 className="page-title user-page__title">My list<span className="user-page__film-count">{favoriteFilms.length}</span></h1>
+        <h1 className="page-title user-page__title" data-testid="hidden-test-my-list-page">My list<span className="user-page__film-count">{favoriteFilms.length}</span></h1>
         <ul className="user-block">
           <li className="user-block__item">
             <div className="user-block__avatar">

@@ -118,13 +118,13 @@ export function MoviePage() {
             <img src={detail.bigImage} alt={film.name} />
           </div>
 
-          <h1 className="visually-hidden">WTW</h1>
+          <h1  className="visually-hidden">WTW</h1>
 
           <Header authStatus={authStatus} />
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{film.name}</h2>
+              <h2 data-testid="hidden-test-film-page" className="film-card__title">{film.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{detail.genre}</span>
                 <span className="film-card__year">{detail.year}</span>

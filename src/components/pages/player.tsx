@@ -129,7 +129,7 @@ export function Player() {
 
   return(
     <div className="player">
-      <video ref={videoRef} src={detail.video} className="player__video" poster={film.image}></video>
+      <video data-testid="hidden-test-player-page" ref={videoRef} src={detail.video} className="player__video" poster={film.image}></video>
 
       <Link to={`${AppRoute.FilmPage}=${film.id}`} type="button" style={{ textDecoration: 'none' }} className="player__exit">
         Exit
