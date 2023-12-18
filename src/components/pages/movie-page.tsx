@@ -118,7 +118,7 @@ export function MoviePage() {
             <img src={detail.bigImage} alt={film.name} />
           </div>
 
-          <h1  className="visually-hidden">WTW</h1>
+          <h1 className="visually-hidden">WTW</h1>
 
           <Header authStatus={authStatus} />
 

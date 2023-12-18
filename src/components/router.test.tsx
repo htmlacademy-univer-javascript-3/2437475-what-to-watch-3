@@ -46,7 +46,7 @@ const testDetails: Detail[] = [
 
 const testFilm: Film = { id: '1', name: 'Film 1', genre: 'Drama', image: '', video: ''};
 
-const testDetail: Detail= {
+const testDetail: Detail = {
   filmId: '1',
   director: ' ',
   actors: [],
@@ -98,8 +98,8 @@ const testStore = configureStore({
   preloadedState: testInitialState
 });
 
-  test('renders main page', () => {
-    render(
+test('renders main page', () => {
+  render(
     <Provider store={testStore}>
       <MemoryRouter initialEntries={[AppRoute.MainPage]}>
         <Routes>
@@ -107,14 +107,14 @@ const testStore = configureStore({
         </Routes>
       </MemoryRouter>
     </Provider>
-    );
-  
-    const mainPageElement = screen.getByTestId('hidden-test-main-page');
-    expect(mainPageElement).toBeInTheDocument();
-  });
+  );
 
-  test('renders login page', () => {
-    render(
+  const mainPageElement = screen.getByTestId('hidden-test-main-page');
+  expect(mainPageElement).toBeInTheDocument();
+});
+
+test('renders login page', () => {
+  render(
     <Provider store={testStore}>
       <MemoryRouter initialEntries={[AppRoute.LoginPage]}>
         <Routes>
@@ -122,14 +122,14 @@ const testStore = configureStore({
         </Routes>
       </MemoryRouter>
     </Provider>
-    );
-  
-    const loginPageElement = screen.getByTestId('hidden-test-login-page');
-    expect(loginPageElement).toBeInTheDocument();
-  });
+  );
 
-  test('renders my list page', () => {
-    render(
+  const loginPageElement = screen.getByTestId('hidden-test-login-page');
+  expect(loginPageElement).toBeInTheDocument();
+});
+
+test('renders my list page', () => {
+  render(
     <Provider store={testStore}>
       <MemoryRouter initialEntries={[AppRoute.MyListPage]}>
         <Routes>
@@ -137,61 +137,61 @@ const testStore = configureStore({
         </Routes>
       </MemoryRouter>
     </Provider>
-    );
-  
-    const myListPageElement = screen.getByTestId('hidden-test-my-list-page');
-    expect(myListPageElement).toBeInTheDocument();
-  });
+  );
 
-  //в тесты ниже не заходит тестовый store. Внутри страницы считают, что те же films пустые. 
+  const myListPageElement = screen.getByTestId('hidden-test-my-list-page');
+  expect(myListPageElement).toBeInTheDocument();
+});
 
-  // test('renders film page', () => {
-  //   render(
-  //   <Provider store={testStore}>
-  //     <MemoryRouter>
-  //       <Routes>
-  //         <Route path={`${AppRoute.FilmPage}=${testFilm.id}`} element={<MoviePage />}/>
-  //       </Routes>
-  //     </MemoryRouter>
-  //   </Provider>
-  //   );
-  
-  //   const filmPageElement = screen.getByTestId('hidden-test-film-page');
-  //   expect(filmPageElement).toBeInTheDocument();
-  // });
+//в тесты ниже не заходит тестовый store. Внутри страницы считают, что те же films пустые.
 
-  // test('renders add review page', () => {
-  //   render(
-  //   <Provider store={testStore}>
-  //     <MemoryRouter initialEntries={[`${AppRoute.ReviewPage}=${testFilm.id}`]}>
-  //       <Routes>
-  //         <Route path={`${AppRoute.ReviewPage}=${testFilm.id}`} element={<AddReview />}/>
-  //       </Routes>
-  //     </MemoryRouter>
-  //   </Provider>
-  //   );
-  
-  //   const reviewPageElement = screen.getByTestId('hidden-test-review-page');
-  //   expect(reviewPageElement).toBeInTheDocument();
-  // });
+// test('renders film page', () => {
+//   render(
+//   <Provider store={testStore}>
+//     <MemoryRouter>
+//       <Routes>
+//         <Route path={`${AppRoute.FilmPage}=${testFilm.id}`} element={<MoviePage />}/>
+//       </Routes>
+//     </MemoryRouter>
+//   </Provider>
+//   );
 
-  // test('renders player page', () => {
-  //   render(
-  //   <Provider store={testStore}>
-  //     <MemoryRouter initialEntries={[`${AppRoute.PlayerPage}=${testFilm.id}`]}>
-  //       <Routes>
-  //         <Route path={`${AppRoute.PlayerPage}=${testFilm.id}`} element={<Player />}/>
-  //       </Routes>
-  //     </MemoryRouter>
-  //   </Provider>
-  //   );
-  
-  //   const playerPageElement = screen.getByTestId('hidden-test-player-page');
-  //   expect(playerPageElement).toBeInTheDocument();
-  // });
+//   const filmPageElement = screen.getByTestId('hidden-test-film-page');
+//   expect(filmPageElement).toBeInTheDocument();
+// });
 
-  test('renders 404 page', () => {
-    render(
+// test('renders add review page', () => {
+//   render(
+//   <Provider store={testStore}>
+//     <MemoryRouter initialEntries={[`${AppRoute.ReviewPage}=${testFilm.id}`]}>
+//       <Routes>
+//         <Route path={`${AppRoute.ReviewPage}=${testFilm.id}`} element={<AddReview />}/>
+//       </Routes>
+//     </MemoryRouter>
+//   </Provider>
+//   );
+
+//   const reviewPageElement = screen.getByTestId('hidden-test-review-page');
+//   expect(reviewPageElement).toBeInTheDocument();
+// });
+
+// test('renders player page', () => {
+//   render(
+//   <Provider store={testStore}>
+//     <MemoryRouter initialEntries={[`${AppRoute.PlayerPage}=${testFilm.id}`]}>
+//       <Routes>
+//         <Route path={`${AppRoute.PlayerPage}=${testFilm.id}`} element={<Player />}/>
+//       </Routes>
+//     </MemoryRouter>
+//   </Provider>
+//   );
+
+//   const playerPageElement = screen.getByTestId('hidden-test-player-page');
+//   expect(playerPageElement).toBeInTheDocument();
+// });
+
+test('renders 404 page', () => {
+  render(
     <Provider store={testStore}>
       <MemoryRouter initialEntries={['/test']}>
         <Routes>
@@ -199,8 +199,8 @@ const testStore = configureStore({
         </Routes>
       </MemoryRouter>
     </Provider>
-    );
-  
-    const notFoundPageElement = screen.getByTestId('hidden-test-error-page');
-    expect(notFoundPageElement).toBeInTheDocument();
-  });
+  );
+
+  const notFoundPageElement = screen.getByTestId('hidden-test-error-page');
+  expect(notFoundPageElement).toBeInTheDocument();
+});
