@@ -1,4 +1,5 @@
 import { Film } from '../mocks/films';
+import { ALL_GENRES } from '../store/reducer';
 
 type GenreListProps = {
  films: Film[];
@@ -8,7 +9,7 @@ type GenreListProps = {
 
 export function GenreList ({ films, activeGenre, onGenreChange }: GenreListProps) {
   const genres = Array.from(new Set(films.map((film) => film.genre)));
-  genres.unshift('All genres');
+  genres.unshift(ALL_GENRES);
 
   return (
     <ul className="catalog__genres-list">

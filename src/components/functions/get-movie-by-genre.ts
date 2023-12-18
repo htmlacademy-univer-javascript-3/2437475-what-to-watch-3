@@ -1,7 +1,8 @@
 import { Film } from '../../mocks/films';
+import { ALL_GENRES } from '../../store/reducer';
 
 export function getMoviesByGenre (films: Film[], genre: string) {
-  if (genre === 'All genres') {
+  if (genre === ALL_GENRES) {
     return films;
   }
 

@@ -30,7 +30,7 @@ export function Header({ authStatus }: PropsHeader) {
           <React.Fragment>
             <li className="user-block__item">
               <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
+                <img src="img/avatar.jpg" alt="user-avatar" width="63" height="63" />
               </div>
             </li>
             <li className="user-block__item">

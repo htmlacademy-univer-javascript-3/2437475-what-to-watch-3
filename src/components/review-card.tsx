@@ -12,7 +12,7 @@ type reviewsListProps = {
 
 export function ReviewCard({review}: PropsReviewCard) {
   return (
-    <div className="review">
+    <div className="review" data-testid="review-card">
       <blockquote className="review__quote">
         <p className="review__text">{review.text}</p>
 

@@ -71,7 +71,7 @@ export function AddReview() {
           <img src={detail.bigImage} alt={film.name} />
         </div>
 
-        <h1 className="visually-hidden">WTW</h1>
+        <h1 data-testid="hidden-test-review-page" className="visually-hidden">WTW</h1>
 
         <header className="page-header">
           <div className="logo">

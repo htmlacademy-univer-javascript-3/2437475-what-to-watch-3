@@ -51,7 +51,7 @@ export function SignIn() {
             </Link>
           </div>
 
-          <h1 className="page-title user-page__title">Sign in</h1>
+          <h1 data-testid="hidden-test-login-page" className="page-title user-page__title">Sign in</h1>
         </header>
 
         <div className="sign-in user-page__content">
