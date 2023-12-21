@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom";
-import { Logo } from "./logo";
-import { AppRoute } from "./app";
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { Logo } from './logo';
+import { AppRoute } from './app';
 
-test("renders Logo component", () => {
+test('renders Logo component', () => {
   render(
     <BrowserRouter>
       <Logo />

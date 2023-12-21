@@ -12,8 +12,8 @@ export function Header({ authStatus }: PropsHeader) {
       <Logo/>
 
       <ul className="user-block">
-        {authStatus === true && ( <SignOutLink/> )}
-        {authStatus === false && ( <SignInLink /> )}
+        {authStatus === true && (<SignOutLink/>)}
+        {authStatus === false && (<SignInLink />)}
       </ul>
     </header>
   );

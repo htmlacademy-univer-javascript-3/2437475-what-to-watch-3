@@ -70,7 +70,7 @@ export function AddReview() {
         <h1 data-testid="hidden-test-review-page" className="visually-hidden">WTW</h1>
 
         <header className="page-header">
-        <Logo/>
+          <Logo/>
 
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
@@ -84,9 +84,9 @@ export function AddReview() {
           </nav>
 
           <ul className="user-block">
-        {authStatus === true && ( <SignOutLink/> )}
-        {authStatus === false && ( <Navigate to={AppRoute.LoginPage} /> )}
-      </ul>
+            {authStatus === true && (<SignOutLink/>)}
+            {authStatus === false && (<Navigate to={AppRoute.LoginPage} />)}
+          </ul>
         </header>
 
         <div className="film-card__poster film-card__poster--small">

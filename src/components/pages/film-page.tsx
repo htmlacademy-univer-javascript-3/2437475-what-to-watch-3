@@ -26,7 +26,7 @@ import { getFilm, getSimilarFilms } from '../../store/api-actions/api-actions-fi
 
 export const SIMILAR_FILM_COUNT = 4;
 
-export function FilmPage() {
+export function MoviePage() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];

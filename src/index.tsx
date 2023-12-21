@@ -4,8 +4,10 @@ import { App } from './components/app';
 import { Detail } from './mocks/details';
 import store from './store';
 import { Provider } from 'react-redux';
-import { fetchFilms, fetchMyList, getAuthStatus, getPromoFilm } from './store/api-actions/api-actions-films';
+import { fetchFilms, getPromoFilm } from './store/api-actions/api-actions-films';
 import { Film } from './mocks/films';
+import { fetchMyList } from './store/api-actions/api-actions-favorite';
+import { getAuthStatus } from './store/api-actions/api-actions-user';
 
 
 const root = ReactDOM.createRoot(

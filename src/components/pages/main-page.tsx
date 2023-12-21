@@ -11,8 +11,8 @@ import { createSelector } from '@reduxjs/toolkit';
 import { ALL_GENRES, AppState, changeGenre } from '../../store/reducer';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../app';
-import { postFilmInMyList } from '../../store/api-actions/api-actions-films';
 import { AppDispatch } from '../../store';
+import { postFilmInMyList } from '../../store/api-actions/api-actions-favorite';
 
 export const FILMS_PAGE_SIZE = 8;
 
