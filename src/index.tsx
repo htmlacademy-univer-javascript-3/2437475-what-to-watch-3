@@ -4,7 +4,7 @@ import { App } from './components/app';
 import { Detail } from './mocks/details';
 import store from './store';
 import { Provider } from 'react-redux';
-import { fetchFilms, fetchMyList, getAuthStatus, getPromoFilm } from './store/api-action';
+import { fetchFilms, fetchMyList, getAuthStatus, getPromoFilm } from './store/api-actions/api-actions-films';
 import { Film } from './mocks/films';
 
 

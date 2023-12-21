@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import { AppRoute } from '../app';
-import '../../../markup/css/not-found.css';
+import './not-found.css';
 
 export function PageNotFound() {
   return (

@@ -4,9 +4,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AppState } from '../store/reducer';
 import { AppRoute } from './app';
 import { AppDispatch } from '../store';
-import { postReview } from '../store/api-action';
 import { PageNotFound } from './pages/not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
+import { postReview } from '../store/api-actions/api-actions-comments';
+
+enum ReviewLength {
+  Min = 50,
+  Max = 400
+}
+
+enum StarsCount {
+  Max = 10,
+  Min = 1
+}
 
 export function AddReviewForm() {
   const { id } = useParams();
@@ -25,6 +35,7 @@ export function AddReviewForm() {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [reviewPosted, setReviewPosted] = useState(false);
+  const [errorMessage, setError] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -47,13 +58,13 @@ export function AddReviewForm() {
         return;
       }
 
-      if (reviewText.length < 50) {
-        // console.error('Minimum 50 characters required');
+      if (reviewText.length < ReviewLength.Min || reviewText.length > ReviewLength.Max) {
+        setError(`Minimum ${ReviewLength.Min} and maximum ${ReviewLength.Max} characters required`);
         return;
       }
 
-      if (rating < 1 || rating > 10) {
-        // console.error('Incorrect rating');
+      if (rating < StarsCount.Min || rating > StarsCount.Max) {
+        setError('Incorrect rating');
         return;
       }
 
@@ -65,10 +76,11 @@ export function AddReviewForm() {
         }
       };
       dispatch(postReview(data));
-    } catch (error) {
-      // console.error('Failed to post review', error);
-    } finally {
       setReviewPosted(true);
+    } catch (error) {
+      setError('Failed to post review');
+    } finally {
+      // setReviewPosted(true);
     }
   }, [dispatch, filmId, film, reviewText, rating]);
 
@@ -122,6 +134,11 @@ export function AddReviewForm() {
           <button className="add-review__btn" type="submit" disabled={reviewPosted}>Post</button>
         </div>
       </div>
+      {(
+        <div style={{ textAlign: 'center' }}>
+          <p style={{color: 'darkpink'}}>{errorMessage}</p>
+        </div>
+      )}
     </form>
   );
 }

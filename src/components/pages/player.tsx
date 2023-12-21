@@ -5,7 +5,7 @@ import { Detail } from '../../mocks/details';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Spinner from '../spinner';
 import { AppDispatch } from '../../store';
-import { getFilm } from '../../store/api-action';
+import { getFilm } from '../../store/api-actions/api-actions-films';
 import { PageNotFound } from './not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
 import { AppRoute } from '../app';

@@ -1,6 +1,8 @@
 import { Film } from '../mocks/films';
 import { ALL_GENRES } from '../store/reducer';
 
+const MAX_GENRES_LIST = 9;
+
 type GenreListProps = {
  films: Film[];
  activeGenre: string;
@@ -8,7 +10,7 @@ type GenreListProps = {
 }
 
 export function GenreList ({ films, activeGenre, onGenreChange }: GenreListProps) {
-  const genres = Array.from(new Set(films.map((film) => film.genre)));
+  const genres = Array.from(new Set(films.map((film) => film.genre))).slice(0, MAX_GENRES_LIST);
   genres.unshift(ALL_GENRES);
 
   return (

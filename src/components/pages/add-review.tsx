@@ -1,16 +1,17 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { AddReviewForm } from '../add-review-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState, setDetail, updateAuthorizationStatus } from '../../store/reducer';
+import { AppState, setDetail } from '../../store/reducer';
 import { useCallback, useEffect, useMemo } from 'react';
 import { Detail } from '../../mocks/details';
 import { AppDispatch } from '../../store';
-import { getFilm } from '../../store/api-action';
+import { getFilm } from '../../store/api-actions/api-actions-films';
 import Spinner from '../spinner';
-import React from 'react';
 import { PageNotFound } from './not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
+import { SignOutLink } from '../sign-out-link';
+import { Logo } from '../logo';
 
 export function AddReview() {
   const { id } = useParams();
@@ -51,11 +52,6 @@ export function AddReview() {
     }
   }, [detail, fetchFilmDetails]);
 
-  const handleSignOut = useCallback(() => {
-    localStorage.removeItem('token');
-    dispatch(updateAuthorizationStatus(false));
-  }, [dispatch]);
-
   if (!film) {
     return <PageNotFound/>;
   }
@@ -74,13 +70,7 @@ export function AddReview() {
         <h1 data-testid="hidden-test-review-page" className="visually-hidden">WTW</h1>
 
         <header className="page-header">
-          <div className="logo">
-            <Link to={AppRoute.MainPage} className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
+        <Logo/>
 
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
@@ -94,24 +84,9 @@ export function AddReview() {
           </nav>
 
           <ul className="user-block">
-            {authStatus === true && (
-              <React.Fragment>
-                <li className="user-block__item">
-                  <div className="user-block__avatar">
-                    <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                  </div>
-                </li>
-                <li className="user-block__item">
-                  <a className="user-block__link" onClick={handleSignOut}>Sign out</a>
-                </li>
-              </React.Fragment>
-            )}
-            {authStatus === false && (
-              <Link to={AppRoute.LoginPage} className="user-block__link">
-              Sign in
-              </Link>
-            )}
-          </ul>
+        {authStatus === true && ( <SignOutLink/> )}
+        {authStatus === false && ( <Navigate to={AppRoute.LoginPage} /> )}
+      </ul>
         </header>
 
         <div className="film-card__poster film-card__poster--small">

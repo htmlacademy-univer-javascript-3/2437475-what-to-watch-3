@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Film } from '../mocks/films';
 import { Detail } from '../mocks/details';
-import { fetchFilms } from './api-action';
+import { fetchFilms } from './api-actions/api-actions-films';
 
 export const ALL_GENRES = 'All genres';
 

@@ -13,7 +13,6 @@ import { getReviewRoute } from '../functions/get-review-route';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState, setDetail } from '../../store/reducer';
 import Spinner from '../spinner';
-import { getFilm, getReviews, getSimilarFilms, postFilmInMyList } from '../../store/api-action';
 import { AppDispatch } from '../../store';
 import { Header } from '../header';
 import { Film } from '../../mocks/films';
@@ -21,10 +20,13 @@ import { Review } from '../../mocks/reviews';
 import { PageNotFound } from './not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
 import { AppRoute } from '../app';
+import { getReviews } from '../../store/api-actions/api-actions-comments';
+import { postFilmInMyList } from '../../store/api-actions/api-actions-favorite';
+import { getFilm, getSimilarFilms } from '../../store/api-actions/api-actions-films';
 
 export const SIMILAR_FILM_COUNT = 4;
 
-export function MoviePage() {
+export function FilmPage() {
 
   const { id } = useParams();
   const filmId = id?.split('=')[1];

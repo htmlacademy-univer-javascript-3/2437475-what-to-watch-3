@@ -1,14 +1,14 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import {Main} from './pages/main-page';
-import {PropsMain} from './pages/main-page';
-import {SignIn} from './pages/sign-in';
-import {MyList} from './pages/my-list';
-import {MoviePage} from './pages/movie-page';
-import {AddReview} from './pages/add-review';
-import {Player} from './pages/player';
-import {PageNotFound} from './pages/not-found-page';
-import {PrivateRoute} from './private-route';
+import { Main } from './pages/main-page';
+import { PropsMain } from './pages/main-page';
+import { SignIn } from './pages/sign-in';
+import { MyList } from './pages/my-list';
+import { FilmPage } from './pages/film-page';
+import { AddReview } from './pages/add-review';
+import { Player } from './pages/player';
+import { PageNotFound } from './pages/not-found-page';
+import { PrivateRoute } from './private-route';
 
 export enum AppRoute {
   MainPage = '/',
@@ -36,7 +36,7 @@ export function App({paramsMain}: PropsAppMain) {
           </PrivateRoute>
         }
         />
-        <Route path={AppRoute.FilmPage} element={<MoviePage />} />
+        <Route path={AppRoute.FilmPage} element={<FilmPage />} />
         <Route path={AppRoute.ReviewPage} element={
           <PrivateRoute>
             <AddReview />

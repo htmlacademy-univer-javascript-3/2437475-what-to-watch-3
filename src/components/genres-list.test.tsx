@@ -5,7 +5,7 @@ test('renders genre list correctly', () => {
   const films = [
     { id: '1', name: 'Film 1', genre: 'Drama', image: '', video: ''},
     { id: '2', name: 'Film 2', genre: 'Comedy', image: '', video: '' },
-    { id: '2', name: 'Film 2', genre: 'All genres', image: '', video: '' }
+    { id: '2', name: 'Film 2', genre: 'Horror', image: '', video: '' }
   ];
   const activeGenre = 'Drama';
 

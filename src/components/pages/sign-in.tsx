@@ -1,12 +1,13 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { AppRoute } from '../app';
 import { Footer } from '../footer';
 import { FormEvent, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store/reducer';
 import { AppDispatch } from '../../store';
-import { signIn } from '../../store/api-action';
 import React from 'react';
+import { Logo } from '../logo';
+import { signIn } from '../../store/api-actions/api-actions-user';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -43,13 +44,7 @@ export function SignIn() {
       {authStatus && (<Navigate to={AppRoute.MainPage} replace/>)}
       <div className="user-page">
         <header className="page-header user-page__head">
-          <div className="logo">
-            <Link to={AppRoute.MainPage} className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>
-          </div>
+        <Logo/>
 
           <h1 data-testid="hidden-test-login-page" className="page-title user-page__title">Sign in</h1>
         </header>

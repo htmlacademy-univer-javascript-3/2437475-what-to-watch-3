@@ -1,4 +1,4 @@
-import '../../markup/css/spinner.css';
+import './spinner.css';
 
 const Spinner = () => (
   <div className="spinner-container">
