@@ -50,38 +50,39 @@ export function AddReviewForm() {
     setRating(parseInt(event.target.value, 10));
   }, []);
 
-  const submitReview = useCallback((event: FormEvent<HTMLFormElement>) => {
+  const submitReview = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    try {
-      if (!filmId || !film || !reviewText || !rating) {
-        return;
-      }
-
-      if (reviewText.length < ReviewLength.Min || reviewText.length > ReviewLength.Max) {
-        setError(`Minimum ${ReviewLength.Min} and maximum ${ReviewLength.Max} characters required`);
-        return;
-      }
-
-      if (rating < StarsCount.Min || rating > StarsCount.Max) {
-        setError('Incorrect rating');
-        return;
-      }
-
-      const data = {
-        filmId: filmId,
-        request: {
-          comment: reviewText,
-          rating: rating
-        }
-      };
-      dispatch(postReview(data));
-      setReviewPosted(true);
-    } catch (error) {
-      setError('Failed to post review');
-    } finally {
-      // setReviewPosted(true);
+    if (!filmId || !film || !reviewText || !rating) {
+      return;
     }
+
+    if (reviewText.length < ReviewLength.Min || reviewText.length > ReviewLength.Max) {
+      setError(`Minimum ${ReviewLength.Min} and maximum ${ReviewLength.Max} characters required`);
+      return;
+    }
+
+    if (rating < StarsCount.Min || rating > StarsCount.Max) {
+      setError('Incorrect rating');
+      return;
+    }
+
+    const data = {
+      filmId: filmId,
+      request: {
+        comment: reviewText,
+        rating: rating
+      }
+    };
+
+    const response = await dispatch(postReview(data));
+
+    if(response.payload) {
+      setReviewPosted(true);
+    } else {
+      setError('Failed to post review');
+    }
+
   }, [dispatch, filmId, film, reviewText, rating]);
 
   if (!film || !filmId) {
@@ -93,7 +94,7 @@ export function AddReviewForm() {
   }
 
   return (
-    <form className="add-review__form" onSubmit={submitReview}>
+    <form className="add-review__form" onSubmit={(event) => void submitReview(event)}>
       <div className="rating">
         <div className="rating__stars">
           <input className="rating__input" id="star-10" type="radio" name="rating" value="10" checked={rating === 10} onChange={handleRatingChange} />

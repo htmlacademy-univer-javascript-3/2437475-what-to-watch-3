@@ -21,22 +21,21 @@ export function SignIn() {
     setError(message);
   }, []);
 
-  const sumbitEmailPassword = useCallback((event: FormEvent<HTMLFormElement>) => {
+  const sumbitEmailPassword = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    try {
-      if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-        handleErrorMessage('Sorry, the email is incorrect');
-      } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
-        handleErrorMessage('Sorry, the password is incorrect');
-      } else {
-        dispatch(signIn({ email, password }));
+    if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      handleErrorMessage('Sorry, the email is incorrect');
+    } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(password)) {
+      handleErrorMessage('Sorry, the password is incorrect');
+    } else {
+      const response = await dispatch(signIn({ email, password }));
+      if (!response.payload) {
+        handleErrorMessage('Sorry, login failed. Try again later');
       }
-    } catch (error) {
-      handleErrorMessage('Sorry, login failed. Try again later');
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
+
   }, [dispatch, email, password, handleErrorMessage]);
 
   return(
@@ -50,7 +49,7 @@ export function SignIn() {
         </header>
 
         <div className="sign-in user-page__content">
-          <form className="sign-in__form" onSubmit={sumbitEmailPassword}>
+          <form className="sign-in__form" onSubmit={(event) => void sumbitEmailPassword(event)}>
             {(
               <div className="sign-in__message">
                 <p>{errorMessage}</p>
