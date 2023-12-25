@@ -90,7 +90,8 @@ export function Player() {
       const percentage = (video.currentTime / video.duration) * 100;
       setProgressPercentage(percentage);
     }
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detail]);
 
   useEffect(() => {
     const video = videoRef.current;

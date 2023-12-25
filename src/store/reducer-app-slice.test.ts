@@ -83,31 +83,4 @@ describe('appSlice reducer', () => {
 
     expect(nextState.myList).toEqual(myList);
   });
-
-  //   it('should handle fetchFilms.pending', () => {
-  //     const prevState = initialState;
-  //     const action = { type: 'fetchFilms/pending' };
-
-  //     const nextState = appReducer(prevState, action);
-
-  //     expect(nextState.loading).toBe(true);
-  //   });
-
-  //   it('should handle fetchFilms.fulfilled', () => {
-  //     const prevState = initialState;
-  //     const action = { type: 'fetchFilms/fulfilled' };
-
-  //     const nextState = appReducer(prevState, action);
-
-  //     expect(nextState.loading).toBe(false);
-  //   });
-
-  //   it('should handle fetchFilms.rejected', () => {
-  //     const prevState = initialState;
-  //     const action = { type: 'fetchFilms/rejected' };
-
-  //     const nextState = appReducer(prevState, action);
-
-//     expect(nextState.loading).toBe(false);
-//   });
 });
