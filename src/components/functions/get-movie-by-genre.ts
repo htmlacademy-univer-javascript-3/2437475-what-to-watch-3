@@ -1,4 +1,4 @@
-import { Film } from '../../mocks/films';
+import { Film } from '../../types/films';
 import { ALL_GENRES } from '../../store/reducer';
 
 export function getMoviesByGenre (films: Film[], genre: string) {

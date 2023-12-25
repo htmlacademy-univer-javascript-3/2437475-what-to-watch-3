@@ -1,20 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-// import { AddReview } from './pages/add-review';
-import { Main } from './pages/main-page';
-// import { MoviePage } from './pages/movie-page';
-import { MyList } from './pages/my-list';
-// import { PageNotFound } from './pages/not-found-page';
-// import { Player } from './pages/player';
-import { SignIn } from './pages/sign-in';
+import { MainPage } from './pages/main-page/main-page';
+import { MyList } from './pages/my-list/my-list';
+import { SignIn } from './pages/sign-in/sign-in';
 import { AppRoute } from './app';
 import { Provider } from 'react-redux';
 import appReducer, { ALL_GENRES } from '../store/reducer';
 import { getDefaultMiddleware, configureStore } from '@reduxjs/toolkit';
 import { createAPI } from '../api';
-import { Film } from '../mocks/films';
-import { Detail } from '../mocks/details';
-import { PageNotFound } from './pages/not-found-page';
+import { Film } from '../types/films';
+import { Detail } from '../types/details';
+import { PageNotFound } from './pages/not-found-page/not-found-page';
 
 const testFilms: Film[] = [
   { id: '1', name: 'Film 1', genre: 'Drama', image: '', video: ''},
@@ -101,9 +97,9 @@ const testStore = configureStore({
 test('renders main page', () => {
   render(
     <Provider store={testStore}>
-      <MemoryRouter initialEntries={[AppRoute.MainPage]}>
+      <MemoryRouter initialEntries={[AppRoute.Main]}>
         <Routes>
-          <Route path={AppRoute.MainPage} element={<Main {...propsMain}/>}/>
+          <Route path={AppRoute.Main} element={<MainPage {...propsMain}/>}/>
         </Routes>
       </MemoryRouter>
     </Provider>
@@ -142,53 +138,6 @@ test('renders my list page', () => {
   const myListPageElement = screen.getByTestId('hidden-test-my-list-page');
   expect(myListPageElement).toBeInTheDocument();
 });
-
-//в тесты ниже не заходит тестовый store. Внутри страницы считают, что те же films пустые.
-
-// test('renders film page', () => {
-//   render(
-//   <Provider store={testStore}>
-//     <MemoryRouter>
-//       <Routes>
-//         <Route path={`${AppRoute.FilmPage}=${testFilm.id}`} element={<MoviePage />}/>
-//       </Routes>
-//     </MemoryRouter>
-//   </Provider>
-//   );
-
-//   const filmPageElement = screen.getByTestId('hidden-test-film-page');
-//   expect(filmPageElement).toBeInTheDocument();
-// });
-
-// test('renders add review page', () => {
-//   render(
-//   <Provider store={testStore}>
-//     <MemoryRouter initialEntries={[`${AppRoute.ReviewPage}=${testFilm.id}`]}>
-//       <Routes>
-//         <Route path={`${AppRoute.ReviewPage}=${testFilm.id}`} element={<AddReview />}/>
-//       </Routes>
-//     </MemoryRouter>
-//   </Provider>
-//   );
-
-//   const reviewPageElement = screen.getByTestId('hidden-test-review-page');
-//   expect(reviewPageElement).toBeInTheDocument();
-// });
-
-// test('renders player page', () => {
-//   render(
-//   <Provider store={testStore}>
-//     <MemoryRouter initialEntries={[`${AppRoute.PlayerPage}=${testFilm.id}`]}>
-//       <Routes>
-//         <Route path={`${AppRoute.PlayerPage}=${testFilm.id}`} element={<Player />}/>
-//       </Routes>
-//     </MemoryRouter>
-//   </Provider>
-//   );
-
-//   const playerPageElement = screen.getByTestId('hidden-test-player-page');
-//   expect(playerPageElement).toBeInTheDocument();
-// });
 
 test('renders 404 page', () => {
   render(

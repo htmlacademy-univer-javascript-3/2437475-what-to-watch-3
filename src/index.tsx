@@ -1,39 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './components/app';
-import { Detail } from './mocks/details';
+import { Detail } from './types/details';
 import store from './store';
 import { Provider } from 'react-redux';
-import { fetchFilms, fetchMyList, getAuthStatus, getPromoFilm } from './store/api-action';
-import { Film } from './mocks/films';
+import { fetchFilms, getPromoFilm } from './store/api-actions/api-actions-films';
+import { Film } from './types/films';
+import { fetchMyList } from './store/api-actions/api-actions-favorite';
+import { getAuthStatus } from './store/api-actions/api-actions-user';
+import Spinner from './components/spinner/spinner';
 
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+export const AppContainer = () => {
+  const [loading, setLoading] = useState(true);
+  const [promoFilm, setPromoFilm] = useState<Film | null>(null);
+  const [detailPromoFilm, setDetailPromoFilm] = useState<Detail | null>(null);
 
-await store.dispatch(getAuthStatus(localStorage.getItem('token') as string));
-await store.dispatch(fetchFilms());
-const state = store.getState();
-if (state.authorizationStatus) {
-  await store.dispatch(fetchMyList());
-}
+  useEffect(() => {
+    const fetchData = async () => {
+      await store.dispatch(getAuthStatus(localStorage.getItem('token') as string));
+      await store.dispatch(fetchFilms());
+      const state = store.getState();
+      if (state.authorizationStatus) {
+        await store.dispatch(fetchMyList());
+      }
+      const serverPromo = await store.dispatch(getPromoFilm());
+      const promo = serverPromo.payload as [Film, Detail];
+      const newDetailPromoFilm = promo[1];
+      const newPromoFilm = promo[0];
 
-const serverPromo = await store.dispatch(getPromoFilm());
-const promo = serverPromo.payload as [Film, Detail];
+      setDetailPromoFilm(newDetailPromoFilm);
+      setPromoFilm(newPromoFilm);
+      setLoading(false);
+    };
 
-const detailPromoFilm = promo[1];
-const promoFilm = promo[0];
+    fetchData();
+  }, []);
 
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App paramsMain={{
-        film: promoFilm ,
-        detail: detailPromoFilm
-      }}
-      />
-    </Provider>
-  </React.StrictMode>
-);
+  if (loading) {
+    return <Spinner />;
+  }
 
+  return (
+    <React.StrictMode>
+      <Provider store={store}>
+        <App paramsMain={{ film: promoFilm as Film, detail: detailPromoFilm as Detail}} />
+      </Provider>
+    </React.StrictMode>
+  );
+};
+
+root.render(<AppContainer />);

@@ -24,14 +24,3 @@ export function createAPI() {
 
   return api;
 }
-
-/**
- * Argument of type '(config: AxiosRequestConfig) => AxiosRequestConfig<any>' is not assignable to parameter of type '(value: InternalAxiosRequestConfig<any>) => InternalAxiosRequestConfig<any> | Promise<InternalAxiosRequestConfig<any>>'.
-  Type 'AxiosRequestConfig<any>' is not assignable to type 'InternalAxiosRequestConfig<any> | Promise<InternalAxiosRequestConfig<any>>'.
-    Type 'AxiosRequestConfig<any>' is not assignable to type 'InternalAxiosRequestConfig<any>'.
-      Types of property 'headers' are incompatible.
-        Type 'AxiosHeaders | (Partial<RawAxiosHeaders & { Accept: AxiosHeaderValue; "Content-Length": AxiosHeaderValue; "User-Agent": AxiosHeaderValue; "Content-Encoding": AxiosHeaderValue; Authorization: AxiosHeaderValue; } & { ...; }> & Partial<...>) | undefined' is not assignable to type 'AxiosRequestHeaders'.
-          Type 'undefined' is not assignable to type 'AxiosRequestHeaders'.
-            Type 'undefined' is not assignable to type 'Partial<RawAxiosHeaders & { Accept: AxiosHeaderValue; "Content-Length": AxiosHeaderValue; "User-Agent": AxiosHeaderValue; "Content-Encoding": AxiosHeaderValue; Authorization: AxiosHeaderValue; } & { ...; }>'.ts(2345)
-
- */
