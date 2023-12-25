@@ -12,7 +12,7 @@ import Spinner from './components/spinner/spinner';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const AppContainer = () => {
+export const AppContainer = () => {
   const [loading, setLoading] = useState(true);
   const [promoFilm, setPromoFilm] = useState<Film | null>(null);
   const [detailPromoFilm, setDetailPromoFilm] = useState<Detail | null>(null);
@@ -27,11 +27,11 @@ const AppContainer = () => {
       }
       const serverPromo = await store.dispatch(getPromoFilm());
       const promo = serverPromo.payload as [Film, Detail];
-      const detailPromoFilm = promo[1];
-      const promoFilm = promo[0];
+      const newDetailPromoFilm = promo[1];
+      const newPromoFilm = promo[0];
 
-      setDetailPromoFilm(detailPromoFilm);
-      setPromoFilm(promoFilm);
+      setDetailPromoFilm(newDetailPromoFilm);
+      setPromoFilm(newPromoFilm);
       setLoading(false);
     };
 

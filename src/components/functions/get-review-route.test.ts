@@ -1,4 +1,4 @@
-import { getReviewRoute } from "./get-review-route";
+import { getReviewRoute } from './get-review-route';
 
 describe('getReviewRoute', () => {
   it('should return the review route with the specified filmId', () => {

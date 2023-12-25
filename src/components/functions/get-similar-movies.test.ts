@@ -1,4 +1,4 @@
-import { getSimilarMovies, SIMILAR_FILM_COUNT } from "./get-similar-movies";
+import { getSimilarMovies, SIMILAR_FILM_COUNT } from './get-similar-movies';
 
 describe('getSimilarMovies', () => {
   const films = [
@@ -38,8 +38,8 @@ describe('getSimilarMovies', () => {
   });
 
   it('should return an empty array if there are no similar films', () => {
-    const genre = 'Фантастика';
-    const result = getSimilarMovies({genre, filmId, films});
+    const otherGenre = 'Фантастика';
+    const result = getSimilarMovies({genre: otherGenre, filmId, films});
     expect(result).toEqual([]);
   });
 });

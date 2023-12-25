@@ -1,4 +1,4 @@
-import { getRatingDescription } from "./get-rating-description";
+import { getRatingDescription } from './get-rating-description';
 
 describe('getRatingDescription', () => {
   it('should return "Bad" when rating is between 0 and 3 (exclusive)', () => {

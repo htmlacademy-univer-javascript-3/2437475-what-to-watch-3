@@ -1,4 +1,4 @@
-import { getMoviesByGenre } from "./get-movie-by-genre";
+import { getMoviesByGenre } from './get-movie-by-genre';
 
 describe('getMoviesByGenre', () => {
   const films = [
