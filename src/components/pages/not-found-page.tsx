@@ -1,8 +1,9 @@
 import {Link} from 'react-router-dom';
 import { AppRoute } from '../app';
 import './not-found.css';
+import React from 'react';
 
-export function PageNotFound() {
+export const PageNotFound = React.memo(() => {
   return (
     <div className="not-found-page">
       <h1 data-testid="hidden-test-error-page" className="not-found-title">404 Not Found :c</h1>
@@ -11,4 +12,4 @@ export function PageNotFound() {
       <Link to={AppRoute.MainPage} className="not-found-link">Main Page</Link>
     </div>
   );
-}
+});

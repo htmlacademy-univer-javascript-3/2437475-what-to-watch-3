@@ -1,3 +1,4 @@
+import React from 'react';
 import { Film } from '../mocks/films';
 import { ALL_GENRES } from '../store/reducer';
 
@@ -9,7 +10,7 @@ type GenreListProps = {
  onGenreChange: (genre: string) => void;
 }
 
-export function GenreList ({ films, activeGenre, onGenreChange }: GenreListProps) {
+export const GenreList = React.memo(({ films, activeGenre, onGenreChange }: GenreListProps) => {
   const genres = Array.from(new Set(films.map((film) => film.genre))).slice(0, MAX_GENRES_LIST);
   genres.unshift(ALL_GENRES);
 
@@ -24,4 +25,4 @@ export function GenreList ({ films, activeGenre, onGenreChange }: GenreListProps
       ))}
     </ul>
   );
-}
+});

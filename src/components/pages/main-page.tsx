@@ -41,10 +41,6 @@ export function MainPage({film, detail}: PropsMain) {
   );
 
   const filteredMovies = useSelector(filteredMoviesSelector);
-  const MemoGenreList = React.memo(GenreList);
-  const MemoCards = React.memo(Cards);
-  const MemoFooter = React.memo(Footer);
-  const MemoSpinner = React.memo(Spinner);
 
   const handleGenreChange = useCallback((genre: string) => {
     setActiveGenre(genre);
@@ -67,7 +63,7 @@ export function MainPage({film, detail}: PropsMain) {
   }, [authStatus, dispatch, film.id, myList, navigate]);
 
   if (loading) {
-    return <MemoSpinner/>;
+    return <Spinner/>;
   }
 
   return (
@@ -120,17 +116,17 @@ export function MainPage({film, detail}: PropsMain) {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <MemoGenreList films={films} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
+          <GenreList films={films} activeGenre={activeGenre} onGenreChange={handleGenreChange}/>
 
-          <MemoCards films={filteredMovies.slice(0, visibleMovies)}>
+          <Cards films={filteredMovies.slice(0, visibleMovies)}>
             {
               filteredMovies.length > visibleMovies &&
               <button className="catalog__button" type="button" onClick={handleShowMore}>Show more</button>
             }
-          </MemoCards>
+          </Cards>
         </section>
 
-        <MemoFooter/>
+        <Footer/>
       </div>
     </React.Fragment>
   );

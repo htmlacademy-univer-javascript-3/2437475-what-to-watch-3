@@ -101,15 +101,12 @@ export function MoviePage() {
     dispatch(postFilmInMyList({ filmId: film?.id as string, status: isFavorite ? 0 : 1 }));
   }, [authStatus, dispatch, film?.id, myList, navigate]);
 
-  const MemoSpinner = React.memo(Spinner);
-  const MemoPageNotFound = React.memo(PageNotFound);
-
   if (!film) {
-    return <MemoPageNotFound/>;
+    return <PageNotFound/>;
   }
 
   if (!detail) {
-    return <MemoSpinner/>;
+    return <Spinner/>;
   }
 
   return(

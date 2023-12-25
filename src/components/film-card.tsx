@@ -3,6 +3,7 @@ import {ReactNode, useCallback, useRef, useState} from 'react';
 import {AppRoute} from './app';
 import { Link } from 'react-router-dom';
 import { VideoPlayer } from './video-player';
+import React from 'react';
 
 export const ONE_SECOND = 1000;
 
@@ -15,7 +16,7 @@ type filmsListProps = {
   children: ReactNode;
 }
 
-export function Card({film}: PropsCard) {
+export const Card = React.memo(({film}: PropsCard) => {
   const [isHovered, setIsHovered] = useState(false);
   const timeoutRef = useRef<number | null>(null);
 
@@ -47,9 +48,9 @@ export function Card({film}: PropsCard) {
       </h3>
     </article>
   );
-}
+});
 
-export function Cards({ films, children }: filmsListProps) {
+export const Cards = React.memo(({ films, children }: filmsListProps) => {
   return (
     <div className="catalog__films-list">
       {films.map((film) => (
@@ -61,6 +62,6 @@ export function Cards({ films, children }: filmsListProps) {
       {children}
     </div>
   );
-}
+});
 
 

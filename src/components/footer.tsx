@@ -1,6 +1,7 @@
+import React from 'react';
 import { Logo } from './logo';
 
-export function Footer() {
+export const Footer = React.memo(() => {
   return (
     <footer className="page-footer">
       <Logo/>
@@ -10,4 +11,4 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});
