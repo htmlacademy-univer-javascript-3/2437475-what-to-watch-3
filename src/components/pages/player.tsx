@@ -56,24 +56,21 @@ export function Player() {
   const handlePlayPause = () => {
     const video = videoRef.current;
 
-    if (video) {
-      if (isPlaying) {
-        video.pause();
-      } else {
-        video.play();
-      }
-
-      setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      video?.pause();
+    } else {
+      video?.play();
     }
+
+    setIsPlaying(!isPlaying);
+
   };
 
   const handleFullScreen = () => {
     const video = videoRef.current;
 
-    if (video) {
-      if (video.requestFullscreen) {
-        video.requestFullscreen();
-      }
+    if (video?.requestFullscreen) {
+      video?.requestFullscreen();
     }
   };
 
@@ -82,7 +79,7 @@ export function Player() {
   const calculateTimeLeft = useCallback(() => {
     const video = videoRef.current;
     if (video) {
-      const remainingTime = Math.ceil(video.duration - video.currentTime);
+      const remainingTime = Math.ceil(video?.duration - video?.currentTime);
 
       const hours = Math.floor(remainingTime / 3600);
       const minutes = Math.floor((remainingTime % 3600) / 60);
@@ -97,12 +94,10 @@ export function Player() {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      video.addEventListener('timeupdate', calculateTimeLeft);
-      return () => {
-        video.removeEventListener('timeupdate', calculateTimeLeft);
-      };
-    }
+    video?.addEventListener('timeupdate', calculateTimeLeft);
+    return () => {
+      video?.removeEventListener('timeupdate', calculateTimeLeft);
+    };
   }, [calculateTimeLeft]);
 
   const handleTogglerClick = (event: React.MouseEvent<HTMLDivElement>) => {
