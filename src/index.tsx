@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './components/app';
-import { Detail } from './mocks/details';
+import { Detail } from './types/details';
 import store from './store';
 import { Provider } from 'react-redux';
 import { fetchFilms, getPromoFilm } from './store/api-actions/api-actions-films';
-import { Film } from './mocks/films';
+import { Film } from './types/films';
 import { fetchMyList } from './store/api-actions/api-actions-favorite';
 import { getAuthStatus } from './store/api-actions/api-actions-user';
 

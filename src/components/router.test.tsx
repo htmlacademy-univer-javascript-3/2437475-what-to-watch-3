@@ -1,20 +1,20 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 // import { AddReview } from './pages/add-review';
-import { MainPage } from './pages/main-page';
+import { MainPage } from './pages/main-page/main-page';
 // import { MoviePage } from './pages/movie-page';
-import { MyList } from './pages/my-list';
+import { MyList } from './pages/my-list/my-list';
 // import { PageNotFound } from './pages/not-found-page';
 // import { Player } from './pages/player';
-import { SignIn } from './pages/sign-in';
+import { SignIn } from './pages/sign-in/sign-in';
 import { AppRoute } from './app';
 import { Provider } from 'react-redux';
 import appReducer, { ALL_GENRES } from '../store/reducer';
 import { getDefaultMiddleware, configureStore } from '@reduxjs/toolkit';
 import { createAPI } from '../api';
-import { Film } from '../mocks/films';
-import { Detail } from '../mocks/details';
-import { PageNotFound } from './pages/not-found-page';
+import { Film } from '../types/films';
+import { Detail } from '../types/details';
+import { PageNotFound } from './pages/not-found-page/not-found-page';
 
 const testFilms: Film[] = [
   { id: '1', name: 'Film 1', genre: 'Drama', image: '', video: ''},

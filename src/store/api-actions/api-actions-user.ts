@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { Film } from '../../mocks/films';
+import { Film } from '../../types/films';
 import { updateAuthorizationStatus, setMyList } from '../reducer';
 import { getMyList } from './api-actions-favorite';
 

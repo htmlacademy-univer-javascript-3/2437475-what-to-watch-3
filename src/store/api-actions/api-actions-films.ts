@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { Film } from '../../mocks/films';
-import { Detail } from '../../mocks/details';
+import { Film } from '../../types/films';
+import { Detail } from '../../types/details';
 import { AppDispatch } from '..';
 import { ALL_GENRES, changeGenre, setFilms, setLoading } from '../reducer';
 import { getRatingDescription } from '../../components/functions/get-rating-description';

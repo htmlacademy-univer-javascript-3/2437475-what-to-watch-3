@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { Review } from '../../mocks/reviews';
+import { Review } from '../../types/reviews';
 
 interface serverReview {
   id: string;

@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { MainPage } from './pages/main-page';
-import { PropsMain } from './pages/main-page';
-import { SignIn } from './pages/sign-in';
-import { MyList } from './pages/my-list';
-import { MoviePage } from './pages/film-page';
-import { AddReview } from './pages/add-review';
-import { Player } from './pages/player';
-import { PageNotFound } from './pages/not-found-page';
-import { PrivateRoute } from './private-route';
+import { MainPage } from './pages/main-page/main-page';
+import { PropsMain } from './pages/main-page/main-page';
+import { SignIn } from './pages/sign-in/sign-in';
+import { MyList } from './pages/my-list/my-list';
+import { MoviePage } from './pages/film-page/film-page';
+import { AddReview } from './pages/add-review/add-review';
+import { Player } from './pages/player/player';
+import { PageNotFound } from './pages/not-found-page/not-found-page';
+import { PrivateRoute } from './private-route/private-route';
 
 export enum AppRoute {
   Main = '/',

@@ -1,4 +1,4 @@
-import { Film } from '../../mocks/films';
+import { Film } from '../../types/films';
 import { getMoviesByGenre } from './get-movie-by-genre';
 
 export const SIMILAR_FILM_COUNT = 4;

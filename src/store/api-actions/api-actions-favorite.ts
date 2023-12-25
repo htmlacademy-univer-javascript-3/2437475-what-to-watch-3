@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { AppDispatch } from '..';
-import { Film } from '../../mocks/films';
+import { Film } from '../../types/films';
 import { serverFilmsItem } from './api-actions-films';
 import { setMyList, setLoading } from '../reducer';
 
