@@ -21,7 +21,7 @@ export type PropsMain = {
     detail: Detail;
 }
 
-export function Main({film, detail}: PropsMain) {
+export function MainPage({film, detail}: PropsMain) {
 
   const loading = useSelector((state: AppState) => state.loading);
   const films = useSelector((state: AppState) => state.films);

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 // import { AddReview } from './pages/add-review';
-import { Main } from './pages/main-page';
+import { MainPage } from './pages/main-page';
 // import { MoviePage } from './pages/movie-page';
 import { MyList } from './pages/my-list';
 // import { PageNotFound } from './pages/not-found-page';
@@ -103,7 +103,7 @@ test('renders main page', () => {
     <Provider store={testStore}>
       <MemoryRouter initialEntries={[AppRoute.MainPage]}>
         <Routes>
-          <Route path={AppRoute.MainPage} element={<Main {...propsMain}/>}/>
+          <Route path={AppRoute.MainPage} element={<MainPage {...propsMain}/>}/>
         </Routes>
       </MemoryRouter>
     </Provider>

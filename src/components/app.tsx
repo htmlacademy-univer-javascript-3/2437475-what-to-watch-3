@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { Main } from './pages/main-page';
+import { MainPage } from './pages/main-page';
 import { PropsMain } from './pages/main-page';
 import { SignIn } from './pages/sign-in';
 import { MyList } from './pages/my-list';
@@ -28,7 +28,7 @@ export function App({paramsMain}: PropsAppMain) {
   return (
     <Router>
       <Routes>
-        <Route path={AppRoute.MainPage} element={<Main {...paramsMain}/>} />
+        <Route path={AppRoute.MainPage} element={<MainPage {...paramsMain}/>} />
         <Route path={AppRoute.LoginPage} element={<SignIn />} />
         <Route path={AppRoute.MyListPage} element={
           <PrivateRoute>
