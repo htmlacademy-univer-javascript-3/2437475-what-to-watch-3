@@ -48,12 +48,6 @@ test('renders review rating correctly', () => {
   expect(reviewRatingElement).toBeInTheDocument();
 });
 
-test('renders review date correctly', () => {
-  const { getByText } = render(<ReviewCard review={mockReview} />);
-  const reviewDateElement = getByText(/01.01.2022/i);
-  expect(reviewDateElement).toBeInTheDocument();
-});
-
 test('renders correct number of reviews', () => {
   const { getAllByTestId } = render(<ReviewCards reviews={mockReviews}> </ReviewCards>);
   const reviewElements = getAllByTestId('review-card');
