@@ -11,7 +11,7 @@ import { PageNotFound } from './pages/not-found-page';
 import { PrivateRoute } from './private-route';
 
 export enum AppRoute {
-  MainPage = '/',
+  Main = '/',
   LoginPage = '/login',
   MyListPage = '/mylist',
   FilmPage = '/films/:id',
@@ -28,7 +28,7 @@ export function App({paramsMain}: PropsAppMain) {
   return (
     <Router>
       <Routes>
-        <Route path={AppRoute.MainPage} element={<MainPage {...paramsMain}/>} />
+        <Route path={AppRoute.Main} element={<MainPage {...paramsMain}/>} />
         <Route path={AppRoute.LoginPage} element={<SignIn />} />
         <Route path={AppRoute.MyListPage} element={
           <PrivateRoute>

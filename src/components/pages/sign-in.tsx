@@ -21,7 +21,7 @@ export function SignIn() {
     setError(message);
   }, []);
 
-  const sumbitEmailPassword = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+  const SubmitLoginCredentials = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
@@ -40,7 +40,7 @@ export function SignIn() {
 
   return(
     <React.Fragment>
-      {authStatus && (<Navigate to={AppRoute.MainPage} replace/>)}
+      {authStatus && (<Navigate to={AppRoute.Main} replace/>)}
       <div className="user-page">
         <header className="page-header user-page__head">
           <Logo/>
@@ -49,7 +49,7 @@ export function SignIn() {
         </header>
 
         <div className="sign-in user-page__content">
-          <form className="sign-in__form" onSubmit={(event) => void sumbitEmailPassword(event)}>
+          <form className="sign-in__form" onSubmit={(event) => void SubmitLoginCredentials(event)}>
             {(
               <div className="sign-in__message">
                 <p>{errorMessage}</p>

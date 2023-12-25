@@ -25,6 +25,6 @@ describe('PageNotFound', () => {
     );
 
     const link = getByText('Main Page');
-    expect(link.getAttribute('href')).toBe(AppRoute.MainPage);
+    expect(link.getAttribute('href')).toBe(AppRoute.Main);
   });
 });

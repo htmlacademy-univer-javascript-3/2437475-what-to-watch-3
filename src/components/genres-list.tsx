@@ -26,3 +26,5 @@ export const GenreList = React.memo(({ films, activeGenre, onGenreChange }: Genr
     </ul>
   );
 });
+
+GenreList.displayName = 'GenreList';

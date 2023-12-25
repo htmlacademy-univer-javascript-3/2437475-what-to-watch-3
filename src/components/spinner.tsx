@@ -7,4 +7,6 @@ const Spinner = React.memo(() => (
   </div>
 ));
 
+Spinner.displayName = 'Spinner';
+
 export default Spinner;

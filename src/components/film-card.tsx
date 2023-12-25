@@ -50,18 +50,19 @@ export const Card = React.memo(({film}: PropsCard) => {
   );
 });
 
-export const Cards = React.memo(({ films, children }: filmsListProps) => {
-  return (
-    <div className="catalog__films-list">
-      {films.map((film) => (
-        <Card
-          key={film.id}
-          film={film}
-        />
-      ))}
-      {children}
-    </div>
-  );
-});
+export const Cards = React.memo(({ films, children }: filmsListProps) => (
+  <div className="catalog__films-list">
+    {films.map((film) => (
+      <Card
+        key={film.id}
+        film={film}
+      />
+    ))}
+    {children}
+  </div>
+));
+
+Card.displayName = 'Card';
+Cards.displayName = 'Cards';
 
 

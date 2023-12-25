@@ -19,7 +19,7 @@ describe('Header component', () => {
 
     const logoLink = letterWElements[0]?.closest('.logo__link');
     expect(logoLink).toBeInTheDocument();
-    expect(logoLink?.getAttribute('href')).toBe(AppRoute.MainPage);
+    expect(logoLink?.getAttribute('href')).toBe(AppRoute.Main);
 
     letterWElements.forEach((letterW) => {
       expect(letterW).toBeInTheDocument();

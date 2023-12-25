@@ -52,15 +52,15 @@ export function MainPage({film, detail}: PropsMain) {
     setVisibleMovies((prev) => prev + FILMS_PAGE_SIZE);
   }, []);
 
-  const handleMyListClick = useCallback(() => {
+  function handleMyListClick() {
     if (!authStatus) {
       navigate(AppRoute.LoginPage);
       return;
     }
 
-    const isFavorite = myList.some((myFilm) => myFilm.id === film.id);
-    dispatch(postFilmInMyList({ filmId: film.id, status: isFavorite ? 0 : 1 }));
-  }, [authStatus, dispatch, film.id, myList, navigate]);
+    const isFavorite = myList.some((myFilm) => myFilm.id === film?.id);
+    dispatch(postFilmInMyList({ filmId: film?.id , status: isFavorite ? 0 : 1 }));
+  }
 
   if (loading) {
     return <Spinner/>;

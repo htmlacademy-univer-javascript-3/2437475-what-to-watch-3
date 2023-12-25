@@ -101,9 +101,9 @@ const testStore = configureStore({
 test('renders main page', () => {
   render(
     <Provider store={testStore}>
-      <MemoryRouter initialEntries={[AppRoute.MainPage]}>
+      <MemoryRouter initialEntries={[AppRoute.Main]}>
         <Routes>
-          <Route path={AppRoute.MainPage} element={<MainPage {...propsMain}/>}/>
+          <Route path={AppRoute.Main} element={<MainPage {...propsMain}/>}/>
         </Routes>
       </MemoryRouter>
     </Provider>

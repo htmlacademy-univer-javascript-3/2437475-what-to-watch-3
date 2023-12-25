@@ -91,7 +91,7 @@ export function MoviePage() {
     fetchReviews();
   }, [dispatch, filmId, fetchReviews]);
 
-  const handleMyListClick = useCallback(() => {
+  function handleMyListClick() {
     if (!authStatus) {
       navigate(AppRoute.LoginPage);
       return;
@@ -99,7 +99,7 @@ export function MoviePage() {
 
     const isFavorite = myList.some((myFilm) => myFilm.id === film?.id);
     dispatch(postFilmInMyList({ filmId: film?.id as string, status: isFavorite ? 0 : 1 }));
-  }, [authStatus, dispatch, film?.id, myList, navigate]);
+  }
 
   if (!film) {
     return <PageNotFound/>;
