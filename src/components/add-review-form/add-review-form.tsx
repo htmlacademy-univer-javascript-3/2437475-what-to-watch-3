@@ -35,6 +35,7 @@ export function AddReviewForm() {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [reviewPosted, setReviewPosted] = useState(false);
+  const [loadingReview, setLoadingReview] = useState(false);
   const [errorMessage, setError] = useState('');
 
   const navigate = useNavigate();
@@ -67,6 +68,8 @@ export function AddReviewForm() {
       return;
     }
 
+    setLoadingReview(true);
+
     const data = {
       filmId: filmId,
       request: {
@@ -82,6 +85,8 @@ export function AddReviewForm() {
     } else {
       setError('Failed to post review');
     }
+
+    setLoadingReview(false);
 
   }, [dispatch, filmId, film, reviewText, rating]);
 
@@ -132,7 +137,7 @@ export function AddReviewForm() {
       <div className="add-review__text">
         <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" value={reviewText} onChange={(e) => setReviewText(e.target.value)}></textarea>
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit" disabled={reviewPosted}>Post</button>
+          <button className="add-review__btn" type="submit" disabled={loadingReview}>Post</button>
         </div>
       </div>
       {(
