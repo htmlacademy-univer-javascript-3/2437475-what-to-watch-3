@@ -20,7 +20,7 @@ enum StarsCount {
 
 export function AddReviewForm() {
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const filmSelector = useMemo(() =>
     createSelector(
@@ -43,7 +43,7 @@ export function AddReviewForm() {
 
   useEffect(() => {
     if (reviewPosted) {
-      navigate(`${AppRoute.FilmPage}=${filmId as string}`);
+      navigate(`${AppRoute.FilmPage.replace(':id', filmId as string)}`);
     }
   }, [filmId, reviewPosted, navigate]);
 

@@ -31,9 +31,9 @@ export function ReviewCard({review}: PropsReviewCard) {
   const year = parts[2];
   const month = Number(parts[1]) - 1;
   const day = parts[0];
-  
+
   const monthName = Months[month];
-  
+
   const formattedDate = `${monthName} ${day}, ${year}`;
   return (
     <div className="review" data-testid="review-card">
