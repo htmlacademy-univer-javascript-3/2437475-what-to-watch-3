@@ -32,7 +32,7 @@ describe('Card', () => {
     );
 
     const link = getByText(film.name);
-    expect(link.getAttribute('href')).toBe(`${AppRoute.FilmPage}=${film.id}`);
+    expect(link.getAttribute('href')).toBe(`${AppRoute.FilmPage.replace(':id', film.id)}`);
   });
 });
 

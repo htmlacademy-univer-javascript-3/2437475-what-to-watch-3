@@ -13,7 +13,7 @@ import React from 'react';
 
 export function Player() {
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const filmSelector = useMemo(() =>
     createSelector(
@@ -127,7 +127,7 @@ export function Player() {
     <div className="player">
       <video data-testid="hidden-test-player-page" ref={videoRef} src={detail.video} className="player__video" poster={film.image}></video>
 
-      <Link to={`${AppRoute.FilmPage}=${film.id}`} type="button" style={{ textDecoration: 'none' }} className="player__exit">
+      <Link to={`${AppRoute.FilmPage.replace(':id', film.id)}`} type="button" style={{ textDecoration: 'none' }} className="player__exit">
         Exit
       </Link>
 
@@ -161,7 +161,7 @@ export function Player() {
                 <span>Play</span>
               </React.Fragment> }
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{film.name}</div>
 
           <button type="button" className="player__full-screen" onClick={handleFullScreen}>
             <svg viewBox="0 0 27 27" width="27" height="27">

@@ -15,7 +15,7 @@ import { Logo } from '../../logo/logo';
 
 export function AddReview() {
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
@@ -75,7 +75,7 @@ export function AddReview() {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link to={`${AppRoute.FilmPage}=${film.id}`} className="breadcrumbs__link">{film.name}</Link>
+                <Link to={`${AppRoute.FilmPage.replace(':id', film.id)}`} className="breadcrumbs__link">{film.name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>

@@ -29,7 +29,7 @@ export const SIMILAR_FILM_COUNT = 4;
 export function MoviePage() {
 
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const [similarFilms, setSimilarFilms] = useState<Film[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -130,7 +130,7 @@ export function MoviePage() {
               </p>
 
               <div className="film-card__buttons">
-                <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
+                <Link to={`${AppRoute.PlayerPage.replace(':id', film.id)}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
