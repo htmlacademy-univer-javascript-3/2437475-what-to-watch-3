@@ -108,28 +108,24 @@ export const getPromoFilm = createAsyncThunk('films/getPromoFilm', async (_, {ex
     genre: serverPromoResponse.genre
   };
 
-  const responseDetail = await apiInstance.get(`/films/${promo.id}`);
-
-  const serverPromoDetailResponse: serverFilm = await responseDetail.data as serverFilm;
-
   const promoDetail: Detail = {
-    filmId: serverPromoDetailResponse.id,
-    genre: serverPromoDetailResponse.genre,
-    year:  serverPromoDetailResponse.released ,
-    director: serverPromoDetailResponse.director,
-    actors: serverPromoDetailResponse.starring,
+    filmId: serverPromoResponse.id,
+    genre: serverPromoResponse.genre,
+    year:  serverPromoResponse.released ,
+    director: '',
+    actors: [],
     duration: {
-      hours: Math.floor(serverPromoDetailResponse.runTime / 60) ,
-      minutes: serverPromoDetailResponse.runTime % 60
+      hours: 0,
+      minutes: 0
     },
-    poster: serverPromoDetailResponse.posterImage,
-    bigImage: serverPromoDetailResponse.backgroundImage,
-    description: serverPromoDetailResponse.description,
-    rating: parseFloat(serverPromoDetailResponse.rating.toFixed(1)),
-    ratingDescription: getRatingDescription(serverPromoDetailResponse.rating) as string,
-    votes: serverPromoDetailResponse.scoresCount,
-    video: serverPromoDetailResponse.videoLink,
-    isFavorite: serverPromoDetailResponse.isFavorite
+    poster: serverPromoResponse.posterImage,
+    bigImage: serverPromoResponse.backgroundImage,
+    description: '',
+    rating: 0,
+    ratingDescription: '',
+    votes: 0,
+    video: serverPromoResponse.videoLink,
+    isFavorite: serverPromoResponse.isFavorite
   };
 
   return [promo, promoDetail];
