@@ -73,7 +73,8 @@ const testInitialState = {
   films: testFilms,
   details: testDetails,
   overviews: [],
-  filteredMovies: []
+  filteredMovies: [],
+  serverIsAvailable: true
 };
 
 const testApi = createAPI();

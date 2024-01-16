@@ -12,6 +12,7 @@ import { PageNotFound } from '../not-found-page/not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
 import { SignOutLink } from '../../sign-link/sign-out-link/sign-out-link';
 import { Logo } from '../../logo/logo';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export function AddReview() {
   const { id } = useParams();
@@ -51,6 +52,12 @@ export function AddReview() {
       fetchFilmDetails();
     }
   }, [detail, fetchFilmDetails]);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   if (!film) {
     return <PageNotFound/>;

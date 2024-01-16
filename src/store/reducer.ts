@@ -14,6 +14,7 @@ export type AppState = {
   details: Detail[];
   filteredMovies: Film[];
   myList: Film[];
+  serverIsAvailable: boolean;
 };
 
 export const initialState: AppState = {
@@ -24,7 +25,8 @@ export const initialState: AppState = {
   films: [],
   details: [],
   filteredMovies: [],
-  myList: []
+  myList: [],
+  serverIsAvailable: true
 };
 
 const appSlice = createSlice({
@@ -58,6 +60,9 @@ const appSlice = createSlice({
     },
     setMyList(state, action: PayloadAction<Film[]>) {
       state.myList = action.payload;
+    },
+    setServerStatus(state, action: PayloadAction<boolean>) {
+      state.serverIsAvailable = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -74,7 +79,7 @@ const appSlice = createSlice({
   },
 });
 
-export const { changeGenre, setFilms, setDetail, setDetails, setLoading, updateAuthorizationStatus, setFilmInMyList, setMyList } =
+export const { changeGenre, setFilms, setDetail, setDetails, setLoading, updateAuthorizationStatus, setFilmInMyList, setMyList, setServerStatus } =
   appSlice.actions;
 
 export default appSlice.reducer;

@@ -10,6 +10,7 @@ import { PageNotFound } from '../not-found-page/not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
 import { AppRoute } from '../../app';
 import React from 'react';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export function Player() {
   const { id } = useParams();
@@ -52,6 +53,12 @@ export function Player() {
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   const handlePlayPause = () => {
     const video = videoRef.current;

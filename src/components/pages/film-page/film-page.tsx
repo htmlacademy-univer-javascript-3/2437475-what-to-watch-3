@@ -23,6 +23,7 @@ import { AppRoute } from '../../app';
 import { getReviews } from '../../../store/api-actions/api-actions-comments';
 import { postFilmInMyList } from '../../../store/api-actions/api-actions-favorite';
 import { getFilm, getSimilarFilms } from '../../../store/api-actions/api-actions-films';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export const SIMILAR_FILM_COUNT = 4;
 
@@ -90,6 +91,12 @@ export function MoviePage() {
   useEffect(() => {
     fetchReviews();
   }, [dispatch, filmId, fetchReviews]);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   function handleMyListClick() {
     if (!authStatus) {

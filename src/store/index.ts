@@ -8,7 +8,8 @@ export const preloadedState = {
   films: [],
   details: [],
   overviews: [],
-  filteredMovies: []
+  filteredMovies: [],
+  serverIsAvailable: true
 };
 
 const api = createAPI();

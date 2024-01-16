@@ -4,9 +4,15 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../store/reducer';
 import { SignOutLink } from '../../sign-link/sign-out-link/sign-out-link';
 import { Logo } from '../../logo/logo';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export function MyList() {
   const favoriteFilms = useSelector((state: AppState) => state.myList) || [];
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
   return(
     <div className="user-page">
       <header className="page-header user-page__head">
