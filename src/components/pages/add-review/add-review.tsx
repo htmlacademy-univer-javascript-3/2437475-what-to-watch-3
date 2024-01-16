@@ -12,17 +12,18 @@ import { PageNotFound } from '../not-found-page/not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
 import { SignOutLink } from '../../sign-link/sign-out-link/sign-out-link';
 import { Logo } from '../../logo/logo';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export function AddReview() {
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const authStatus = useSelector((state: AppState) => state.authorizationStatus);
 
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
-      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+      (films) => films.find((filmInFilms) => filmInFilms?.id === filmId)
     ),
   [filmId]
   );
@@ -30,7 +31,7 @@ export function AddReview() {
   const detailsSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.details,
-      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+      (details) => details.find((detailInDetails) => detailInDetails?.filmId === filmId)
     ),
   [filmId]
   );
@@ -51,6 +52,12 @@ export function AddReview() {
       fetchFilmDetails();
     }
   }, [detail, fetchFilmDetails]);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   if (!film) {
     return <PageNotFound/>;
@@ -75,7 +82,7 @@ export function AddReview() {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link to={`${AppRoute.FilmPage}=${film.id}`} className="breadcrumbs__link">{film.name}</Link>
+                <Link to={`${AppRoute.FilmPage.replace(':id', film.id)}`} className="breadcrumbs__link">{film.name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>

@@ -8,6 +8,7 @@ import { AppDispatch } from '../../../store';
 import React from 'react';
 import { Logo } from '../../logo/logo';
 import { signIn } from '../../../store/api-actions/api-actions-user';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -37,6 +38,12 @@ export function SignIn() {
     setIsLoading(false);
 
   }, [dispatch, email, password, handleErrorMessage]);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   return(
     <React.Fragment>

@@ -34,7 +34,7 @@ export const Card = React.memo(({film}: PropsCard) => {
 
   return (
     <article className="small-film-card catalog__films-card" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <Link to={`${AppRoute.FilmPage}=${film.id}`}>
+      <Link to={`${AppRoute.FilmPage.replace(':id', film.id)}`}>
         <div className="small-film-card__image">
           {isHovered ? (
             <VideoPlayer src={film.video} muted width="280" height="175" poster={film.image} autoplay />
@@ -44,7 +44,7 @@ export const Card = React.memo(({film}: PropsCard) => {
         </div>
       </Link>
       <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={`${AppRoute.FilmPage}=${film.id}`}>{film.name}</Link>
+        <Link className="small-film-card__link" to={`${AppRoute.FilmPage.replace(':id', film.id)}`}>{film.name}</Link>
       </h3>
     </article>
   );

@@ -10,15 +10,16 @@ import { PageNotFound } from '../not-found-page/not-found-page';
 import { createSelector } from '@reduxjs/toolkit';
 import { AppRoute } from '../../app';
 import React from 'react';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export function Player() {
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
-      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+      (films) => films.find((filmInFilms) => filmInFilms?.id === filmId)
     ),
   [filmId]
   );
@@ -26,7 +27,7 @@ export function Player() {
   const detailsSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.details,
-      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+      (details) => details.find((detailInDetails) => detailInDetails?.filmId === filmId)
     ),
   [filmId]
   );
@@ -52,27 +53,6 @@ export function Player() {
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const handlePlayPause = () => {
-    const video = videoRef.current;
-
-    if (isPlaying) {
-      video?.pause();
-    } else {
-      video?.play();
-    }
-
-    setIsPlaying(!isPlaying);
-
-  };
-
-  const handleFullScreen = () => {
-    const video = videoRef.current;
-
-    if (video?.requestFullscreen) {
-      video?.requestFullscreen();
-    }
-  };
 
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
@@ -101,6 +81,33 @@ export function Player() {
     };
   }, [calculateTimeLeft]);
 
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
+
+  const handlePlayPause = () => {
+    const video = videoRef.current;
+
+    if (isPlaying) {
+      video?.pause();
+    } else {
+      video?.play();
+    }
+
+    setIsPlaying(!isPlaying);
+
+  };
+
+  const handleFullScreen = () => {
+    const video = videoRef.current;
+
+    if (video?.requestFullscreen) {
+      video?.requestFullscreen();
+    }
+  };
+
   const handleTogglerClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const video = videoRef.current;
     if (video) {
@@ -127,7 +134,7 @@ export function Player() {
     <div className="player">
       <video data-testid="hidden-test-player-page" ref={videoRef} src={detail.video} className="player__video" poster={film.image}></video>
 
-      <Link to={`${AppRoute.FilmPage}=${film.id}`} type="button" style={{ textDecoration: 'none' }} className="player__exit">
+      <Link to={`${AppRoute.FilmPage.replace(':id', film.id)}`} type="button" style={{ textDecoration: 'none' }} className="player__exit">
         Exit
       </Link>
 
@@ -161,7 +168,7 @@ export function Player() {
                 <span>Play</span>
               </React.Fragment> }
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{film.name}</div>
 
           <button type="button" className="player__full-screen" onClick={handleFullScreen}>
             <svg viewBox="0 0 27 27" width="27" height="27">

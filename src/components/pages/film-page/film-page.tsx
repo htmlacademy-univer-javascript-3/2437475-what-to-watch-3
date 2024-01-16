@@ -23,13 +23,14 @@ import { AppRoute } from '../../app';
 import { getReviews } from '../../../store/api-actions/api-actions-comments';
 import { postFilmInMyList } from '../../../store/api-actions/api-actions-favorite';
 import { getFilm, getSimilarFilms } from '../../../store/api-actions/api-actions-films';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export const SIMILAR_FILM_COUNT = 4;
 
 export function MoviePage() {
 
   const { id } = useParams();
-  const filmId = id?.split('=')[1];
+  const filmId = id;
 
   const [similarFilms, setSimilarFilms] = useState<Film[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -40,7 +41,7 @@ export function MoviePage() {
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
-      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+      (films) => films.find((filmInFilms) => filmInFilms?.id === filmId)
     ),
   [filmId]
   );
@@ -48,7 +49,7 @@ export function MoviePage() {
   const detailsSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.details,
-      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+      (details) => details.find((detailInDetails) => detailInDetails?.filmId === filmId)
     ),
   [filmId]
   );
@@ -69,7 +70,7 @@ export function MoviePage() {
 
   const fetchSimilarFilms = useCallback(async () => {
     const serverSimilarFilmsAction = await dispatch(getSimilarFilms(filmId as string));
-    setSimilarFilms((serverSimilarFilmsAction.payload as Film[]).slice(0, SIMILAR_FILM_COUNT));
+    setSimilarFilms((serverSimilarFilmsAction.payload as Film[])?.slice(0, SIMILAR_FILM_COUNT));
   }, [dispatch, filmId]);
 
   const fetchReviews = useCallback(async () => {
@@ -90,6 +91,12 @@ export function MoviePage() {
   useEffect(() => {
     fetchReviews();
   }, [dispatch, filmId, fetchReviews]);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   function handleMyListClick() {
     if (!authStatus) {
@@ -130,7 +137,7 @@ export function MoviePage() {
               </p>
 
               <div className="film-card__buttons">
-                <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
+                <Link to={`${AppRoute.PlayerPage.replace(':id', film.id)}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

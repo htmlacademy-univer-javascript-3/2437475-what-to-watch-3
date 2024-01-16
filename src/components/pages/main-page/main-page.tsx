@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../app';
 import { AppDispatch } from '../../../store';
 import { postFilmInMyList } from '../../../store/api-actions/api-actions-favorite';
+import { ServerErrorMessage } from '../../server-error-message/server-error-message';
 
 export const FILMS_PAGE_SIZE = 8;
 
@@ -51,6 +52,12 @@ export function MainPage({film, detail}: PropsMain) {
   const handleShowMore = useCallback(() => {
     setVisibleMovies((prev) => prev + FILMS_PAGE_SIZE);
   }, []);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
 
   function handleMyListClick() {
     if (!authStatus) {
@@ -92,7 +99,7 @@ export function MainPage({film, detail}: PropsMain) {
 
               <div className="film-card__buttons">
 
-                <Link to={`${AppRoute.PlayerPage}=${film.id}`} className="btn btn--play film-card__button" type="button" >
+                <Link to={`${AppRoute.PlayerPage.replace(':id', film.id)}`} className="btn btn--play film-card__button" type="button" >
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

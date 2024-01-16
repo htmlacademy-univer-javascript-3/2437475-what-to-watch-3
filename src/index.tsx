@@ -9,6 +9,7 @@ import { Film } from './types/films';
 import { fetchMyList } from './store/api-actions/api-actions-favorite';
 import { getAuthStatus } from './store/api-actions/api-actions-user';
 import Spinner from './components/spinner/spinner';
+import { ServerErrorMessage } from './components/server-error-message/server-error-message';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -16,6 +17,7 @@ export const AppContainer = () => {
   const [loading, setLoading] = useState(true);
   const [promoFilm, setPromoFilm] = useState<Film | null>(null);
   const [detailPromoFilm, setDetailPromoFilm] = useState<Detail | null>(null);
+  const [serverError, setServerError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,17 +28,25 @@ export const AppContainer = () => {
         await store.dispatch(fetchMyList());
       }
       const serverPromo = await store.dispatch(getPromoFilm());
-      const promo = serverPromo.payload as [Film, Detail];
-      const newDetailPromoFilm = promo[1];
-      const newPromoFilm = promo[0];
+      if (state.serverIsAvailable) {
+        const promo = serverPromo.payload as [Film, Detail];
+        const newDetailPromoFilm = promo[1];
+        const newPromoFilm = promo[0];
 
-      setDetailPromoFilm(newDetailPromoFilm);
-      setPromoFilm(newPromoFilm);
-      setLoading(false);
+        setDetailPromoFilm(newDetailPromoFilm);
+        setPromoFilm(newPromoFilm);
+        setLoading(false);
+      } else {
+        setServerError(true);
+      }
     };
 
     fetchData();
   }, []);
+
+  if (serverError) {
+    return <ServerErrorMessage/>;
+  }
 
   if (loading) {
     return <Spinner />;
