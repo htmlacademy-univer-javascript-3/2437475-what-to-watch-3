@@ -25,7 +25,7 @@ export function AddReviewForm() {
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
-      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+      (films) => films.find((filmInFilms) => filmInFilms?.id === filmId)
     ),
   [filmId]
   );

@@ -40,7 +40,7 @@ export function MoviePage() {
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
-      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+      (films) => films.find((filmInFilms) => filmInFilms?.id === filmId)
     ),
   [filmId]
   );
@@ -48,7 +48,7 @@ export function MoviePage() {
   const detailsSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.details,
-      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+      (details) => details.find((detailInDetails) => detailInDetails?.filmId === filmId)
     ),
   [filmId]
   );
@@ -69,7 +69,7 @@ export function MoviePage() {
 
   const fetchSimilarFilms = useCallback(async () => {
     const serverSimilarFilmsAction = await dispatch(getSimilarFilms(filmId as string));
-    setSimilarFilms((serverSimilarFilmsAction.payload as Film[]).slice(0, SIMILAR_FILM_COUNT));
+    setSimilarFilms((serverSimilarFilmsAction.payload as Film[])?.slice(0, SIMILAR_FILM_COUNT));
   }, [dispatch, filmId]);
 
   const fetchReviews = useCallback(async () => {

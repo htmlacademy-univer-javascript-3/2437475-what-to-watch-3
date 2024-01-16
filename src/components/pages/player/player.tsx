@@ -18,7 +18,7 @@ export function Player() {
   const filmSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.films,
-      (films) => films.find((filmInFilms) => filmInFilms.id === filmId)
+      (films) => films.find((filmInFilms) => filmInFilms?.id === filmId)
     ),
   [filmId]
   );
@@ -26,7 +26,7 @@ export function Player() {
   const detailsSelector = useMemo(() =>
     createSelector(
       (state: AppState) => state.details,
-      (details) => details.find((detailInDetails) => detailInDetails.filmId === filmId)
+      (details) => details.find((detailInDetails) => detailInDetails?.filmId === filmId)
     ),
   [filmId]
   );
