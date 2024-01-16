@@ -54,33 +54,6 @@ export function Player() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
-
-  if (!serverIsAvailable) {
-    return <ServerErrorMessage/>;
-  }
-
-  const handlePlayPause = () => {
-    const video = videoRef.current;
-
-    if (isPlaying) {
-      video?.pause();
-    } else {
-      video?.play();
-    }
-
-    setIsPlaying(!isPlaying);
-
-  };
-
-  const handleFullScreen = () => {
-    const video = videoRef.current;
-
-    if (video?.requestFullscreen) {
-      video?.requestFullscreen();
-    }
-  };
-
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   const calculateTimeLeft = useCallback(() => {
@@ -107,6 +80,33 @@ export function Player() {
       video?.removeEventListener('timeupdate', calculateTimeLeft);
     };
   }, [calculateTimeLeft]);
+
+  const serverIsAvailable = useSelector((state: AppState) => state.serverIsAvailable);
+
+  if (!serverIsAvailable) {
+    return <ServerErrorMessage/>;
+  }
+
+  const handlePlayPause = () => {
+    const video = videoRef.current;
+
+    if (isPlaying) {
+      video?.pause();
+    } else {
+      video?.play();
+    }
+
+    setIsPlaying(!isPlaying);
+
+  };
+
+  const handleFullScreen = () => {
+    const video = videoRef.current;
+
+    if (video?.requestFullscreen) {
+      video?.requestFullscreen();
+    }
+  };
 
   const handleTogglerClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const video = videoRef.current;

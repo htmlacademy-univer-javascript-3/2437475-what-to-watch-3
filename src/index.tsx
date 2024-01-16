@@ -29,13 +29,13 @@ export const AppContainer = () => {
       }
       const serverPromo = await store.dispatch(getPromoFilm());
       if (state.serverIsAvailable) {
-      const promo = serverPromo.payload as [Film, Detail];
-      const newDetailPromoFilm = promo[1];
-      const newPromoFilm = promo[0];
+        const promo = serverPromo.payload as [Film, Detail];
+        const newDetailPromoFilm = promo[1];
+        const newPromoFilm = promo[0];
 
-      setDetailPromoFilm(newDetailPromoFilm);
-      setPromoFilm(newPromoFilm);
-      setLoading(false);
+        setDetailPromoFilm(newDetailPromoFilm);
+        setPromoFilm(newPromoFilm);
+        setLoading(false);
       } else {
         setServerError(true);
       }
